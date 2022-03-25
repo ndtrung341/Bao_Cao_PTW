@@ -1,0 +1,16 @@
+export const LOGO = require('assets/img/logo.png');
+
+export const NAV_LINKS = [
+   {
+      name: 'Trang chủ',
+      path: '/',
+   },
+   {
+      name: 'Sản phẩm',
+      path: '/collections',
+   },
+   {
+      name: 'Liên hệ',
+      path: '/contact',
+   },
+];
