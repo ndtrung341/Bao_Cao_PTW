@@ -12,7 +12,7 @@ export const NAV_LINKS = [
    },
    {
       name: 'Sản phẩm',
-      path: '/collections',
+      path: '/product/list',
    },
    {
       name: 'Tin tức',

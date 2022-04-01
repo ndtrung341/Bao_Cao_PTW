@@ -1,9 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Rating, Typography } from '@mui/material';
+import {
+   Box,
+   Card,
+   CardActions,
+   CardContent,
+   CardMedia,
+   IconButton,
+   Rating,
+   Typography,
+} from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { formatCurrency } from 'utils';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -11,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
       '&:hover $actions': {
          transform: 'translateX(0)',
+      },
+      '&:hover': {
+         boxShadow: theme.shadows[4],
       },
    },
    content: {
@@ -22,19 +35,21 @@ const useStyles = makeStyles((theme) => ({
       WebkitLineClamp: 2,
       WebkitBoxOrient: 'vertical',
       overflow: 'hidden',
+      textDecoration: 'none',
+      color: 'inherit',
    },
    originalPrice: {
       '&&': {
          color: theme.palette.text.secondary,
          textDecoration: 'line-through',
-         fontSize: 16,
+         fontSize: 15,
       },
    },
    salePrice: {
       '&&': {
          color: theme.palette.error.dark,
-         fontSize: 20,
-         marginRight: theme.spacing(2),
+         fontSize: 17,
+         marginRight: theme.spacing(1),
          fontWeight: 700,
       },
    },
@@ -75,16 +90,20 @@ const ProductCard = ({ product }) => {
    const classes = useStyles();
 
    return (
-      <Card className={classes.root}>
+      <Card className={classes.root} elevation={0}>
          <CardMedia component='img' image={product.thumb} />
          <CardContent className={classes.content}>
-            {product.discountPercent !== 0 && <Box className={classes.percent}>-{product.discountPercent}%</Box>}
+            {product.discountPercent !== 0 && (
+               <Box className={classes.percent}>-{product.discountPercent}%</Box>
+            )}
 
-            <Typography gutterBottom component='p' className={classes.title}>
-               {product.name}
-            </Typography>
+            <Link to={`/product${product.slug}`} className={classes.title}>
+               <Typography gutterBottom component='p'>
+                  {product.name}
+               </Typography>
+            </Link>
 
-            <Box mb={1}>
+            <Box my={1}>
                <Typography component={'span'} className={classes.salePrice}>
                   {formatCurrency(product.salePrice)}
                </Typography>

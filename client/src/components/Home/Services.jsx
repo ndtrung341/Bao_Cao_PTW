@@ -57,17 +57,17 @@ const Services = () => {
             <Box className={classes.wrapper}>
                <Swiper
                   updateOnWindowResize
-                  scrollbar
                   breakpoints={{
                      // when window width is >= 320px
                      320: {
                         slidesPerView: 2,
                         spaceBetween: 10,
+                        scrollbar: true,
                      },
 
                      // when window width is >= 992px
                      992: {
-                        slidesPerView: 2,
+                        slidesPerView: 4,
                         spaceBetween: 20,
                      },
                   }}

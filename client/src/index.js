@@ -7,6 +7,7 @@ import { CssBaseline } from '@material-ui/core';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
+import { HelmetProvider } from 'react-helmet-async';
 
 const customTheme = createTheme({
    palette: {
@@ -24,10 +25,12 @@ const customTheme = createTheme({
 ReactDOM.render(
    <React.StrictMode>
       <BrowserRouter>
-         <ThemeProvider theme={customTheme}>
-            <CssBaseline />
-            <App />
-         </ThemeProvider>
+         <HelmetProvider>
+            <ThemeProvider theme={customTheme}>
+               <CssBaseline />
+               <App />
+            </ThemeProvider>
+         </HelmetProvider>
       </BrowserRouter>
    </React.StrictMode>,
    document.getElementById('root')

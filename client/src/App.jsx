@@ -5,11 +5,9 @@ import CartFeature from 'features/cart';
 import NotFound from 'components/NotFound';
 import AuthFeature from 'features/auth';
 import MainLayout from 'layouts/MainLayout';
-import FullScreenLayout from 'layouts/FullScreenLayout';
-
-// const CollectionsFeature = React.lazy(() => import('features/collections'));
-const ProductFeature = React.lazy(() => import('features/product'));
-const HomePage = React.lazy(() => import('components/Home'));
+import AuthLayout from 'layouts/AuthLayout';
+import Home from 'components/Home';
+import ProductFeature from 'features/product';
 
 function App() {
    return (
@@ -17,14 +15,13 @@ function App() {
          <React.Suspense fallback={''}>
             <Routes>
                <Route path='/' element={<MainLayout />}>
-                  <Route path='' element={<HomePage />} />
-                  <Route path='collections' element={<ProductFeature />} />
+                  <Route path='' element={<Home />} />
                   <Route path='product/*' element={<ProductFeature />} />
                   <Route path='cart/*' element={<CartFeature />} />
                   <Route path='404' element={<NotFound />} />
                </Route>
 
-               <Route path='auth' element={<FullScreenLayout />}>
+               <Route path='auth' element={<AuthLayout />}>
                   <Route path='*' element={<AuthFeature />} />
                </Route>
 
