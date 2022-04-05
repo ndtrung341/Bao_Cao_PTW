@@ -9,18 +9,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-const SLIDES_THUMB = [
-   'https://via.placeholder.com/1500x500/f55',
-   'https://via.placeholder.com/1500x500/000',
-   'https://via.placeholder.com/1500x500/cdd',
-   // 'https://bizweb.dktcdn.net/100/011/344/files/1-5.jpg?v=1608113447817',
-   // 'https://bizweb.dktcdn.net/100/011/344/files/2-3.jpg?v=1608113514902',
-   // 'https://www.wheystore.vn/upload/banner/upl_banner_1641957646_image_1641957646.jpg',
-   // 'https://bizweb.dktcdn.net/100/011/344/themes/836009/assets/slider_item_2_image.jpg?1648172785464',
-   // 'https://bizweb.dktcdn.net/100/011/344/themes/836009/assets/banner_1.png?1648172785464',
-   //    'https://www.thucphambosung.vn/wp-content/uploads/2019/01/baner-rule-1400x570.jpg',
-   // 'https://www.wheystore.vn/upload/product_optimize/image_content/349_image_content_mass_infusion_12lbs___xtend_bcaas_90_servings_image_content_1587723009.jpg',
-];
+import img1 from 'assets/img/slide1.png';
+import img2 from 'assets/img/slide2.png';
+
+const SLIDES_THUMB = [img2, img1];
 
 const useStyles = makeStyles((theme) => ({
    root: {},

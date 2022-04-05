@@ -97,7 +97,7 @@ const ProductCard = ({ product }) => {
                <Box className={classes.percent}>-{product.discountPercent}%</Box>
             )}
 
-            <Link to={`/product${product.slug}`} className={classes.title}>
+            <Link to={`/product/${product.slug}`} className={classes.title}>
                <Typography gutterBottom component='p'>
                   {product.name}
                </Typography>

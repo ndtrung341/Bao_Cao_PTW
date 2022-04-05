@@ -3,6 +3,7 @@ import { NavigateNext } from '@mui/icons-material';
 import { Breadcrumbs, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { capitalize } from 'utils';
 const useStyles = makeStyles((theme) => ({
    item: {
       textDecoration: 'none',
@@ -21,8 +22,8 @@ const Breadcrumb = ({ title, parent }) => {
             <Link to='/' className={classes.item}>
                Trang chủ
             </Link>
-            {parent ? <Typography className={classes.item}>{parent}</Typography> : ''}
-            <Typography className={`${classes.item} active`}>{title}</Typography>
+            {parent ? <Typography className={classes.item}>{capitalize(parent)}</Typography> : ''}
+            <Typography className={`${classes.item} active`}>{capitalize(title)}</Typography>
          </Breadcrumbs>
       </Stack>
    );

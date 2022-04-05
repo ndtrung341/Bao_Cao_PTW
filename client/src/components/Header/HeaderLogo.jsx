@@ -1,11 +1,13 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { LOGO } from 'constants';
 
 const HeaderLogo = () => {
    return (
       <>
-         <Box
+         <Link
+            component={'a'}
+            href='/'
             sx={{
                display: 'flex',
                alignItems: 'center',
@@ -15,8 +17,15 @@ const HeaderLogo = () => {
                height: '100%',
             }}
          >
-            <img src={LOGO} alt='' width={200} style={{ objectFit: 'contain', height: '100%' }} />
-         </Box>
+            <Box height='100%'>
+               <img
+                  src={LOGO}
+                  alt=''
+                  width={200}
+                  style={{ objectFit: 'contain', height: '100%' }}
+               />
+            </Box>
+         </Link>
       </>
    );
 };

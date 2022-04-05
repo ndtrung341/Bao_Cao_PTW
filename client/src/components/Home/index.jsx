@@ -6,11 +6,12 @@ import Section from '../Section';
 import Services from './Services';
 import Slider from './Slider';
 import TitleSection from '../TitleSection';
-import { products } from 'data/product';
-
-const productList = products.filter((_, index) => index < 4);
+import { useSelector } from 'react-redux';
+import { selectProductList } from 'features/product/productSlice';
 
 const Home = () => {
+   const productList = useSelector(selectProductList);
+
    return (
       <>
          <Slider />
@@ -20,7 +21,7 @@ const Home = () => {
          <Section>
             <TitleSection title={'Sản phẩm mới'} subTitle={'Các sản phẩm mới có tại cửa hàng'} />
             <Grid container spacing={2} py={2}>
-               {productList.map((item) => (
+               {productList.slice(0, 4).map((item) => (
                   <Grid item key={item.id} md={6} lg={3} xs={6}>
                      <Link to={`/product/${item.id}`} style={{ textDecoration: 'none' }}>
                         <ProductCard product={item} />
@@ -36,7 +37,7 @@ const Home = () => {
                subTitle={'Các sản phẩm bán chạy tại cửa hàng'}
             />
             <Grid container spacing={2} py={2}>
-               {productList.map((item) => (
+               {productList.slice(0, 4).map((item) => (
                   <Grid item key={item.id} md={6} lg={3} xs={6}>
                      <ProductCard product={item} />
                   </Grid>

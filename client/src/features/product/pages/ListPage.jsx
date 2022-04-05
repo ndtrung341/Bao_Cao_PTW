@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container, Grid, Pagination } from '@mui/material';
 import Breadcrumb from 'components/Breadcrumb';
-import { products } from 'data/product';
 import ProductList from '../components/ProductList';
 import { makeStyles } from '@material-ui/core';
 import ProductFilterForm from '../components/ProductFilterForm';
 import ProductSort from '../components/ProductSort';
+import { useSelector } from 'react-redux';
+import { selectProductList } from '../productSlice';
+
 const useStyles = makeStyles((theme) => ({
    left: {
       width: 250,
@@ -23,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 20,
    },
 }));
+
 const ListPage = () => {
    const classes = useStyles();
-   const productList = products.slice(0, 12);
+   const productList = useSelector(selectProductList);
 
    return (
       <Container>
@@ -38,7 +41,7 @@ const ListPage = () => {
                {/* sort and limit */}
                <ProductSort />
                {/* list product */}
-               <ProductList productList={productList} />
+               <ProductList productList={productList.slice(0, 12)} />
                {/* pagination */}
                <Pagination className={classes.pagination} count={6} page={1} color='primary' />
             </Grid>

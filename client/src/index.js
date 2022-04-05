@@ -8,6 +8,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 
 const customTheme = createTheme({
    palette: {
@@ -25,12 +27,14 @@ const customTheme = createTheme({
 ReactDOM.render(
    <React.StrictMode>
       <BrowserRouter>
-         <HelmetProvider>
-            <ThemeProvider theme={customTheme}>
-               <CssBaseline />
-               <App />
-            </ThemeProvider>
-         </HelmetProvider>
+         <Provider store={store}>
+            <HelmetProvider>
+               <ThemeProvider theme={customTheme}>
+                  <CssBaseline />
+                  <App />
+               </ThemeProvider>
+            </HelmetProvider>
+         </Provider>
       </BrowserRouter>
    </React.StrictMode>,
    document.getElementById('root')

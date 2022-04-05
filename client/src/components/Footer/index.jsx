@@ -1,18 +1,26 @@
-import { Container, Box, Grid, Typography, List, ListItem, ListItemText, Button, OutlinedInput } from '@mui/material';
+import {
+   Container,
+   Box,
+   Grid,
+   Typography,
+   List,
+   ListItem,
+   ListItemText,
+   Button,
+   OutlinedInput,
+} from '@mui/material';
 import React, { forwardRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { LOGO_DARK as LOGO } from 'constants';
 import { Email, LocalPhone, LocationOnOutlined } from '@mui/icons-material';
-
+import img from 'assets/img/footer.png';
 const useStyles = makeStyles((theme) => ({
    root: {
-      padding: theme.spacing(2, 0),
-      backgroundImage: ` linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1595348020949-87cdfbb44174?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8d2hleXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=2000&q=100")`,
+      padding: theme.spacing(3, 0),
+      backgroundImage: ` url("${img}")`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      backgroundAttachment: 'scroll',
-      backgroundPosition: 'center right',
-
+      backgroundPosition: 'top center',
       '& *': {
          color: '#fff',
       },
