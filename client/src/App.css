@@ -36,6 +36,15 @@
       transform: rotate(360deg);
    }
 }
-* {
-   box-sizing: border-box !important;
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+a {
+   display: inline-block;
+   text-decoration: none !important;
+   /* color: inherit !important; */
 }

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundImage: ` url("${img}")`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      backgroundPosition: 'top center',
+      backgroundPosition: 'top',
       '& *': {
          color: '#fff',
       },
@@ -80,7 +80,6 @@ const Footer = (props, ref) => {
                      </ListItem>
                      <ListItem>
                         <LocalPhone sx={{ mr: 2 }} />
-
                         <ListItemText>123456789</ListItemText>
                      </ListItem>
                      <ListItem>
@@ -136,7 +135,7 @@ const Footer = (props, ref) => {
 
                <Grid item lg={3} md={3} xs={12}>
                   <Box mt={4}>
-                     <Typography variant='subtitle1' className={classes.title}>
+                     {/* <Typography variant='subtitle1' className={classes.title}>
                         Theo dõi chúng tôi
                      </Typography>
                      <Box>
@@ -149,7 +148,7 @@ const Footer = (props, ref) => {
                         <Button className={classes.icon}>
                            <i className='fa-brands fa-instagram'></i>
                         </Button>
-                     </Box>
+                     </Box> */}
                      <Typography variant='subtitle1' className={classes.title} my={2}>
                         Đăng ký nhận tin
                      </Typography>
@@ -163,6 +162,19 @@ const Footer = (props, ref) => {
                         <Button variant='contained' className={classes.button}>
                            Gửi
                         </Button>
+                     </Box>
+
+                     <Box height={200} mt={3}>
+                        <iframe
+                           title='map'
+                           src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.1440907586257!2d105.95961575068047!3d10.24996067145613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310a82ce95555555%3A0x451cc8d95d6039f8!2zVHLGsOG7nW5nIMSQSCBTxrAgcGjhuqFtIEvhu7kgdGh14bqtdCBWxKluaCBMb25n!5e0!3m2!1svi!2s!4v1649554886222!5m2!1svi!2s'
+                           width={'100%'}
+                           style={{ border: 0 }}
+                           height={200}
+                           allowFullScreen
+                           loading='lazy'
+                           referrerPolicy='no-referrer-when-downgrade'
+                        ></iframe>
                      </Box>
                   </Box>
                </Grid>

@@ -51,9 +51,11 @@ const HeaderRight = () => {
             </IconButton>
 
             {/* cart icon */}
-            <Badge color='primary' badgeContent={3} sx={{ mr: 2 }}>
-               <ShoppingCartOutlined />
-            </Badge>
+            <Link to='/cart' style={{ color: 'inherit' }}>
+               <Badge color='primary' badgeContent={3} sx={{ mr: 2 }}>
+                  <ShoppingCartOutlined />
+               </Badge>
+            </Link>
 
             {!isLoggedIn ? (
                <Link to={'/auth/login'} style={{ textDecoration: 'none' }}>
@@ -65,11 +67,7 @@ const HeaderRight = () => {
                <Box>
                   <Tooltip title='Open settings'>
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar
-                           alt='Remy Sharp'
-                           src={AVATAR_DEFAULT}
-                           sx={{ width: 40, height: 40 }}
-                        />
+                        <Avatar src={AVATAR_DEFAULT} sx={{ width: 40, height: 40 }} />
                      </IconButton>
                   </Tooltip>
                   <Menu

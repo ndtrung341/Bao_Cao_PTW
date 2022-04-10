@@ -1,14 +1,14 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 
-const CartFeature = () => {
+const CheckoutFeature = () => {
    return (
       <Routes>
-         <Route path='' element={<CartPage />} />
+         <Route path='' element={<CheckoutPage />} />
          <Route path='*' element={<Navigate to='/404' />} />
       </Routes>
    );
 };
 
-export default CartFeature;
+export default CheckoutFeature;

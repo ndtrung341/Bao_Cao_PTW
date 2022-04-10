@@ -1,44 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid as MuiGrid, Rating, Typography } from '@mui/material';
+import { Box, Container, Grid, Paper } from '@mui/material';
 import Breadcrumb from 'components/Breadcrumb';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { products } from 'data/product';
-import { formatCurrency } from 'utils';
-import { Thumbs } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { makeStyles } from '@material-ui/core';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+import ProductGallery from '../components/ProductGallery';
+import ProductInfo from '../components/ProductInfo';
+import TitleSection from 'components/TitleSection';
+import ProductSlider from 'components/ProductSlider';
+import AddCartForm from '../components/AddCartForm';
+import DetailTabs from '../components/DetailTabs';
 
-const useStyles = makeStyles((theme) => ({
-   swiper1: {
-      '& .swiper-wrapper': {
-         height: 420,
-         userSelect: 'none',
-      },
-   },
-   thumb: {
-      border: `1px solid ${theme.palette.divider}`,
+// const useStyles = makeStyles((theme) => ({
 
-      '&.swiper-slide-thumb-active': {
-         border: `1px solid ${theme.palette.primary.main}`,
-      },
-
-      '& img': {
-         width: '100%',
-      },
-   },
-}));
+// }));
 
 const DetailPage = () => {
-   const classes = useStyles();
+   // const classes = useStyles();
    const navigate = useNavigate();
    const { slug } = useParams();
    const [product, setProduct] = useState({});
-   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
    useEffect(() => {
       console.log(slug);
@@ -49,74 +31,41 @@ const DetailPage = () => {
    }, [slug, navigate]);
 
    return (
-      <Container>
+      <>
          <Helmet>
             <title>{product?.name}</title>
          </Helmet>
 
+         {/* BREADCRUMB */}
          <Breadcrumb parent={product?.category} title={product?.name} />
 
-         <MuiGrid container>
-            <MuiGrid item lg={1}>
-               <Swiper
-                  modules={[Thumbs]}
-                  direction='vertical'
-                  slidesPerView={4}
-                  spaceBetween={10}
-                  onSwiper={setThumbsSwiper}
-                  className={classes.swiper1}
-               >
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-               </Swiper>
-            </MuiGrid>
+         <Container>
+            <Paper sx={{ mb: 3, px: 2, py: 3 }} elevation={0}>
+               <Grid container spacing={1}>
+                  {/* PRODUCT GALLERY */}
+                  <Grid container item lg={5}>
+                     <ProductGallery thumbs={[product.thumb, product.thumb]} />
+                  </Grid>
 
-            <MuiGrid item lg={4} px={2}>
-               <Swiper modules={[Thumbs]} thumbs={{ swiper: thumbsSwiper }} spaceBetween={10}>
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-                  <SwiperSlide className={classes.thumb}>
-                     <img src={product.thumb} alt='' />
-                  </SwiperSlide>
-               </Swiper>
-            </MuiGrid>
+                  <Grid item lg={7}>
+                     {/* PRODUCT INFO */}
+                     <ProductInfo product={product} />
+                     {/* ADD TO CART FORM */}
+                     <AddCartForm />
+                  </Grid>
+               </Grid>
+            </Paper>
 
-            <MuiGrid item lg={7}>
-               <Rating readOnly value={4} />
-               <Typography variant='h6'>{product?.name}</Typography>
-               <Box my={1}>
-                  <Typography component={'span'} fontSize={28} fontWeight={600} color='error'>
-                     {formatCurrency(product.salePrice)}
-                  </Typography>
-                  {product.discountPercent !== 0 && (
-                     <Typography component={'span'} fontSize={20} ml={2}>
-                        {formatCurrency(product.originalPrice)}
-                     </Typography>
-                  )}
-                  <Typography
-                     component={'p'}
-                     variant='subtitle1'
-                     color='text.secondary'
-                     fontSize={16}
-                     mt={1}
-                  >
-                     {product.shortDetail}
-                  </Typography>
-               </Box>
-            </MuiGrid>
-         </MuiGrid>
-      </Container>
+            {/* TABS */}
+            <DetailTabs />
+
+            {/* SLIDER RELATED PRODUCT */}
+            <Box my={5}>
+               <TitleSection title={'Sản phẩm tương tự'} subTitle={'Các sản phẩm tương tự'} />
+               <ProductSlider products={products.slice(0, 8)} />
+            </Box>
+         </Container>
+      </>
    );
 };
 

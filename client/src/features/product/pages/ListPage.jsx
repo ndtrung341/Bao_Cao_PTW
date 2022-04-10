@@ -7,6 +7,7 @@ import ProductFilterForm from '../components/ProductFilterForm';
 import ProductSort from '../components/ProductSort';
 import { useSelector } from 'react-redux';
 import { selectProductList } from '../productSlice';
+import { Helmet } from 'react-helmet-async';
 
 const useStyles = makeStyles((theme) => ({
    left: {
@@ -31,22 +32,29 @@ const ListPage = () => {
    const productList = useSelector(selectProductList);
 
    return (
-      <Container>
+      <>
+         <Helmet>
+            <title>{'Tất cả sản phẩm'}</title>
+         </Helmet>
+
          <Breadcrumb title={'Tất cả sản phẩm'} />
-         <Grid container spacing={1}>
-            <Grid item className={classes.left}>
-               <ProductFilterForm />
+
+         <Container>
+            <Grid container spacing={1}>
+               <Grid item className={classes.left}>
+                  <ProductFilterForm />
+               </Grid>
+               <Grid item className={classes.right}>
+                  {/* sort and limit */}
+                  <ProductSort />
+                  {/* list product */}
+                  <ProductList productList={productList.slice(0, 12)} />
+                  {/* pagination */}
+                  <Pagination className={classes.pagination} count={6} page={1} color='primary' />
+               </Grid>
             </Grid>
-            <Grid item className={classes.right}>
-               {/* sort and limit */}
-               <ProductSort />
-               {/* list product */}
-               <ProductList productList={productList.slice(0, 12)} />
-               {/* pagination */}
-               <Pagination className={classes.pagination} count={6} page={1} color='primary' />
-            </Grid>
-         </Grid>
-      </Container>
+         </Container>
+      </>
    );
 };
 

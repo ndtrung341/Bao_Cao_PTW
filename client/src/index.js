@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { CssBaseline } from '@material-ui/core';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { store } from 'app/store';
+import { CssBaseline } from '@material-ui/core';
 
 const customTheme = createTheme({
    palette: {

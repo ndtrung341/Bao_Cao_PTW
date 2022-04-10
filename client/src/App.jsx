@@ -8,6 +8,7 @@ import MainLayout from 'layouts/MainLayout';
 import AuthLayout from 'layouts/AuthLayout';
 import Home from 'components/Home';
 import ProductFeature from 'features/product';
+import CheckoutFeature from 'features/checkout';
 
 function App() {
    return (
@@ -18,6 +19,7 @@ function App() {
                   <Route path='' element={<Home />} />
                   <Route path='product/*' element={<ProductFeature />} />
                   <Route path='cart/*' element={<CartFeature />} />
+                  <Route path='checkout/*' element={<CheckoutFeature />} />
                   <Route path='404' element={<NotFound />} />
                </Route>
 

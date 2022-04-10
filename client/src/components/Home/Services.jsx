@@ -58,14 +58,11 @@ const Services = () => {
                <Swiper
                   updateOnWindowResize
                   breakpoints={{
-                     // when window width is >= 320px
                      320: {
                         slidesPerView: 2,
                         spaceBetween: 10,
                         scrollbar: true,
                      },
-
-                     // when window width is >= 992px
                      992: {
                         slidesPerView: 4,
                         spaceBetween: 20,
