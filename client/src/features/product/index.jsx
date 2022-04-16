@@ -8,7 +8,6 @@ const ProductFeature = () => {
       <Routes>
          <Route path='list' element={<ListPage />} />
          <Route path=':slug' element={<DetailPage />} />
-         <Route path='*' element={<Navigate to='/404' />} />
       </Routes>
    );
 };

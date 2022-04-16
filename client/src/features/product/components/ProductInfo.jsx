@@ -9,7 +9,7 @@ const ProductInfo = ({ product }) => {
          <Rating readOnly value={4} />
 
          {/* PRODUCT NAME */}
-         <Typography variant='h6'>{product?.name}</Typography>
+         <Typography variant='h6'>{product.name}</Typography>
 
          {/* PRICE */}
          <Typography component={'span'} fontSize={28} fontWeight={600} color='error'>
@@ -22,7 +22,7 @@ const ProductInfo = ({ product }) => {
                ml={2}
                sx={{ textDecoration: 'line-through' }}
             >
-               {formatCurrency(product.originalPrice)}
+               {formatCurrency(product.price)}
             </Typography>
          )}
 
@@ -36,7 +36,7 @@ const ProductInfo = ({ product }) => {
             fontSize={16}
             mb={4}
          >
-            {product.shortDetail}
+            {product.description}
          </Typography>
       </>
    );

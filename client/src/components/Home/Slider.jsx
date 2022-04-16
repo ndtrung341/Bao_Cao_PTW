@@ -9,12 +9,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-import img1 from 'assets/img/slide1.png';
-import img2 from 'assets/img/slide2.png';
-import img3 from 'assets/img/slide3.png';
-
-const SLIDES_THUMB = [img2, img1, img3];
-
 const useStyles = makeStyles((theme) => ({
    root: {},
    slide: {
@@ -26,9 +20,8 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const Slider = () => {
+const Slider = ({ bannerList }) => {
    const classes = useStyles();
-   const images = SLIDES_THUMB;
 
    return (
       <Swiper
@@ -39,7 +32,7 @@ const Slider = () => {
          onSwiper={(swiper) => console.log(swiper)}
          onSlideChange={() => console.log('slide change')}
       >
-         {images.map((item, key) => (
+         {bannerList.map((item, key) => (
             <SwiperSlide key={key}>
                <Box className={classes.slide}>
                   <img src={item} alt='' />

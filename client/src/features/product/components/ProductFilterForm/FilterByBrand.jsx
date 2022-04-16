@@ -21,7 +21,7 @@ const FilterByBrand = ({ onChange }) => {
    return (
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
          <FilterLabel>thương hiệu</FilterLabel>
-         <List sx={{ pt: 0 }}>
+         <List sx={{ pt: 0, pb: 1 }}>
             {categoryList.map((item, index) => (
                <ListItem key={index} sx={{ py: 0 }} className={classes.item}>
                   <FormLabel sx={{ display: 'flex' }}>

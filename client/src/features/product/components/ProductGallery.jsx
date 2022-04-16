@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import { getFullPathImage } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
    swiper1: {
@@ -45,7 +46,7 @@ const ProductGallery = ({ thumbs }) => {
             >
                {thumbs.map((thumb, index) => (
                   <SwiperSlide className={classes.thumb} key={index}>
-                     <img src={thumb} alt='' />
+                     <img src={getFullPathImage(thumb)} alt='' />
                   </SwiperSlide>
                ))}
             </Swiper>
@@ -55,7 +56,7 @@ const ProductGallery = ({ thumbs }) => {
             <Swiper modules={[Thumbs]} thumbs={{ swiper: thumbsSwiper }} spaceBetween={10}>
                {thumbs.map((thumb, index) => (
                   <SwiperSlide className={classes.thumb} key={index}>
-                     <img src={thumb} alt='' />
+                     <img src={getFullPathImage(thumb)} alt='' />
                   </SwiperSlide>
                ))}
             </Swiper>

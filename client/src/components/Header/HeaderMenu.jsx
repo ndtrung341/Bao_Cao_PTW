@@ -1,9 +1,16 @@
 import { Box, Button, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NAV_LINKS } from 'constants';
 import { makeStyles } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import axiosClient from 'api/axiosClient';
+import categoryApi from 'api/categoryApi';
+import { useSelector } from 'react-redux';
+import {
+   selectCategoryList,
+   selectCategoryParentList,
+} from 'features/category/categorySlice';
 
 const useStyles = makeStyles((theme) => ({
    menu: {
@@ -27,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
 
 const HeaderMenu = () => {
    const classes = useStyles();
-
+   // const parentCategoryList = useSelector(selectCategoryParentList);
+   // console.log(parentCategoryList);
    const [anchorElNav, setAnchorElNav] = React.useState(null);
+   // const [anchorElMenu, setAnchorElMenu] = React.useState(null);
 
    const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -80,7 +89,10 @@ const HeaderMenu = () => {
          {/* END MENU MOBILE */}
 
          {/* MENU */}
-         <Box sx={{ flexGrow: 1, flexShrink: 0, display: { xs: 'none', md: 'flex' } }} className={classes.menu}>
+         <Box
+            sx={{ flexGrow: 1, flexShrink: 0, display: { xs: 'none', md: 'flex' } }}
+            className={classes.menu}
+         >
             {NAV_LINKS.map((item) => (
                <Button key={item.name} onClick={handleCloseNavMenu}>
                   <NavLink to={item.path} className={classes.link}>
@@ -88,6 +100,22 @@ const HeaderMenu = () => {
                   </NavLink>
                </Button>
             ))}
+            {/* <Button>
+               <NavLink to={'/'} className={classes.link}>
+                  Trang chủ
+               </NavLink>
+            </Button>
+            {parentCategoryList.map((item) => (
+               <Button key={item.id}>
+                  <NavLink
+                     to={'/product/list/' + item.slug}
+                     className={classes.link}
+                     state={{ parentId: item.id }}
+                  >
+                     {item.name}
+                  </NavLink>
+               </Button>
+            ))} */}
          </Box>
       </>
    );

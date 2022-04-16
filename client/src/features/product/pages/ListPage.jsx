@@ -1,14 +1,26 @@
-import React from 'react';
-import { Container, Grid, Pagination } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Container, Grid, Pagination, Skeleton } from '@mui/material';
 import Breadcrumb from 'components/Breadcrumb';
 import ProductList from '../components/ProductList';
 import { makeStyles } from '@material-ui/core';
 import ProductFilterForm from '../components/ProductFilterForm';
 import ProductSort from '../components/ProductSort';
-import { useSelector } from 'react-redux';
-import { selectProductList } from '../productSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
-
+import {
+   selectCollection,
+   selectCollectionLoading,
+   selectPagination,
+   selectTotalPage,
+   fetchCollection,
+   collectionActions,
+   selectFilters,
+} from '../collectionSlice';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import queryString from 'query-string';
+import useCollectionQuery from 'hooks/useCollectionQuery';
+import SkeletonProductList from '../components/SkeletonProductList';
+import SkeletonFilterForm from '../components/SkeletonFilterForm';
 const useStyles = makeStyles((theme) => ({
    left: {
       width: 250,
@@ -29,7 +41,19 @@ const useStyles = makeStyles((theme) => ({
 
 const ListPage = () => {
    const classes = useStyles();
-   const productList = useSelector(selectProductList);
+   const { filters, handleFiltersChange } = useCollectionQuery();
+   const loading = useSelector(selectCollectionLoading);
+   const collection = useSelector(selectCollection);
+   const pagination = useSelector(selectPagination);
+   const totalPage = useSelector(selectTotalPage);
+
+   const handlePageChange = (event, page) => {
+      const newFilters = {
+         ...filters,
+         page,
+      };
+      handleFiltersChange(newFilters);
+   };
 
    return (
       <>
@@ -39,18 +63,37 @@ const ListPage = () => {
 
          <Breadcrumb title={'Tất cả sản phẩm'} />
 
-         <Container>
+         <Container sx={{ mb: 3 }}>
             <Grid container spacing={1}>
                <Grid item className={classes.left}>
-                  <ProductFilterForm />
+                  {loading ? (
+                     <SkeletonFilterForm />
+                  ) : (
+                     <ProductFilterForm onFiltersChange={handleFiltersChange} />
+                  )}
                </Grid>
                <Grid item className={classes.right}>
-                  {/* sort and limit */}
-                  <ProductSort />
-                  {/* list product */}
-                  <ProductList productList={productList.slice(0, 12)} />
-                  {/* pagination */}
-                  <Pagination className={classes.pagination} count={6} page={1} color='primary' />
+                  {loading ? (
+                     <>
+                        <Skeleton variant='rectangular' height={30} sx={{ mb: 2 }} />
+                        <SkeletonProductList />
+                     </>
+                  ) : (
+                     <>
+                        {/* sort and limit */}
+                        <ProductSort onFiltersChange={handleFiltersChange} />
+                        {/* list product */}
+                        <ProductList productList={collection} />
+                        {/* pagination */}
+                        <Pagination
+                           className={classes.pagination}
+                           page={pagination._page}
+                           count={totalPage}
+                           color='primary'
+                           onChange={handlePageChange}
+                        />
+                     </>
+                  )}
                </Grid>
             </Grid>
          </Container>

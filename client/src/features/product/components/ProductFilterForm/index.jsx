@@ -3,12 +3,12 @@ import FilterByBrand from './FilterByBrand';
 import FilterByCategory from './FilterByCategory';
 import FilterByPrice from './FilterByPrice';
 
-const ProductFilterForm = () => {
+const ProductFilterForm = ({ onFiltersChange }) => {
    return (
       <>
-         <FilterByCategory />
-         <FilterByBrand />
-         <FilterByPrice />
+         <FilterByCategory onFiltersChange={onFiltersChange} />
+         <FilterByBrand onFiltersChange={onFiltersChange} />
+         <FilterByPrice onFiltersChange={onFiltersChange} />
       </>
    );
 };

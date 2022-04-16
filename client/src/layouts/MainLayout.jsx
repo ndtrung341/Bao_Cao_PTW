@@ -14,8 +14,10 @@ const MainLayout = () => {
       setTimeout(() => {
          const footerHeight = footerRef.current.offsetHeight;
          const headerHeight = 80;
-         console.log(footerHeight);
-         contentRef.current.style.minHeight = `calc(100vh - ${footerHeight + headerHeight}px)`;
+         // console.log(footerHeight);
+         contentRef.current.style.minHeight = `calc(100vh - ${
+            footerHeight + headerHeight
+         }px)`;
       }, 100);
    }, []);
 

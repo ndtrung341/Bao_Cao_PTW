@@ -16,10 +16,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Breadcrumb = ({ title, parent }) => {
    const classes = useStyles();
+   // console.log({ title, parent });
    return (
-      <Container>
-         <Stack spacing={2} py={3}>
-            <Breadcrumbs separator={<NavigateNext fontSize='small' />} aria-label='breadcrumb'>
+      <Container sx={{ py: 3 }}>
+         <Stack spacing={2}>
+            <Breadcrumbs
+               separator={<NavigateNext fontSize='small' />}
+               aria-label='breadcrumb'
+            >
                <Link to='/' className={classes.item}>
                   Trang chủ
                </Link>
@@ -28,7 +32,9 @@ const Breadcrumb = ({ title, parent }) => {
                ) : (
                   ''
                )}
-               <Typography className={`${classes.item} active`}>{capitalize(title)}</Typography>
+               <Typography className={`${classes.item} active`}>
+                  {capitalize(title)}
+               </Typography>
             </Breadcrumbs>
          </Stack>
       </Container>

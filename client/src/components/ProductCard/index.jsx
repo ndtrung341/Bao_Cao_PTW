@@ -11,7 +11,7 @@ import {
    Typography,
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
-import { formatCurrency } from 'utils';
+import { formatCurrency, getFullPathImage } from 'utils';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'none',
       color: 'inherit',
    },
-   originalPrice: {
+   price: {
       '&&': {
          color: theme.palette.text.secondary,
          textDecoration: 'line-through',
@@ -91,13 +91,21 @@ const ProductCard = ({ product }) => {
 
    return (
       <Card className={classes.root} elevation={0}>
-         <CardMedia component='img' image={product.thumb} />
+         <CardMedia
+            component='img'
+            image={getFullPathImage(product.thumb)}
+            sx={{ minHeight: 220 }}
+         />
          <CardContent className={classes.content}>
             {product.discountPercent !== 0 && (
                <Box className={classes.percent}>-{product.discountPercent}%</Box>
             )}
 
-            <Link to={`/product/${product.slug}`} className={classes.title}>
+            <Link
+               to={`/product/${product.slug}`}
+               className={classes.title}
+               state={{ id: product.id }}
+            >
                <Typography gutterBottom component='p'>
                   {product.name}
                </Typography>
@@ -108,13 +116,19 @@ const ProductCard = ({ product }) => {
                   {formatCurrency(product.salePrice)}
                </Typography>
                {product.discountPercent !== 0 && (
-                  <Typography className={classes.originalPrice} component={'span'}>
-                     {formatCurrency(product.originalPrice)}
+                  <Typography className={classes.price} component={'span'}>
+                     {formatCurrency(product.price)}
                   </Typography>
                )}
             </Box>
 
-            <Rating name='read-only' value={4} readOnly sx={{ mt: 'auto' }} size='small' />
+            <Rating
+               name='read-only'
+               value={4}
+               readOnly
+               sx={{ mt: 'auto' }}
+               size='small'
+            />
          </CardContent>
 
          <CardActions className={classes.actions} disableSpacing>

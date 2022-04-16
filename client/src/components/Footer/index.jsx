@@ -76,7 +76,9 @@ const Footer = (props, ref) => {
                   <List>
                      <ListItem>
                         <LocationOnOutlined sx={{ mr: 2 }} />
-                        <ListItemText>73 Nguyễn Huệ, Phường 2, TP, Vĩnh Long</ListItemText>
+                        <ListItemText>
+                           73 Nguyễn Huệ, Phường 2, TP, Vĩnh Long
+                        </ListItemText>
                      </ListItem>
                      <ListItem>
                         <LocalPhone sx={{ mr: 2 }} />
@@ -173,7 +175,6 @@ const Footer = (props, ref) => {
                            height={200}
                            allowFullScreen
                            loading='lazy'
-                           referrerPolicy='no-referrer-when-downgrade'
                         ></iframe>
                      </Box>
                   </Box>

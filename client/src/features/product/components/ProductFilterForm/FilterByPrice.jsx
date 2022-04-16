@@ -3,16 +3,20 @@ import PropTypes from 'prop-types';
 
 import { Box, Button, TextField } from '@mui/material';
 import FilterLabel from './FiterLabel';
+import { useSelector } from 'react-redux';
+import { selectFilters } from 'features/product/collectionSlice';
 
-const FilterByPrice = ({ onChange }) => {
-   const [values, setValues] = useState({
-      salePrice_gte: 0,
-      salePrice_lte: 0,
-   });
+const FilterByPrice = ({ onFiltersChange }) => {
+   const filters = useSelector(selectFilters);
+   const [values, setValues] = useState({ minPrice: 0, maxPrice: 0 });
 
    const handleSubmit = () => {
-      if (!onChange) return;
-      onChange(values);
+      if (!onFiltersChange) return;
+      const newFilters = {
+         ...filters,
+         ...values,
+      };
+      onFiltersChange(newFilters);
    };
 
    const handleInputChange = (event) => {
@@ -41,17 +45,18 @@ const FilterByPrice = ({ onChange }) => {
          >
             <TextField
                size='small'
-               name='salePrice_gte'
-               value={values.salePrice_gte}
+               name='minPrice'
+               value={filters.minPrice || values.minPrice}
                onChange={handleInputChange}
                onKeyPress={handleInputPress}
             />
             <span style={{ fontSize: '1.2rem' }}>...</span>
             <TextField
                size='small'
-               name='salePrice_lte'
-               value={values.salePrice_lte}
+               name='maxPrice'
+               value={filters.maxPrice || values.maxPrice}
                onChange={handleInputChange}
+               onKeyPress={handleInputPress}
             />
          </Box>
          <Box m={2}>
