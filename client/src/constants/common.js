@@ -1,10 +1,6 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
-export const LOGO = require('assets/img/logo.png');
-export const LOGO_DARK = require('assets/img/logo-dark.png');
-
-export const AVATAR_DEFAULT = require('assets/img/avatar-default.png');
 export const NAV_LINKS = [
    {
       name: 'Trang chủ',
@@ -12,7 +8,7 @@ export const NAV_LINKS = [
    },
    {
       name: 'Sản phẩm',
-      path: '/product/list',
+      path: '/collection',
    },
    {
       name: 'Tin tức',

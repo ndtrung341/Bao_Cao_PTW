@@ -1,9 +1,11 @@
-import img1 from 'assets/img/slide1.png';
-import img2 from 'assets/img/slide2.png';
-import img3 from 'assets/img/slide3.png';
+import { getPathPublic } from 'utils';
+const slide1 = getPathPublic('slide1.png');
+const slide2 = getPathPublic('slide2.png');
+const slide3 = getPathPublic('slide3.png');
+
 const bannerApi = {
    getAll() {
-      return { data: [img1, img2, img3] };
+      return { data: [slide1, slide2, slide3] };
    },
 };
 export default bannerApi;

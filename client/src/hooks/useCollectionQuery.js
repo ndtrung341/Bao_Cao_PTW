@@ -1,12 +1,8 @@
-import {
-   collectionActions,
-   fetchCollection,
-   selectFilters,
-} from 'features/product/collectionSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import queryString from 'query-string';
+import { collectionActions, fetchCollection, selectFilters } from 'redux/collectionSlice';
 
 const useCollectionQuery = () => {
    const filters = useSelector(selectFilters);

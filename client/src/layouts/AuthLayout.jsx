@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       '&&': {
          maxWidth: '60vw',
          height: '100%',
-         backgroundColor: '#fff',
+         backgroundColor: 'transparent',
          borderRadius: 8,
          boxShadow: theme.shadows[10],
          overflow: 'hidden',

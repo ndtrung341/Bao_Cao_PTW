@@ -1,37 +1,40 @@
 import './App.css';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import React from 'react';
-import CartFeature from 'features/cart';
-import NotFound from 'components/NotFound';
-import AuthFeature from 'features/auth';
+
+import NotFound from 'components/Common/NotFound';
+
 import MainLayout from 'layouts/MainLayout';
 import AuthLayout from 'layouts/AuthLayout';
-import Home from 'components/Home';
-import ProductFeature from 'features/product';
-import CheckoutFeature from 'features/checkout';
+
+import Home from 'pages/Home';
+import Cart from 'pages/Cart';
+import Checkout from 'pages/Checkout';
+import Collection from 'pages/Collection';
+import ProductDetail from 'pages/ProductDetail';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
 
 function App() {
    return (
-      <>
-         <React.Suspense fallback={''}>
-            <Routes>
-               <Route path='/' element={<MainLayout />}>
-                  <Route path='' element={<Home />} />
-                  <Route path='product/*' element={<ProductFeature />} />
-                  <Route path='cart/*' element={<CartFeature />} />
-                  <Route path='checkout/*' element={<CheckoutFeature />} />
-                  <Route path='404' element={<NotFound />} />
-               </Route>
+      <Routes>
+         <Route path='/' element={<MainLayout />}>
+            <Route path='' element={<Home />} />
+            <Route path=':slug' element={<ProductDetail />} />
+            <Route path='collection' element={<Collection />} />
+            <Route path='cart' element={<Cart />} />
+            <Route path='checkout' element={<Checkout />} />
+            <Route path='404' element={<NotFound />} />
+         </Route>
 
-               <Route path='auth' element={<AuthLayout />}>
-                  <Route path='*' element={<AuthFeature />} />
-               </Route>
+         <Route path='auth' element={<AuthLayout />}>
+            <Route path='login' element={<Login />} />
+            <Route path='Register' element={<Register />} />
+         </Route>
 
-               {/* redirect to 404 page */}
-               <Route path='*' element={<Navigate to='404' />} />
-            </Routes>
-         </React.Suspense>
-      </>
+         {/* redirect to 404 page */}
+         <Route path='*' element={<Navigate to='404' />} />
+      </Routes>
    );
 }
 

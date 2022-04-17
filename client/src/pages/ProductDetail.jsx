@@ -1,0 +1,90 @@
+import React from 'react';
+
+import { Container, Grid, Paper } from '@mui/material';
+
+import Section from 'components/Common/Section';
+import Breadcrumb from 'components/Common/Breadcrumb';
+import ProductSlider from 'components/Common/ProductSlider';
+import SkeletonProductSlider from 'components/Common/SkeletonProductSlider';
+
+import ProductInfo from 'components/Product/ProductInfo';
+import AddCartForm from 'components/Product/AddCartForm';
+import ProductGallery from 'components/Product/ProductGallery';
+
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
+
+import useProductDetail from 'hooks/useProductDetail';
+import SkeletonInfo from 'components/Product/SkeletonInfo';
+import { useDispatch } from 'react-redux';
+import { cartActions } from 'redux/cartSlice';
+import { toast } from 'react-toastify';
+
+const ProductDetail = () => {
+   const location = useLocation();
+   const { product, relatedList, loading } = useProductDetail(location.state?.id);
+   const dispatch = useDispatch();
+   console.log({ product, relatedList, loading });
+
+   const handleAddItemToCart = (quantity) => {
+      const newItem = {
+         id: product.id,
+         name: product.name,
+         thumb: product.thumb,
+         slug: product.slug,
+         price: product.salePrice,
+         quantity,
+      };
+      dispatch(cartActions.addItemToCart(newItem));
+
+      toast.success('Thêm vào giỏ hàng thành công');
+   };
+
+   return (
+      <>
+         <Helmet>
+            <title>{product?.name}</title>
+         </Helmet>
+
+         {/* BREADCRUMB */}
+         {loading ? null : (
+            <Breadcrumb parent={product.category.name} title={product.name} />
+         )}
+
+         <Container>
+            <Paper sx={{ mb: 3, px: 2, py: 3 }} elevation={0}>
+               <Grid container spacing={1}>
+                  {/* PRODUCT GALLERY */}
+                  <Grid container item lg={5} md={12}>
+                     <ProductGallery thumbs={[product?.thumb]} loading={loading} />
+                  </Grid>
+
+                  <Grid item lg={7} md={12}>
+                     {loading ? (
+                        <SkeletonInfo />
+                     ) : (
+                        <>
+                           {/* PRODUCT INFO */}
+                           <ProductInfo product={product} />
+                           {/* ADD TO CART FORM */}
+                           <AddCartForm onSubmit={handleAddItemToCart} />
+                        </>
+                     )}
+                  </Grid>
+               </Grid>
+            </Paper>
+         </Container>
+
+         {/* SLIDER SIMILAR PRODUCT */}
+         <Section title={'Sản phẩm tương tự'} subtitle={'Các sản phẩm tương tự'}>
+            {loading ? (
+               <SkeletonProductSlider />
+            ) : (
+               <ProductSlider products={relatedList} />
+            )}
+         </Section>
+      </>
+   );
+};
+
+export default ProductDetail;

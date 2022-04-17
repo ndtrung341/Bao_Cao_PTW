@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Link } from '@mui/material';
-import { LOGO } from 'constants';
+import { getPathPublic } from 'utils';
 
 const HeaderLogo = () => {
    return (
@@ -19,7 +19,7 @@ const HeaderLogo = () => {
          >
             <Box height='100%'>
                <img
-                  src={LOGO}
+                  src={getPathPublic('logo.png')}
                   alt=''
                   width={200}
                   style={{ objectFit: 'contain', height: '100%' }}

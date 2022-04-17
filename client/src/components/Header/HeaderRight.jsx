@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { Close, LogoutOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+   Close,
+   LogoutOutlined,
+   SearchOutlined,
+   ShoppingCartOutlined,
+} from '@mui/icons-material';
 import {
    Avatar,
    Badge,
@@ -16,11 +21,16 @@ import {
    TextField,
    Tooltip,
 } from '@mui/material';
-import { SETTING_LINKS, AVATAR_DEFAULT } from 'constants';
+import { SETTING_LINKS } from 'constants';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
+import { useSelector } from 'react-redux';
+import { selectCartCount } from 'redux/cartSlice';
+import { getPathPublic } from 'utils';
 
 const HeaderRight = () => {
+   const cartCount = useSelector(selectCartCount);
+
    const [anchorElUser, setAnchorElUser] = useState(null);
    const [openSearch, setOpenSearch] = useState(false);
 
@@ -52,7 +62,7 @@ const HeaderRight = () => {
 
             {/* cart icon */}
             <Link to='/cart' style={{ color: 'inherit' }}>
-               <Badge color='primary' badgeContent={3} sx={{ mr: 2 }}>
+               <Badge color='primary' badgeContent={cartCount} sx={{ mr: 2 }}>
                   <ShoppingCartOutlined />
                </Badge>
             </Link>
@@ -67,7 +77,10 @@ const HeaderRight = () => {
                <Box>
                   <Tooltip title='Open settings'>
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar src={AVATAR_DEFAULT} sx={{ width: 40, height: 40 }} />
+                        <Avatar
+                           src={getPathPublic('avatar.png')}
+                           sx={{ width: 40, height: 40 }}
+                        />
                      </IconButton>
                   </Tooltip>
                   <Menu

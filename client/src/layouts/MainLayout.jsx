@@ -1,9 +1,14 @@
 import { NoLuggageOutlined } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import Footer from 'components/Footer';
+import DialogContainer from 'components/Common/ConfirmDialog';
+import Footer from 'components/Common/Footer';
 import Header from 'components/Header';
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 const MainLayout = () => {
    const location = useLocation();
@@ -32,6 +37,16 @@ const MainLayout = () => {
             <Outlet />
          </Box>
          <Footer ref={footerRef} />
+
+         <ToastContainer
+            position='top-center'
+            autoClose={2000}
+            hideProgressBar={false}
+            closeOnClick
+            pauseOnHover={false}
+         />
+
+         <DialogContainer />
       </>
    );
 };
