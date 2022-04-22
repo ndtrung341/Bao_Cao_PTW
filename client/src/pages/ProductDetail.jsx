@@ -5,7 +5,7 @@ import { Container, Grid, Paper } from '@mui/material';
 import Section from 'components/Common/Section';
 import Breadcrumb from 'components/Common/Breadcrumb';
 import ProductSlider from 'components/Common/ProductSlider';
-import SkeletonProductSlider from 'components/Common/SkeletonProductSlider';
+import SkeletonProductSlider from 'components/Skeleton/SkeletonProductSlider';
 
 import ProductInfo from 'components/Product/ProductInfo';
 import AddCartForm from 'components/Product/AddCartForm';
@@ -15,7 +15,7 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 import useProductDetail from 'hooks/useProductDetail';
-import SkeletonInfo from 'components/Product/SkeletonInfo';
+import SkeletonInfo from 'components/Skeleton/SkeletonProductInfo';
 import { useDispatch } from 'react-redux';
 import { cartActions } from 'redux/cartSlice';
 import { toast } from 'react-toastify';
@@ -24,7 +24,6 @@ const ProductDetail = () => {
    const location = useLocation();
    const { product, relatedList, loading } = useProductDetail(location.state?.id);
    const dispatch = useDispatch();
-   console.log({ product, relatedList, loading });
 
    const handleAddItemToCart = (quantity) => {
       const newItem = {

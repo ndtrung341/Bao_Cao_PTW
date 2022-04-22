@@ -15,6 +15,7 @@ const defaultValues = {
    district: '',
    ward: '',
    payment: '',
+   address: '',
 };
 
 const schema = yup.object().shape({
@@ -31,9 +32,9 @@ const schema = yup.object().shape({
       .matches(/[0-9]+/, {
          message: 'Số điện thoại không hợp lệ',
       }),
-   province: yup.string().required('Vui lòng chọn Tỉnh/Thành phố'),
-   district: yup.string().required('Vui lòng chọn Quận/Huyện'),
-   ward: yup.string().required('Vui lòng chọn Phường/Xã'),
+   province: yup.object().nullable().required('Vui lòng chọn Tỉnh/Thành phố'),
+   district: yup.object().nullable().required('Vui lòng chọn Quận/Huyện'),
+   ward: yup.object().nullable().required('Vui lòng chọn Phường/Xã'),
    payment: yup.string().required('Vui lòng chọn phương thức thanh toán'),
 });
 
@@ -45,8 +46,9 @@ const CheckoutForm = () => {
    });
 
    const handleCheckout = (values) => {
-      console.log(values);
+      console.log({ values });
    };
+
    return (
       <Box component={'form'} onSubmit={form.handleSubmit(handleCheckout)}>
          <ShippingInfo form={form} />

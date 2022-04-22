@@ -24,7 +24,6 @@ const ProductSort = ({ onFiltersChange }) => {
    const handleSortChange = (event) => {
       if (!onFiltersChange) return;
       const [sort, order] = event.target.value.split(':');
-      // console.log({s*
       onFiltersChange({ ...filters, sort, order, page: 1 });
    };
 

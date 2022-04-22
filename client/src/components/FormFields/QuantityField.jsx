@@ -48,7 +48,6 @@ const QuantityField = ({ value, size, onChange }) => {
 
    const handleValueChange = (value) => {
       if (!onChange) return;
-      console.log(value);
       setDisabled(true);
       onChange(value);
       setDisabled(false);

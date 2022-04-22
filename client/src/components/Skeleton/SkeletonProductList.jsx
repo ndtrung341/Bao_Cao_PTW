@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import SkeletonProductCard from 'components/Common/SkeletonProductCard';
+import SkeletonProductCard from './SkeletonProductCard';
 import React from 'react';
 
 const SkeletonProductList = ({ length }) => {

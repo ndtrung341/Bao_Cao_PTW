@@ -1,7 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 const initialState = {
-   list: [],
+   list: [
+      {
+         id: 108,
+         name: 'Rule 1 Essential Amino 9 EAA+Energy, 30 Servings (345g)',
+         thumb: 'storage/upload/product/rule-1-essential-amino-9-eaaenergy-30-servings-345g/1649896954.png',
+         slug: 'rule-1-essential-amino-9-eaaenergy-30-servings-345g',
+         price: 550000,
+         quantity: 1,
+      },
+   ],
    promotion: false,
 };
 

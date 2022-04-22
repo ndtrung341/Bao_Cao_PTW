@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import { Box, Paper } from '@mui/material';
+import ModalContainer from 'components/Common/ModalContainer';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -33,6 +34,7 @@ const FullScreenLayout = ({ children }) => {
          <Paper className={classes.wrapper}>
             <Outlet />
          </Paper>
+         <ModalContainer />
       </Box>
    );
 };

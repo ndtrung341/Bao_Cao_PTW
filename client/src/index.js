@@ -8,7 +8,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
-import { store } from 'redux/store';
+import store from 'redux/store';
 import { CssBaseline } from '@material-ui/core';
 
 const customTheme = createTheme({

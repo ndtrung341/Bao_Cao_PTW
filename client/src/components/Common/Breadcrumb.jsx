@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Breadcrumb = ({ title, parent }) => {
    const classes = useStyles();
-   // console.log({ title, parent });
+
    return (
       <Container sx={{ py: 3 }}>
          <Stack spacing={2}>

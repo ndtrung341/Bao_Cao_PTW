@@ -2,12 +2,12 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { formatCurrency, getFullPathImage } from 'utils';
-import QuantityField from 'components/FormControl/QuantityField';
+import QuantityField from 'components/FormFields/QuantityField';
 import { makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { cartActions } from 'redux/cartSlice';
-import { dialogActions } from 'redux/dialogSlice';
 import { toast } from 'react-toastify';
+import useModal from 'hooks/useModal';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -56,20 +56,20 @@ const useStyles = makeStyles((theme) => ({
 const CartItem = ({ item }) => {
    const classes = useStyles();
    const dispatch = useDispatch();
+   const { modal } = useModal();
 
-   const handleRemoveItemFromCart = () => {
+   const removeItemFromCart = () => {
       dispatch(cartActions.removeItemFromCart(item.id));
       toast.success('Xóa sản phẩm thành công');
    };
 
    const showConfirmRemove = () => {
-      dispatch(
-         dialogActions.showDialog({
-            title: 'Bạn chắc chắn muốn xóa sản phẩm này?',
-            content: item.name,
-            onSubmit: handleRemoveItemFromCart,
-         })
-      );
+      modal({
+         type: 'warning',
+         title: 'Bạn có muốn xóa sản phẩm này?',
+         content: item.name,
+         onSubmit: removeItemFromCart,
+      });
    };
 
    const handleUpdateQuantity = (value) => {

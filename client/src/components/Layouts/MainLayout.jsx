@@ -1,6 +1,6 @@
 import { NoLuggageOutlined } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import DialogContainer from 'components/Common/ConfirmDialog';
+import ModalContainer from 'components/Common/ModalContainer';
 import Footer from 'components/Common/Footer';
 import Header from 'components/Header';
 import { useEffect, useRef } from 'react';
@@ -19,7 +19,7 @@ const MainLayout = () => {
       setTimeout(() => {
          const footerHeight = footerRef.current.offsetHeight;
          const headerHeight = 80;
-         // console.log(footerHeight);
+
          contentRef.current.style.minHeight = `calc(100vh - ${
             footerHeight + headerHeight
          }px)`;
@@ -46,7 +46,7 @@ const MainLayout = () => {
             pauseOnHover={false}
          />
 
-         <DialogContainer />
+         <ModalContainer />
       </>
    );
 };

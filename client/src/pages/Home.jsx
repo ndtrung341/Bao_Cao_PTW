@@ -9,8 +9,8 @@ import Section from 'components/Common/Section';
 
 import useHome from 'hooks/useHome';
 import React from 'react';
-import SkeletonProductSlider from 'components/Common/SkeletonProductSlider';
-import SkeletonProductList from 'components/Collection/SkeletonProductList';
+import SkeletonProductSlider from 'components/Skeleton/SkeletonProductSlider';
+import SkeletonProductList from 'components/Skeleton/SkeletonProductList';
 
 const Home = () => {
    const { latestList, topList, bannerList, loading } = useHome();

@@ -1,11 +1,11 @@
 import { Box, Button, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
-import InputField from 'components/FormControl/InputField';
+import InputField from 'components/FormFields/InputField';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import PasswordField from 'components/FormControl/PasswordField';
+import PasswordField from 'components/FormFields/PasswordField';
 
 const defaultValues = {
    email: '',

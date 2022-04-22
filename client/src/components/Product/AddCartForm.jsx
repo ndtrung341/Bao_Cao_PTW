@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import QuantityField from 'components/FormControl/QuantityField';
+import QuantityField from 'components/FormFields/QuantityField';
 import React, { useState } from 'react';
 
 const AddCartForm = ({ onSubmit }) => {

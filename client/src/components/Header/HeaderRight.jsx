@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
    Close,
    LogoutOutlined,
@@ -24,17 +24,23 @@ import {
 import { SETTING_LINKS } from 'constants';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCartCount } from 'redux/cartSlice';
-import { getPathPublic } from 'utils';
+import { selectCurrentUser, logout } from 'redux/authSlice';
 
 const HeaderRight = () => {
+   const dispatch = useDispatch();
    const cartCount = useSelector(selectCartCount);
+   // const isLoggedIn = useSelector(selectIsLoggedIn);
+   const currentUser = useSelector(selectCurrentUser);
+   const isLoggedIn = useMemo(() => currentUser !== null, [currentUser]);
 
    const [anchorElUser, setAnchorElUser] = useState(null);
    const [openSearch, setOpenSearch] = useState(false);
 
-   const isLoggedIn = false;
+   const handleLogout = () => {
+      dispatch(logout()).unwrap();
+   };
 
    const handleOpenUserMenu = (event) => {
       setAnchorElUser(event.currentTarget);
@@ -44,7 +50,7 @@ const HeaderRight = () => {
       setAnchorElUser(null);
    };
 
-   const handleOpenSearch = () => {
+   const handleOpenSearchBox = () => {
       setOpenSearch(true);
    };
 
@@ -56,7 +62,7 @@ const HeaderRight = () => {
       <>
          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {/* search icon */}
-            <IconButton onClick={handleOpenSearch}>
+            <IconButton onClick={handleOpenSearchBox}>
                <SearchOutlined />
             </IconButton>
 
@@ -77,10 +83,9 @@ const HeaderRight = () => {
                <Box>
                   <Tooltip title='Open settings'>
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar
-                           src={getPathPublic('avatar.png')}
-                           sx={{ width: 40, height: 40 }}
-                        />
+                        <Avatar src={null} sx={{ width: 40, height: 40 }}>
+                           {currentUser.fullname.charAt(0)}
+                        </Avatar>
                      </IconButton>
                   </Tooltip>
                   <Menu
@@ -109,7 +114,7 @@ const HeaderRight = () => {
                         <ListItemIcon>
                            <LogoutOutlined />
                         </ListItemIcon>
-                        <ListItemText>Đăng xuất</ListItemText>
+                        <ListItemText onClick={handleLogout}>Đăng xuất</ListItemText>
                      </MenuItem>
                   </Menu>
                </Box>

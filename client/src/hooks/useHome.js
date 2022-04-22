@@ -20,7 +20,6 @@ const useHome = () => {
          ]);
 
          const [latestList, topList, bannerList] = responseList.map(({ data }) => data);
-         // console.log({ latestList, topList, bannerList });
 
          setLoading(false);
          setLatestList(latestList);

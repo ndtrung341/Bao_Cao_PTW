@@ -1,8 +1,12 @@
 import { makeStyles } from '@material-ui/core';
-import { Box, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Grid, Typography } from '@mui/material';
 import React from 'react';
 import LoginForm from 'components/Auth/LoginForm';
 import { getPathPublic } from 'utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMe, login, selectIsLogging } from 'redux/authSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
    thumb: {
@@ -31,9 +35,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
    const classes = useStyles();
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const isLogging = useSelector(selectIsLogging);
 
-   const handleLogin = (values) => {
-      console.log(values);
+   const handleLogin = async (values) => {
+      const resultLogin = await dispatch(login(values));
+      unwrapResult(resultLogin);
+
+      const resultGetMe = await dispatch(getMe());
+      unwrapResult(resultGetMe);
+
+      return navigate('/');
    };
 
    return (
@@ -43,6 +56,7 @@ const Login = () => {
                <img src={getPathPublic('login.png')} alt='' />
             </Box>
          </Grid>
+
          <Grid item md={5} xs={12} sx={{ background: '#fff' }}>
             <Box className={classes.wrapper}>
                <Box className={classes.header}>
@@ -60,6 +74,13 @@ const Login = () => {
                <LoginForm onLogin={handleLogin} />
             </Box>
          </Grid>
+
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLogging}
+         >
+            <CircularProgress color='inherit' size={50} />
+         </Backdrop>
       </Grid>
    );
 };

@@ -1,17 +1,22 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+
 import collectionReducer from './collectionSlice';
 import cartReducer from './cartSlice';
-import dialogReducer from './dialogSlice';
+import modalReducer from './modalSlice';
+import authReducer from './authSlice';
 
 const rootReducer = combineReducers({
-   collection: collectionReducer,
+   auth: authReducer,
    cart: cartReducer,
-   dialog: dialogReducer,
+   collection: collectionReducer,
+   modal: modalReducer,
 });
 
-export const store = configureStore({
+const store = configureStore({
    reducer: rootReducer,
    middleware: getDefaultMiddleware({
       serializableCheck: false,
    }),
 });
+
+export default store;

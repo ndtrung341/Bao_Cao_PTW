@@ -6,7 +6,6 @@ const InputField = ({ field, fieldState, placeholder, label }) => {
    // fieldRest contain onChange, onBlur, ref
    const { value, name, ...fieldRest } = { ...field };
    const { invalid, error } = fieldState;
-   // console.log({ name, isTouched });
 
    return (
       <TextField
