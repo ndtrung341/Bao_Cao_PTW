@@ -16,8 +16,6 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
    async function (config) {
       // Do something before request is sent
-      const customHeaders = {};
-
       let token = getToken();
 
       if (token) {
@@ -32,18 +30,9 @@ axiosClient.interceptors.request.use(
             token = newToken;
          }
          config.headers['Authorization'] = `Bearer ${token}`;
-         // customHeaders.Authorization = `Bearer ${token}`;
       }
 
       return config;
-
-      // return {
-      //    ...config,
-      //    headers: {
-      //       ...customHeaders, // auto attach token
-      //       ...config.headers, // but you can override for some requests
-      //    },
-      // };
    },
    function (error) {
       // Do something with request error

@@ -65,7 +65,7 @@ const authSlice = createSlice({
       },
 
       [logout.fulfilled]: () => {
-         return initialState;
+         return { ...initialState, currentUser: null };
       },
    },
 });
