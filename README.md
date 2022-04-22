@@ -1,1 +1,1 @@
-# A Website using ReactJS - Laravel
+# React
