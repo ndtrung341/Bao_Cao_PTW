@@ -38,7 +38,7 @@ const schema = yup.object().shape({
    payment: yup.string().required('Vui lòng chọn phương thức thanh toán'),
 });
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ onSubmit }) => {
    const form = useForm({
       defaultValues,
       mode: 'all',
@@ -46,7 +46,7 @@ const CheckoutForm = () => {
    });
 
    const handleCheckout = (values) => {
-      console.log({ values });
+      onSubmit && onSubmit(values);
    };
 
    return (

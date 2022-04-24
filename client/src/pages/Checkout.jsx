@@ -6,6 +6,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const Checkout = () => {
+   const handlePlaceOrder = (values) => {
+      console.log(values);
+   };
+
    return (
       <>
          <Helmet>
@@ -17,7 +21,7 @@ const Checkout = () => {
          <Container sx={{ mb: 3 }}>
             <Grid container spacing={2} mb={2}>
                <Grid item lg={7}>
-                  <CheckoutForm />
+                  <CheckoutForm onSubmit={handlePlaceOrder} />
                </Grid>
 
                <Grid item lg={5}>
