@@ -8,12 +8,18 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCart, selectCartIsUpdated } from 'redux/cartSlice';
+import { selectIsLoggedIn } from 'redux/authSlice';
 toast.configure();
 
 const MainLayout = () => {
    const location = useLocation();
+   const dispatch = useDispatch();
    const footerRef = useRef(null);
    const contentRef = useRef(NoLuggageOutlined);
+   const isUpdated = useSelector(selectCartIsUpdated);
+   const isLoggedIn = useSelector(selectIsLoggedIn);
 
    useEffect(() => {
       setTimeout(() => {
@@ -30,20 +36,28 @@ const MainLayout = () => {
       window.scrollTo(0, 0);
    }, [location.pathname]);
 
+   useEffect(() => {
+      if (!isUpdated || !isLoggedIn) return;
+      dispatch(fetchCart());
+   }, [isUpdated, dispatch, isLoggedIn]);
+
    return (
       <>
          <Header />
+
          <Box ref={contentRef}>
             <Outlet />
          </Box>
+
          <Footer ref={footerRef} />
 
          <ToastContainer
             position='top-center'
-            autoClose={2000}
-            hideProgressBar={false}
+            autoClose={1500}
+            hideProgressBar={true}
             closeOnClick
             pauseOnHover={false}
+            pauseOnFocusLoss={false}
          />
 
          <ModalContainer />

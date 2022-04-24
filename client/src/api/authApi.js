@@ -21,6 +21,6 @@ export const authApi = {
    },
 
    refreshToken() {
-      return axiosClient.post('auth/refresh-token');
+      return axiosClient.post('auth/token');
    },
 };

@@ -6,8 +6,8 @@ import modalReducer from './modalSlice';
 import authReducer from './authSlice';
 
 const rootReducer = combineReducers({
-   auth: authReducer,
    cart: cartReducer,
+   auth: authReducer,
    collection: collectionReducer,
    modal: modalReducer,
 });

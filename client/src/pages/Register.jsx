@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/core';
 import { Backdrop, Box, CircularProgress, Grid, Typography } from '@mui/material';
 import React from 'react';
+import { authApi } from 'api/authApi';
+import { register, getMe, selectIsLogging } from 'redux/authSlice';
 import RegisterForm from 'components/Auth/RegisterForm';
 import { getPathPublic } from 'utils';
-import { authApi } from 'api/authApi';
 import useModal from 'hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { register, getMe, selectIsLogging } from 'redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
 

@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 const QuantityField = ({ value, size, onChange }) => {
    const classes = useStyles({ size });
-   const [disabled, setDisabled] = useState(false);
    const [inputValue, setInputValue] = useState(1);
 
    useEffect(() => {
@@ -48,9 +47,7 @@ const QuantityField = ({ value, size, onChange }) => {
 
    const handleValueChange = (value) => {
       if (!onChange) return;
-      setDisabled(true);
       onChange(value);
-      setDisabled(false);
    };
 
    return (
@@ -58,7 +55,6 @@ const QuantityField = ({ value, size, onChange }) => {
          <Button
             className={`${classes.button} decrease`}
             onClick={() => handleValueChange(value - 1)}
-            disabled={disabled}
          >
             <RemoveIcon fontSize='inherit' />
          </Button>
@@ -69,7 +65,6 @@ const QuantityField = ({ value, size, onChange }) => {
             color='primary'
             value={inputValue}
             size='small'
-            disabled={disabled}
             onChange={(e) => setInputValue(+e.target.value || 1)}
             onBlur={() => handleValueChange(inputValue)}
          />
@@ -77,7 +72,6 @@ const QuantityField = ({ value, size, onChange }) => {
          <Button
             className={`${classes.button} increase`}
             onClick={() => handleValueChange(value + 1)}
-            disabled={disabled}
          >
             <AddIcon fontSize='inherit' />
          </Button>

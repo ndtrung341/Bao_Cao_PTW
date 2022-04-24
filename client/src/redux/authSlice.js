@@ -1,6 +1,7 @@
 import { authApi } from 'api/authApi';
 import { getItemStorage, removeItemStorage, setItemStorage } from 'utils';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
 
 const initialState = {
    isLogging: false,
@@ -41,32 +42,24 @@ const authSlice = createSlice({
    initialState,
    reducers: {},
 
-   extraReducers: {
-      [register.pending]: (state) => {
-         state.isLoggedIn = false;
-         state.isLogging = true;
-      },
-      [register.fulfilled]: (state) => {
-         state.isLoggedIn = true;
-         state.isLogging = false;
-      },
-
-      [login.pending]: (state) => {
-         state.isLoggedIn = false;
-         state.isLogging = true;
-      },
-      [login.fulfilled]: (state) => {
-         state.isLoggedIn = true;
-         state.isLogging = false;
-      },
-
-      [getMe.fulfilled]: (state, action) => {
+   extraReducers(builder) {
+      builder.addCase(getMe.fulfilled, (state, action) => {
          state.currentUser = action.payload;
-      },
+      });
 
-      [logout.fulfilled]: () => {
+      builder.addCase(logout.fulfilled, (state) => {
          return { ...initialState, currentUser: null };
-      },
+      });
+
+      builder.addMatcher(isAnyOf(register.pending, login.pending), (state) => {
+         state.isLoggedIn = false;
+         state.isLogging = true;
+      });
+
+      builder.addMatcher(isAnyOf(register.fulfilled, login.fulfilled), (state) => {
+         state.isLoggedIn = true;
+         state.isLogging = false;
+      });
    },
 });
 
@@ -80,3 +73,6 @@ export const authActions = authSlice.actions;
 // selectors
 export const selectCurrentUser = (state) => state.auth.currentUser;
 export const selectIsLogging = (state) => state.auth.isLogging;
+export const selectIsLoggedIn = createSelector(selectCurrentUser, (user) =>
+   Boolean(user)
+);

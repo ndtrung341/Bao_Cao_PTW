@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
    Close,
    LogoutOutlined,
@@ -22,24 +22,27 @@ import {
    Tooltip,
 } from '@mui/material';
 import { SETTING_LINKS } from 'constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartCount } from 'redux/cartSlice';
-import { selectCurrentUser, logout } from 'redux/authSlice';
+import { selectCurrentUser, logout, selectIsLoggedIn } from 'redux/authSlice';
 
 const HeaderRight = () => {
    const dispatch = useDispatch();
+
    const cartCount = useSelector(selectCartCount);
-   // const isLoggedIn = useSelector(selectIsLoggedIn);
    const currentUser = useSelector(selectCurrentUser);
-   const isLoggedIn = useMemo(() => currentUser !== null, [currentUser]);
+   const isLoggedIn = useSelector(selectIsLoggedIn);
+
+   const navigate = useNavigate();
 
    const [anchorElUser, setAnchorElUser] = useState(null);
    const [openSearch, setOpenSearch] = useState(false);
 
    const handleLogout = () => {
       dispatch(logout()).unwrap();
+      return navigate('/');
    };
 
    const handleOpenUserMenu = (event) => {
@@ -84,7 +87,7 @@ const HeaderRight = () => {
                   <Tooltip title='Open settings'>
                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <Avatar src={null} sx={{ width: 40, height: 40 }}>
-                           {currentUser.fullname.charAt(0)}
+                           {currentUser?.fullname.charAt(0)}
                         </Avatar>
                      </IconButton>
                   </Tooltip>

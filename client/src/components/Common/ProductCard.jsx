@@ -14,9 +14,7 @@ import { makeStyles } from '@material-ui/core';
 import { formatCurrency, getFullPathImage } from 'utils';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { cartActions } from 'redux/cartSlice';
-import { toast } from 'react-toastify';
+import useAddToCart from 'hooks/useAddToCart';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -91,21 +89,22 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductCard = ({ product }) => {
    const classes = useStyles();
-   const dispatch = useDispatch();
+   const { handleAddToCart } = useAddToCart();
 
-   const handleAddToCart = () => {
+   const handleAddCartClick = () => {
+      // const newItem = {
+      //    id: product.id,
+      //    name: product.name,
+      //    thumb: product.thumb,
+      //    slug: product.slug,
+      //    price: product.salePrice,
+      //    quantity: 1,
+      // };
       const newItem = {
-         id: product.id,
-         name: product.name,
-         thumb: product.thumb,
-         slug: product.slug,
-         price: product.salePrice,
+         product_id: product.id,
          quantity: 1,
       };
-
-      dispatch(cartActions.addItemToCart(newItem));
-
-      toast.success('Thêm vào giỏ hàng thành công');
+      handleAddToCart(newItem);
    };
 
    return (
@@ -151,7 +150,7 @@ const ProductCard = ({ product }) => {
          </CardContent>
 
          <CardActions className={classes.actions} disableSpacing>
-            <IconButton size='medium' onClick={handleAddToCart}>
+            <IconButton size='medium' onClick={handleAddCartClick}>
                <AddShoppingCart fontSize='small' />
             </IconButton>
             <IconButton size='medium'>

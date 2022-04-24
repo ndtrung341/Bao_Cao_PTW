@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import { formatCurrency, getFullPathImage } from 'utils';
 import QuantityField from 'components/FormFields/QuantityField';
 import { makeStyles } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { cartActions } from 'redux/cartSlice';
-import { toast } from 'react-toastify';
 import useModal from 'hooks/useModal';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,31 +50,23 @@ const useStyles = makeStyles((theme) => ({
       },
    },
 }));
-const CartItem = ({ item }) => {
+const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
    const classes = useStyles();
-   const dispatch = useDispatch();
    const { modal } = useModal();
-
-   const removeItemFromCart = () => {
-      dispatch(cartActions.removeItemFromCart(item.id));
-      toast.success('Xóa sản phẩm thành công');
-   };
 
    const showConfirmRemove = () => {
       modal({
          type: 'warning',
          title: 'Bạn có muốn xóa sản phẩm này?',
          content: item.name,
-         onSubmit: removeItemFromCart,
+         onSubmit: () => onRemoveFromCart(item.product_id),
       });
    };
 
-   const handleUpdateQuantity = (value) => {
-      if (value === 0) {
-         showConfirmRemove();
-      } else {
-         dispatch(cartActions.updateItemCart({ id: item.id, quantity: value }));
-      }
+   const handleQuantityChange = (value) => {
+      value === 0
+         ? showConfirmRemove()
+         : onUpdateCart({ productId: item.product_id, quantity: value });
    };
 
    return (
@@ -112,7 +101,7 @@ const CartItem = ({ item }) => {
                <QuantityField
                   size={'small'}
                   value={item.quantity}
-                  onChange={handleUpdateQuantity}
+                  onChange={handleQuantityChange}
                />
             </Box>
 
