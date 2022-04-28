@@ -1,0 +1,33 @@
+@baseURL = http://127.0.0.1:3001/api
+
+POST {{baseURL}}/auth/register
+Content-Type: application/json
+
+{
+   "fullname":"Nguyễn Duy Trung",
+   "email":"test1@gmail.com",
+   "password":"123456"
+}
+
+### USER INFO
+POST {{baseURL}}/auth/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY4ZWI3ODcxMDlhNjE2OGZlMzE5YzIiLCJpYXQiOjE2NTExNTc5MzYsImV4cCI6MTY1MTE1Nzk5Nn0._cVcfe6kAFdSjsB9dhYVFxuX0lZ-uiIDin718MjBONw
+
+### LOGIN
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+   "email":"test@gmail.com",
+   "password":"123456"
+}
+
+### REFRESH TOKEN
+POST {{baseURL}}/auth/token
+Content-Type: application/json
+
+### LOGOUT
+POST {{baseURL}}/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY4ZWI3ODcxMDlhNjE2OGZlMzE5YzIiLCJpYXQiOjE2NTExNTgwNzEsImV4cCI6MTY1MTE1ODEzMX0.sOYItbC8Dh6RQNSEhbWNv3JRb-GtTGqyCLtQEK4d1pc
+
