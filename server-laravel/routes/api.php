@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,12 +23,17 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth',
-    'controller' => AuthController::class
 ], function () {
-    Route::post('registry', 'registry')->name('registry');
-    Route::post('login', 'login')->name('login');
-    Route::post('me', 'me');
-    Route::post('logout', 'logout');
-    Route::post('token', 'refresh')->name('refresh');
-    // Route::post('check_unique_email', 'checkUniqueEmail')->name('checkUniqueEmail');
+    Route::post('registry', [AuthController::class, 'registry'])->name('registry');
+    // Route::post('registry/verify', [VerifyEmailController::class, 'sendMail'])->name('verify');
+    Route::post('verify/{id}', [AuthController::class, 'verify'])->name('verify');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('me', [AuthController::class, 'me']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('token', [AuthController::class, 'refresh'])->name('refresh');
 });
+Route::post('email/verify', [VerificationController::class, 'verify'])->name('verify');
+
+// Route::get('email/verify/{id}', [VerifyEmailController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+
+// Route::get('email/resend', [VerifyEmailController::class, 'resend'])->name('verification.resend');

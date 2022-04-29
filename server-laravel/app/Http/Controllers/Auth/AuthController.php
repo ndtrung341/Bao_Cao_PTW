@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserVerification;
+use Carbon\Carbon;
 use Error;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use JWTFactory;
+use Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
@@ -22,7 +28,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'registry', 'refresh']]);
+        $this->middleware('auth:api', ['except' => ['login', 'registry', 'refresh', 'verify']]);
     }
 
     /**
@@ -37,6 +43,10 @@ class AuthController extends Controller
 
             if (!$token = JWTAuth::attempt($credentials)) {
                 throw new Exception('Unauthorized', 401);
+            }
+
+            if (empty(JWTAuth::user()->email_verified_at)) {
+                throw new Exception('Your email is not verified', 401);
             }
 
             return response()->json([
@@ -75,16 +85,23 @@ class AuthController extends Controller
 
             $user = User::create(array_merge(
                 $validator->validated(),
-                ['id' => Str::uuid()->toString(), 'password' => bcrypt($request->password)]
+                ['password' => bcrypt($request->password)]
             ));
 
-            $token = JWTAuth::attempt($user);
-            // $token = auth()->login($user);
+            // $token = JWTAuth::attempt($validator->validated());
+            $code = random_int(100000, 999999);
+
+            UserVerification::create([
+                'user_id' => $user->id,
+                'code' => $code
+            ]);
+
+            VerificationController::sendMail($user, $code);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Register successfully',
-                'accessToken' => $token
+                // 'accessToken' => $token
             ], 201);
         } catch (\Throwable $e) {
             return response()->json(
@@ -92,7 +109,7 @@ class AuthController extends Controller
                     'status' => 'failed',
                     'message' => $e->getMessage()
                 ],
-                $e->getCode()
+                400
             );
         }
     }
@@ -182,5 +199,24 @@ class AuthController extends Controller
             'status' => 'success',
             'message' => 'Update password successfully',
         ], 201);
+    }
+
+    public function verify(Request $request, $user_id)
+    {
+        $code = $request->get('code');
+        $verify = UserVerification::where([['user_id', '=', $user_id], ['code', '=', $code]])->first();
+
+        if ($verify) {
+            User::where('id', $user_id)->update(['email_verified_at' => Carbon::now()]);
+            $verify->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Verify successfully',
+            ], 201);
+        }
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Activate code invalid',
+        ], 400);
     }
 }
