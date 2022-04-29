@@ -1,0 +1,23 @@
+### LOGIN
+POST http://localhost:8000/api/auth/login
+content-type: application/json
+
+{
+   "email":"test@gmail.com",
+   "password":"12345"
+}
+
+### REGISTER
+POST http://localhost:8000/api/auth/registry
+content-type: application/json
+
+{
+   "fullname":"Duy Trung",
+   "email":"test@gmail.com",
+   "password":"12345"
+}
+
+### ME
+POST http://localhost:8000/api/auth/me
+content-type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9yZWdpc3RyeSIsImlhdCI6MTY1MTIwNjI3MSwiZXhwIjoxNjUxMjA5ODcxLCJuYmYiOjE2NTEyMDYyNzEsImp0aSI6IjU4Q2piazJGcERFSjFBM3AiLCJzdWIiOjAsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.qN0lHgUOI4hB2oJjYfmvQEjlPfU1ZstwbNSKRvUk9No

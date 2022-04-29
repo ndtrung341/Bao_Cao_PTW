@@ -1,0 +1,31 @@
+### LOGIN
+POST http://localhost:8000/api/auth/login
+content-type: application/json
+
+{
+   "email":"test@gmail.com",
+   "password":"12345"
+}
+
+### REGISTER
+POST http://localhost:8000/api/auth/registry
+content-type: application/json
+
+{
+   "fullname":"Duy Trung",
+   "email":"test@gmail.com",
+   "password":"12345"
+}
+
+### ME
+POST http://localhost:8000/api/auth/me
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTIxNzUxMywiZXhwIjoxNjUxMjE3NTczLCJuYmYiOjE2NTEyMTc1MTMsImp0aSI6IjhhT2NkaDQ0SU45VlhRSmoiLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.jKT7Ad7-EXzFWJ4k9i0XaU66qX0V5cdawv74G3u6L5E
+
+### LOGOUT
+POST http://localhost:8000/api/auth/logout
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTIxNTYyOCwiZXhwIjoxNjUxMjE1OTI4LCJuYmYiOjE2NTEyMTU2MjgsImp0aSI6IkpQNlRSbElTZW9NSGF5OGMiLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.3OBlm7TtmjuKFuyDHZfOCePe6n-BO8LHYL_pc3Qvnpo
+
+
+### token
+POST http://localhost:8000/api/auth/token
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC90b2tlbiIsImlhdCI6MTY1MTIxNzUxMywiZXhwIjoxNjUxMjE3NjYxLCJuYmYiOjE2NTEyMTc2MDEsImp0aSI6IjI5TlJBaG83TVhNRlNKOEciLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Xxh4Ykmw_7Da7FV7rHFqFmzLE9n1Pg40U18W0-KAMhk
