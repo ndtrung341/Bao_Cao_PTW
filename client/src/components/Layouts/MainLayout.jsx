@@ -1,4 +1,3 @@
-import { NoLuggageOutlined } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import ModalContainer from 'components/Common/ModalContainer';
 import Footer from 'components/Common/Footer';
@@ -6,18 +5,21 @@ import Header from 'components/Header';
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCart, selectCartIsUpdated } from 'redux/cartSlice';
-import { selectIsLoggedIn } from 'redux/authSlice';
+import { getMe, selectIsLoggedIn } from 'redux/authSlice';
+import { getToken } from 'utils/auth';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 toast.configure();
 
 const MainLayout = () => {
    const location = useLocation();
    const dispatch = useDispatch();
    const footerRef = useRef(null);
-   const contentRef = useRef(NoLuggageOutlined);
+   const contentRef = useRef(null);
    const isUpdated = useSelector(selectCartIsUpdated);
    const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -32,14 +34,23 @@ const MainLayout = () => {
       }, 100);
    }, []);
 
+   // scroll to top
    useEffect(() => {
       window.scrollTo(0, 0);
    }, [location.pathname]);
 
+   // fetch cart when changed
    useEffect(() => {
       if (!isUpdated || !isLoggedIn) return;
       dispatch(fetchCart());
-   }, [isUpdated, dispatch, isLoggedIn]);
+   }, [isUpdated, isLoggedIn, dispatch]);
+
+   // fetch user info
+   useEffect(() => {
+      if (!getToken()) return;
+      console.log('fetch user');
+      dispatch(getMe()).unwrap();
+   });
 
    return (
       <>

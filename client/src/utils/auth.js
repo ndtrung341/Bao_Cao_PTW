@@ -1,7 +1,7 @@
 import { getItemStorage } from './storage';
 import jwt_decode from 'jwt-decode';
 
-export const getToken = () => getItemStorage('access_token')?.['access_token'];
+export const getToken = () => getItemStorage('access_token');
 
 export const isTokenExpired = (token) => {
    const { exp } = jwt_decode(token);

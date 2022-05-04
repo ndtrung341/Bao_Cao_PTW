@@ -2,10 +2,10 @@ import axiosClient from './axiosClient';
 
 export const productApi = {
    getBestSeller() {
-      return axiosClient.get('products/best-seller');
+      return axiosClient.get('best_seller');
    },
    getLatest() {
-      return axiosClient.get('products/latest');
+      return axiosClient.get('latest_products');
    },
    get(id) {
       return axiosClient.get(`products/${id}`);

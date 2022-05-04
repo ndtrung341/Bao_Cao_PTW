@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserVerification;
 use Carbon\Carbon;
-use Error;
 use Exception;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use JWTFactory;
 use Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -28,7 +24,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'registry', 'refresh', 'verify']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'refresh', 'verify']]);
     }
 
     /**
@@ -42,17 +38,17 @@ class AuthController extends Controller
             $credentials = $request->only('email', 'password');
 
             if (!$token = JWTAuth::attempt($credentials)) {
-                throw new Exception('Unauthorized', 401);
+                throw new Exception('Invalid email or password', 401);
             }
 
-            if (empty(JWTAuth::user()->email_verified_at)) {
-                throw new Exception('Your email is not verified', 401);
-            }
+            // if (empty(JWTAuth::user()->email_verified_at)) {
+            //     throw new Exception('Your email is not verified', 401);
+            // }
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Login successfully',
-                'accessToken' => $token,
+                'access_token' => $token,
             ], 200);
         } catch (\Throwable $e) {
             return response()->json(
@@ -70,7 +66,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function registry(Request $request)
+    public function register(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -88,20 +84,20 @@ class AuthController extends Controller
                 ['password' => bcrypt($request->password)]
             ));
 
-            // $token = JWTAuth::attempt($validator->validated());
-            $code = random_int(100000, 999999);
+            $token = JWTAuth::attempt($validator->validated());
+            // $code = random_int(100000, 999999);
 
-            UserVerification::create([
-                'user_id' => $user->id,
-                'code' => $code
-            ]);
+            // UserVerification::create([
+            //     'user_id' => $user->id,
+            //     'code' => $code
+            // ]);
 
-            VerificationController::sendMail($user, $code);
+            // VerificationController::sendMail($user, $code);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Register successfully',
-                // 'accessToken' => $token
+                'access_token' => $token
             ], 201);
         } catch (\Throwable $e) {
             return response()->json(
@@ -140,12 +136,12 @@ class AuthController extends Controller
         try {
             // time refresh has not expired and token still available
             $token = JWTAuth::parseToken()->refresh();
-            return response()->json(['accessToken' => $token], 200);
+            return response()->json(['access_token' => $token], 200);
         } catch (Exception $e) {
             if ($e instanceof TokenExpiredException && $e->getMessage() === 'Token has expired') {
                 // token expired
                 $token = JWTAuth::parseToken()->refresh();
-                return response()->json(['accessToken' => $token], 200);
+                return response()->json(['access_token' => $token], 200);
             } else {
                 // time to refresh expired
                 return response()->json([

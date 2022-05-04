@@ -48,3 +48,7 @@ a {
    text-decoration: none !important;
    /* color: inherit !important; */
 }
+
+.ck-editor__editable {
+   min-height: 200px;
+}

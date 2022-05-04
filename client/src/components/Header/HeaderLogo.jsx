@@ -19,7 +19,7 @@ const HeaderLogo = () => {
          >
             <Box height='100%'>
                <img
-                  src={getPathPublic('logo.png')}
+                  src='/images/logo.png'
                   alt=''
                   width={200}
                   style={{ objectFit: 'contain', height: '100%' }}

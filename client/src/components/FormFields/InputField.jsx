@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 
-const InputField = ({ field, fieldState, placeholder, label }) => {
-   // fieldRest contain onChange, onBlur, ref
+const InputField = ({ field, fieldState, placeholder, label, type }) => {
    const { value, name, ...fieldRest } = { ...field };
    const { invalid, error } = fieldState;
 
@@ -13,6 +12,7 @@ const InputField = ({ field, fieldState, placeholder, label }) => {
          fullWidth
          size='small'
          name={name}
+         type={type}
          value={value}
          placeholder={placeholder}
          label={label}
@@ -34,7 +34,7 @@ InputField.propTypes = {
    fieldState: PropTypes.object.isRequired,
    placeholder: PropTypes.string,
    label: PropTypes.string,
-   type: PropTypes.oneOf(['text', 'email']),
+   type: PropTypes.oneOf(['text', 'email', 'number']),
 };
 
 export default InputField;

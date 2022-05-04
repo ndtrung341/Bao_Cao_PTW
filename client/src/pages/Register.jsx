@@ -42,36 +42,38 @@ const RegisterPage = () => {
    const { modal } = useModal();
    const isLogging = useSelector(selectIsLogging);
 
-   const checkUniqueEmail = async (email) => {
-      const { error, error_msg } = await authApi.checkUniqueEmail(email);
-      error &&
-         modal({
-            type: 'error',
-            title: 'Thất bại',
-            content: error_msg,
-         });
-      return error === false;
-   };
+   // const checkUniqueEmail = async (email) => {
+   //    const { error, error_msg } = await authApi.checkUniqueEmail(email);
+   //    error &&
+   //       modal({
+   //          type: 'error',
+   //          title: 'Thất bại',
+   //          content: error_msg,
+   //       });
+   //    return error === false;
+   // };
 
    const handleRegister = async (values) => {
       try {
          const { fullname, email, password } = values;
 
-         const isValid = await checkUniqueEmail(email);
-         if (!isValid) return;
+         // const isValid = await checkUniqueEmail(email);
+         // if (!isValid) return;
 
          const payload = { fullname, email, password };
-         await dispatch(register(payload)).unwrap();
+         const resultRegister = await dispatch(register(payload));
+         unwrapResult(resultRegister);
 
-         const resultGetMe = await dispatch(getMe());
-         unwrapResult(resultGetMe);
+         // const resultGetMe = await dispatch(getMe());
+         // unwrapResult(resultGetMe);
 
          return navigate('/');
       } catch (error) {
+         // console.log(error);
          modal({
             type: 'error',
             title: 'Lỗi',
-            content: 'Có lỗi xảy ra, vui lòng thử lại',
+            content: error.message,
          });
       }
    };

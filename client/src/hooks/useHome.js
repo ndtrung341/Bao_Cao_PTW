@@ -9,7 +9,6 @@ const useHome = () => {
    const [loading, setLoading] = useState(false);
 
    useEffect(() => {
-      let isUnsubcribe = true;
       (async () => {
          setLoading(true);
 
@@ -26,8 +25,6 @@ const useHome = () => {
          setTopList(topList);
          setBannerList(bannerList);
       })();
-
-      return () => (isUnsubcribe = false);
    }, []);
 
    return { latestList, topList, bannerList, loading };

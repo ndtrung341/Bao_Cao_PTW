@@ -1,4 +1,4 @@
 export * from './formatCurrency';
-export * from './capitalize';
+export * from './string';
 export * from './getFullPathImage';
 export * from './storage';

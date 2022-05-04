@@ -28,18 +28,16 @@ const customTheme = createTheme({
 setupAxios(store);
 
 ReactDOM.render(
-   <React.StrictMode>
-      <BrowserRouter>
-         <Provider store={store}>
-            <HelmetProvider>
-               <ThemeProvider theme={customTheme}>
-                  <CssBaseline />
-                  <App />
-               </ThemeProvider>
-            </HelmetProvider>
-         </Provider>
-      </BrowserRouter>
-   </React.StrictMode>,
+   <BrowserRouter>
+      <Provider store={store}>
+         <HelmetProvider>
+            <ThemeProvider theme={customTheme}>
+               <CssBaseline />
+               <App />
+            </ThemeProvider>
+         </HelmetProvider>
+      </Provider>
+   </BrowserRouter>,
    document.getElementById('root')
 );
 

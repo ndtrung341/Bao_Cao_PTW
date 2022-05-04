@@ -13,11 +13,12 @@ import React, { forwardRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Email, LocalPhone, LocationOnOutlined } from '@mui/icons-material';
 import { getPathPublic } from 'utils';
-
+// https://www.lego.com/cdn/cs/set/assets/blt001fa66733a27e4a/42115-PDP-202003-Hero4-Standard-Large.jpg?fit=crop&format=webply&quality=80&width=2200&height=700&dpr=1
+// ${getPathPublic('footer.png')}
 const useStyles = makeStyles((theme) => ({
    root: {
       padding: theme.spacing(3, 0),
-      backgroundImage: ` url("${getPathPublic('footer.png')}")`,
+      background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://www.lego.com/cdn/cs/set/assets/blt001fa66733a27e4a/42115-PDP-202003-Hero4-Standard-Large.jpg?fit=crop&format=webply&quality=80&width=2200&height=700&dpr=1")`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
       backgroundPosition: 'top',

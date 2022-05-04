@@ -4,9 +4,10 @@ import React from 'react';
 import LoginForm from 'components/Auth/LoginForm';
 import { getPathPublic } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe, login, selectIsLogging } from 'redux/authSlice';
+import { login, selectIsLogging } from 'redux/authSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
+import useModal from 'hooks/useModal';
 
 const useStyles = makeStyles((theme) => ({
    thumb: {
@@ -38,15 +39,24 @@ const Login = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const isLogging = useSelector(selectIsLogging);
+   const { modal } = useModal();
 
    const handleLogin = async (values) => {
-      const resultLogin = await dispatch(login(values));
-      unwrapResult(resultLogin);
+      try {
+         const resultLogin = await dispatch(login(values));
+         unwrapResult(resultLogin);
 
-      const resultGetMe = await dispatch(getMe());
-      unwrapResult(resultGetMe);
+         // const resultGetMe = await dispatch(getMe());
+         // unwrapResult(resultGetMe);
 
-      return navigate('/');
+         return navigate('/');
+      } catch (error) {
+         modal({
+            type: 'error',
+            title: 'Lỗi',
+            content: error.message,
+         });
+      }
    };
 
    return (

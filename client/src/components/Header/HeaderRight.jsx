@@ -33,7 +33,7 @@ const HeaderRight = () => {
 
    const cartCount = useSelector(selectCartCount);
    const currentUser = useSelector(selectCurrentUser);
-   const isLoggedIn = useSelector(selectIsLoggedIn);
+   // const isLoggedIn = useSelector(selectIsLoggedIn);
 
    const navigate = useNavigate();
 
@@ -76,7 +76,7 @@ const HeaderRight = () => {
                </Badge>
             </Link>
 
-            {!isLoggedIn ? (
+            {!currentUser ? (
                <Link to={'/auth/login'} style={{ textDecoration: 'none' }}>
                   <Button variant='outlined' size='small'>
                      Đăng nhập

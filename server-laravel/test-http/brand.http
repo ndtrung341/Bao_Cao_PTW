@@ -1,0 +1,12 @@
+### CREATE BRAND
+POST http://localhost:8000/api/brands
+content-type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTMwNzk2MCwiZXhwIjoxNjUxNDE1OTYwLCJuYmYiOjE2NTEzMDc5NjAsImp0aSI6InVGMTl6c2g2aXJCaE02V2QiLCJzdWIiOjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bd3PjGG_y2pN35y-CFrxAxeP4O0FA-g5VpKcy1Lf_2w
+
+{
+   "name":"Duy Trung"
+}
+
+### all brand
+GET http://localhost:8000/api/brands
+content-type: application/json

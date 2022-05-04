@@ -1,12 +1,12 @@
 import { authApi } from 'api/authApi';
-import { getItemStorage, removeItemStorage, setItemStorage } from 'utils';
+import { removeItemStorage, setItemStorage } from 'utils';
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
 const initialState = {
    isLogging: false,
    isLoggedIn: false,
-   currentUser: getItemStorage('user'),
+   currentUser: null,
 };
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
@@ -16,26 +16,32 @@ export const getMe = createAsyncThunk('auth/getMe', async () => {
 });
 
 export const register = createAsyncThunk('auth/register', async (payload) => {
-   const token = await authApi.register(payload);
-   setItemStorage('access_token', token);
+   const res = await authApi.register(payload);
+   setItemStorage('access_token', res.access_token);
 });
 
 export const login = createAsyncThunk('auth/login', async (payload) => {
-   const token = await authApi.login(payload);
-   setItemStorage('access_token', token);
+   const res = await authApi.login(payload);
+   setItemStorage('access_token', res.access_token);
 });
 
 export const logout = createAsyncThunk('auth/logout', async () => {
    await authApi.logout();
    removeItemStorage('access_token');
-   removeItemStorage('user');
 });
 
-export const refreshToken = createAsyncThunk('auth/refreshToken', async () => {
-   const token = await authApi.refreshToken();
-   setItemStorage('access_token', token);
-   return token['access_token'];
-});
+export const refreshToken = createAsyncThunk(
+   'auth/refreshToken',
+   async (_, { rejectWithValue }) => {
+      try {
+         const res = await authApi.refreshToken();
+         setItemStorage('access_token', res.access_token);
+         return res.access_token;
+      } catch (error) {
+         rejectWithValue(error);
+      }
+   }
+);
 
 const authSlice = createSlice({
    name: 'auth',
@@ -47,13 +53,17 @@ const authSlice = createSlice({
          state.currentUser = action.payload;
       });
 
-      builder.addCase(logout.fulfilled, (state) => {
-         return { ...initialState, currentUser: null };
+      builder.addCase(logout.fulfilled, () => {
+         return initialState;
       });
 
       builder.addMatcher(isAnyOf(register.pending, login.pending), (state) => {
          state.isLoggedIn = false;
          state.isLogging = true;
+      });
+
+      builder.addMatcher(isAnyOf(register.rejected, login.rejected), (state) => {
+         state.isLogging = false;
       });
 
       builder.addMatcher(isAnyOf(register.fulfilled, login.fulfilled), (state) => {
@@ -73,6 +83,4 @@ export const authActions = authSlice.actions;
 // selectors
 export const selectCurrentUser = (state) => state.auth.currentUser;
 export const selectIsLogging = (state) => state.auth.isLogging;
-export const selectIsLoggedIn = createSelector(selectCurrentUser, (user) =>
-   Boolean(user)
-);
+export const selectIsLoggedIn = (state) => state.auth.isL;
