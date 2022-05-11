@@ -10,13 +10,16 @@ export const NAV_LINKS = [
       name: 'Sản phẩm',
       path: '/collection',
    },
+];
+
+export const ADMIN_LINKS = [
    {
-      name: 'Tin tức',
-      path: '/blog',
+      name: 'Sản phẩm',
+      path: '/admin/products/',
    },
    {
-      name: 'Liên hệ',
-      path: '/contact',
+      name: 'Danh mục',
+      path: '/aaaa',
    },
 ];
 

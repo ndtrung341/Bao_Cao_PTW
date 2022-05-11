@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
-import { Box, IconButton, ImageList, ImageListItem, Typography } from '@mui/material';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { DeleteOutlined } from '@mui/icons-material';
 import axiosClient from 'api/axiosClient';
@@ -18,15 +18,17 @@ const useStyles = makeStyles((theme) => ({
    },
    previewImage: {
       padding: 5,
-      width: 120,
-      height: 120,
+      width: 150,
+      height: 150,
       display: 'inline-block',
       borderRadius: theme.shape.borderRadius,
       border: '2px solid #eee',
       marginBottom: theme.spacing(1),
       marginRight: theme.spacing(1),
       position: 'relative',
+      boxSizing: 'border-box',
       '& img': {
+         display: 'block',
          width: '100%',
          height: '100%',
          objectFit: 'contain',
@@ -61,57 +63,85 @@ const useStyles = makeStyles((theme) => ({
          '&:hover': { background: '#f55' },
       },
    },
+   lazy: {
+      position: 'relative',
+      width: 150,
+      height: 150,
+      display: 'inline-block',
+      borderRadius: theme.shape.borderRadius,
+      border: '2px solid #eee',
+      background: '#ccc',
+      marginBottom: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      boxSizing: 'border-box',
+   },
+   loading: {
+      display: 'inline-block',
+      position: 'absolute',
+      transform: 'translate(-50%,-50%)',
+      top: '50%',
+      left: '50%',
+   },
 }));
 
 const ImageUpload = ({
    maxFiles = 6,
-   onUpload,
    previewImages,
    action,
-   fileList = [],
-   onSuccess,
+   fileList,
+   onUpload,
+   onRemove,
+   onError,
 }) => {
    const classes = useStyles();
-   const handleUpload = async (files) => {
-      const uploadReqs = files.map((file) => {
+   const [amountLoading, setAmountLoading] = useState(0);
+
+   const updateFileList = async (files) => {
+      const promiseList = files.map((file) => {
          const formData = new FormData();
          formData.append('file', file);
-         return axiosClient.post(action, formData, { baseURL: '' });
+         return axiosClient.post(action, formData);
       });
 
-      const data = await Promise.allSettled(uploadReqs);
-      onSuccess?.(data.map(({ _, value }) => value));
+      const data = await Promise.allSettled(promiseList);
+      setAmountLoading(0);
+
+      const newFileList = data
+         .filter((item) => item.status === 'fulfilled')
+         .map((item) => item.value);
+      newFileList.length && onUpload?.([...fileList, ...newFileList]);
+
+      // check error
+      const errors = data
+         .filter((item) => item.status === 'rejected')
+         .map((item) => item.reason.message);
+      errors.length && onError?.(errors);
    };
 
    const handleFileDrop = (e) => {
       e.preventDefault();
       const files = Array.from(e.dataTransfer.files).slice(0, maxFiles - fileList.length);
-      // if (files.length) onUpload(files);
-      console.log(files);
-      if (files.length) handleUpload(files);
+      if (files.length === 0) return;
+      setAmountLoading(files.length);
+      updateFileList(files);
    };
 
    const handleFileChange = (e) => {
       const files = Array.from(e.target.files).slice(0, maxFiles - fileList.length);
-      // if (files.length) onUpload(files);
-      if (files.length) handleUpload(files);
+      if (files.length === 0) return;
+      setAmountLoading(files.length);
+      updateFileList(files);
    };
 
    return (
       <>
-         {previewImages.length >= 6 ? null : (
+         {fileList.length >= 6 ? null : (
             <label
                className={classes.buttonUpload}
                onDrop={handleFileDrop}
                onDragOver={(e) => e.preventDefault()}
             >
-               <input
-                  type='file'
-                  hidden
-                  accept='images/*'
-                  onChange={handleFileChange}
-                  multiple
-               />
+               <input type='file' hidden accept='images/*' onChange={handleFileChange} multiple />
                <CloudUploadIcon fontSize='large' />
                <Typography variant='subtitle2'>
                   Click or drag file to this area to upload
@@ -119,20 +149,35 @@ const ImageUpload = ({
             </label>
          )}
 
-         <Box sx={{ mt: 1 }}>
+         <Box sx={{ mt: 2 }}>
             {previewImages.map((image, index) => (
                <Box className={classes.previewImage} key={index}>
                   <img src={image} alt='' />
                   <Box className={classes.previewActions}>
                      <IconButton
                         className='action-delete'
-                        // onClick={() => onRemove(index)}
+                        onClick={() => onRemove(fileList[index])}
                      >
                         <DeleteOutlined />
                      </IconButton>
                   </Box>
                </Box>
             ))}
+
+            {Array(amountLoading)
+               .fill()
+               .map((_, index) => (
+                  <Box className={classes.lazy} key={index}>
+                     <Box className={classes.loading}>
+                        <CircularProgress
+                           sx={{
+                              color: '#fff',
+                           }}
+                           size={40}
+                        />
+                     </Box>
+                  </Box>
+               ))}
          </Box>
       </>
    );

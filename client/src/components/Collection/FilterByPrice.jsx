@@ -60,7 +60,7 @@ const FilterByPrice = ({ onFiltersChange }) => {
             />
          </Box>
          <Box m={2}>
-            <Button variant='contained' onClick={handleSubmit} fullWidth size='small'>
+            <Button variant='contained' onClick={handleSubmit} fullWidth>
                Áp dụng
             </Button>
          </Box>

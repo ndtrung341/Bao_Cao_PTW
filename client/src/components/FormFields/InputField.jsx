@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 
 const InputField = ({ field, fieldState, placeholder, label, type }) => {
-   const { value, name, ...fieldRest } = { ...field };
+   const { value, name, onChange } = field;
    const { invalid, error } = fieldState;
 
    return (
@@ -14,9 +14,9 @@ const InputField = ({ field, fieldState, placeholder, label, type }) => {
          name={name}
          type={type}
          value={value}
+         onChange={onChange}
          placeholder={placeholder}
          label={label}
-         {...fieldRest}
          error={invalid}
          helperText={error?.message}
       />
@@ -34,7 +34,7 @@ InputField.propTypes = {
    fieldState: PropTypes.object.isRequired,
    placeholder: PropTypes.string,
    label: PropTypes.string,
-   type: PropTypes.oneOf(['text', 'email', 'number']),
+   type: PropTypes.oneOf(['text', 'email']),
 };
 
 export default InputField;

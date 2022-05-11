@@ -22,6 +22,9 @@ const customTheme = createTheme({
    typography: {
       fontFamily: `'Nunito', sans-serif`,
       fontSize: 15,
+      button: {
+         textTransform: 'none',
+      },
    },
 });
 

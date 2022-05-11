@@ -1,6 +1,5 @@
 import './App.css';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import React from 'react';
 
 import NotFound from 'components/Common/NotFound';
 
@@ -16,8 +15,8 @@ import PrivateRoute from 'components/Common/PrivateRoute';
 
 import MainLayout from 'components/Layouts/MainLayout';
 import AuthLayout from 'components/Layouts/AuthLayout';
-import Forbidden from 'components/Common/Forbidden';
-import AddEditProduct from 'pages/AddEditProduct';
+import AddEditProduct from 'pages/Admin/AddEditProduct';
+import AdminProductList from 'pages/Admin/AdminProductList';
 
 function App() {
    return (
@@ -34,13 +33,14 @@ function App() {
             </Route>
 
             <Route path='404' element={<NotFound />} />
-            <Route path='403' element={<Forbidden />} />
          </Route>
 
          {/* ROUTE ADMIN */}
-         <Route path='admin' element={<PrivateRoute roles={['admin']} />}>
-            <Route element={<AdminLayout />}>
+         <Route element={<PrivateRoute roles={['admin']} />}>
+            <Route path='admin' element={<AdminLayout />}>
                <Route path='products'>
+                  <Route path='' element={<AdminProductList />} />
+                  <Route path=':id' element={<AddEditProduct />} />
                   <Route path='add' element={<AddEditProduct />} />
                </Route>
             </Route>

@@ -3,12 +3,12 @@ import CartSummary from 'components/Cart/CartSummary';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectCartItems } from 'redux/cartSlice';
-import { formatCurrency, getFullPathImage } from 'utils';
+import { formatCurrency } from 'utils';
 
 const OrderItem = ({ item }) => {
    return (
       <Box display='flex' py={1}>
-         <img src={getFullPathImage(item.thumb)} alt='' width={50} height={50} />
+         <img src={item.thumbnail} alt='' width={50} height={50} />
          <Box sx={{ mx: 1.5, flexGrow: 1 }}>
             <Typography variant={'body2'}>{item.name}</Typography>
             <Typography variant={'body2'} color='text.secondary' mt={0.5}>

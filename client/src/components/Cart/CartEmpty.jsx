@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { getPathPublic } from 'utils';
 
 const CartEmpty = () => {
    return (
@@ -12,7 +11,7 @@ const CartEmpty = () => {
             justifyContent: 'center',
          }}
       >
-         <img src={getPathPublic('empty-cart.png')} alt='' width={100} />
+         <img src={'/images/empty-cart.png'} alt='' width={100} />
          <Typography variant='subtitle1'>
             Không có sản phẩm nào trong giỏ hàng của bạn
          </Typography>

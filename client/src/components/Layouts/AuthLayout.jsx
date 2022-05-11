@@ -10,11 +10,10 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '100vh',
-      backgroundColor: theme.palette.primary.light,
    },
    wrapper: {
       '&&': {
-         maxWidth: '60vw',
+         maxWidth: '30vw',
          height: '100%',
          backgroundColor: 'transparent',
          borderRadius: 8,

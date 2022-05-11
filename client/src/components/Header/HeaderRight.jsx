@@ -26,14 +26,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartCount } from 'redux/cartSlice';
-import { selectCurrentUser, logout, selectIsLoggedIn } from 'redux/authSlice';
+import { logout } from 'redux/authSlice';
 
-const HeaderRight = () => {
+const HeaderRight = ({ currentUser }) => {
    const dispatch = useDispatch();
-
    const cartCount = useSelector(selectCartCount);
-   const currentUser = useSelector(selectCurrentUser);
-   // const isLoggedIn = useSelector(selectIsLoggedIn);
 
    const navigate = useNavigate();
 
@@ -62,7 +59,7 @@ const HeaderRight = () => {
    };
 
    return (
-      <>
+      <Box sx={{ flexGrow: 0, order: { xs: 2, md: 0 } }}>
          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {/* search icon */}
             <IconButton onClick={handleOpenSearchBox}>
@@ -70,11 +67,13 @@ const HeaderRight = () => {
             </IconButton>
 
             {/* cart icon */}
-            <Link to='/cart' style={{ color: 'inherit' }}>
-               <Badge color='primary' badgeContent={cartCount} sx={{ mr: 2 }}>
-                  <ShoppingCartOutlined />
-               </Badge>
-            </Link>
+            {currentUser?.role === 'admin' ? null : (
+               <Link to='/cart' style={{ color: 'inherit' }}>
+                  <Badge color='primary' badgeContent={cartCount} sx={{ mr: 2 }}>
+                     <ShoppingCartOutlined />
+                  </Badge>
+               </Link>
+            )}
 
             {!currentUser ? (
                <Link to={'/auth/login'} style={{ textDecoration: 'none' }}>
@@ -159,7 +158,7 @@ const HeaderRight = () => {
                </Box>
             </DialogContent>
          </Dialog>
-      </>
+      </Box>
    );
 };
 

@@ -11,7 +11,7 @@ import {
    Typography,
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
-import { formatCurrency, getFullPathImage } from 'utils';
+import { formatCurrency } from 'utils';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import useAddToCart from 'hooks/useAddToCart';
@@ -92,14 +92,6 @@ const ProductCard = ({ product }) => {
    const { handleAddToCart } = useAddToCart();
 
    const handleAddCartClick = () => {
-      // const newItem = {
-      //    id: product.id,
-      //    name: product.name,
-      //    thumb: product.thumb,
-      //    slug: product.slug,
-      //    price: product.salePrice,
-      //    quantity: 1,
-      // };
       const newItem = {
          product_id: product.id,
          quantity: 1,
@@ -109,21 +101,13 @@ const ProductCard = ({ product }) => {
 
    return (
       <Card className={classes.root} elevation={0}>
-         <CardMedia
-            component='img'
-            image={getFullPathImage(product.thumb)}
-            sx={{ minHeight: 220 }}
-         />
+         <CardMedia component='img' image={product.thumbnail} sx={{ minHeight: 220 }} />
          <CardContent className={classes.content}>
-            {product.discountPercent !== 0 && (
-               <Box className={classes.percent}>-{product.discountPercent}%</Box>
+            {product.salePercentage !== 0 && (
+               <Box className={classes.percent}>-{product.salePercentage}%</Box>
             )}
 
-            <Link
-               to={`/${product.slug}`}
-               className={classes.title}
-               state={{ id: product.id }}
-            >
+            <Link to={`/${product.slug}`} className={classes.title}>
                <Typography gutterBottom component='p'>
                   {product.name}
                </Typography>
@@ -133,7 +117,7 @@ const ProductCard = ({ product }) => {
                <Typography component={'span'} className={classes.salePrice}>
                   {formatCurrency(product.salePrice)}
                </Typography>
-               {product.discountPercent !== 0 && (
+               {product.salePercentage !== 0 && (
                   <Typography className={classes.price} component={'span'}>
                      {formatCurrency(product.price)}
                   </Typography>

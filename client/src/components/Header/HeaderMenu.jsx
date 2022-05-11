@@ -17,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
    },
    link: {
       color: theme.palette.common.black,
-      textTransform: 'none',
       textDecoration: 'none',
       '&.active': {
          color: theme.palette.primary.main,
+         background: 'rgba(63, 63, 219, 0.04)',
       },
    },
 }));
 
-const HeaderMenu = () => {
+const HeaderMenu = ({ isAdmin }) => {
    const classes = useStyles();
    const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -84,12 +84,17 @@ const HeaderMenu = () => {
             className={classes.menu}
          >
             {NAV_LINKS.map((item) => (
-               <Button key={item.name} onClick={handleCloseNavMenu}>
+               <Button key={item.name}>
                   <NavLink to={item.path} className={classes.link}>
                      {item.name}
                   </NavLink>
                </Button>
             ))}
+            {isAdmin && (
+               <NavLink to={'/admin'} className={classes.link}>
+                  <Button>Admin Panel</Button>
+               </NavLink>
+            )}
          </Box>
       </>
    );

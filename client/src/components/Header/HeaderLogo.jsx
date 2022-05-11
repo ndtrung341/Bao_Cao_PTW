@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Link } from '@mui/material';
-import { getPathPublic } from 'utils';
 
 const HeaderLogo = () => {
    return (
@@ -17,9 +16,9 @@ const HeaderLogo = () => {
                height: '100%',
             }}
          >
-            <Box height='100%'>
+            <Box height='100%' py={1}>
                <img
-                  src='/images/logo.png'
+                  src='/images/logo.svg'
                   alt=''
                   width={200}
                   style={{ objectFit: 'contain', height: '100%' }}

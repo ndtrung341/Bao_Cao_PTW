@@ -1,8 +1,7 @@
-import { Box } from '@mui/material';
 import ModalContainer from 'components/Common/ModalContainer';
 import Footer from 'components/Common/Footer';
 import Header from 'components/Header';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,21 +17,8 @@ toast.configure();
 const MainLayout = () => {
    const location = useLocation();
    const dispatch = useDispatch();
-   const footerRef = useRef(null);
-   const contentRef = useRef(null);
    const isUpdated = useSelector(selectCartIsUpdated);
    const isLoggedIn = useSelector(selectIsLoggedIn);
-
-   useEffect(() => {
-      setTimeout(() => {
-         const footerHeight = footerRef.current.offsetHeight;
-         const headerHeight = 80;
-
-         contentRef.current.style.minHeight = `calc(100vh - ${
-            footerHeight + headerHeight
-         }px)`;
-      }, 100);
-   }, []);
 
    // scroll to top
    useEffect(() => {
@@ -55,13 +41,8 @@ const MainLayout = () => {
    return (
       <>
          <Header />
-
-         <Box ref={contentRef}>
-            <Outlet />
-         </Box>
-
-         <Footer ref={footerRef} />
-
+         <Outlet />
+         <Footer />
          <ToastContainer
             position='top-center'
             autoClose={1500}
@@ -70,7 +51,6 @@ const MainLayout = () => {
             pauseOnHover={false}
             pauseOnFocusLoss={false}
          />
-
          <ModalContainer />
       </>
    );

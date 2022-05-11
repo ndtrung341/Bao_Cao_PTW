@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\AuthController;
@@ -39,9 +41,7 @@ Route::get('best_seller', function () {
     return response()->json(['data' => []]);
 });
 
-Route::get('related/{product}', function () {
-    return response()->json([]);
-});
+Route::get('related/{product}', [ProductController::class, 'getRelated']);
 
 Route::group([
     'prefix' => 'brands',
@@ -57,4 +57,22 @@ Route::group([
     Route::post('', [CategoryController::class, 'store'])->middleware(['auth:api', 'role.admin']);
 });
 
-Route::post('upload', [UploadController::class, 'upload'])->middleware(['auth:api', 'role.admin']);
+Route::post('upload/destroy', [UploadController::class, 'destroy']);
+Route::post('upload', [UploadController::class, 'upload']);
+
+
+Route::group([
+    'prefix' => 'products',
+], function () {
+    Route::get('', [ProductController::class, 'index']);
+    Route::get('{product:id}', [ProductController::class, 'show']);
+    Route::post('', [ProductController::class, 'store'])->middleware(['auth:api', 'role.admin']);
+    Route::patch('{product:id}', [ProductController::class, 'update'])->middleware(['auth:api', 'role.admin']);
+    Route::post('delete_media', [ProductController::class, 'deleteMedia'])->middleware(['auth:api', 'role.admin']);
+});
+
+Route::controller(LocationController::class)->group(function () {
+    Route::get('location/provinces', 'getProvinces');
+    Route::get('location/districts/{province_id}', 'getDistricts');
+    Route::get('location/wards/{district_id}', 'getWards');
+});

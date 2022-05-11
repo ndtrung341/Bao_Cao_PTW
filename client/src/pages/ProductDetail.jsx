@@ -12,7 +12,7 @@ import AddCartForm from 'components/Product/AddCartForm';
 import ProductGallery from 'components/Product/ProductGallery';
 
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import useProductDetail from 'hooks/useProductDetail';
 import SkeletonInfo from 'components/Skeleton/SkeletonProductInfo';
@@ -21,8 +21,8 @@ import { cartActions } from 'redux/cartSlice';
 import { toast } from 'react-toastify';
 
 const ProductDetail = () => {
-   const location = useLocation();
-   const { product, relatedList, loading } = useProductDetail(location.state?.id);
+   const { slug } = useParams();
+   const { product, relatedList, loading } = useProductDetail(slug);
    const dispatch = useDispatch();
 
    const handleAddItemToCart = (quantity) => {
@@ -47,7 +47,7 @@ const ProductDetail = () => {
 
          {/* BREADCRUMB */}
          {loading ? null : (
-            <Breadcrumb parent={product.category.name} title={product.name} />
+            <Breadcrumb parent={product.brand.name} title={product.name} />
          )}
 
          <Container>
@@ -55,7 +55,7 @@ const ProductDetail = () => {
                <Grid container spacing={1}>
                   {/* PRODUCT GALLERY */}
                   <Grid container item lg={5} md={12}>
-                     <ProductGallery thumbs={[product?.thumb]} loading={loading} />
+                     <ProductGallery thumbs={product.productImages} loading={loading} />
                   </Grid>
 
                   <Grid item lg={7} md={12}>

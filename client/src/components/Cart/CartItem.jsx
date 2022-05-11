@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { formatCurrency, getFullPathImage } from 'utils';
+import { formatCurrency } from 'utils';
 import QuantityField from 'components/FormFields/QuantityField';
 import { makeStyles } from '@material-ui/core';
 import useModal from 'hooks/useModal';
@@ -71,7 +71,7 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
 
    return (
       <Box className={classes.root}>
-         <img src={getFullPathImage(item.thumb)} alt='' className={classes.thumb} />
+         <img src={item.thumbnail} alt='' className={classes.thumb} />
          <Box className={classes.info}>
             <Box className={classes.name}>
                <Link to={'#'}>{item.name}</Link>

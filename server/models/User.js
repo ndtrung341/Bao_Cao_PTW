@@ -59,7 +59,6 @@ userSchema.methods.createRefreshToken = function () {
 		},
 	);
 
-	this.refreshToken = token;
 	return token;
 };
 

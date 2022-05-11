@@ -3,7 +3,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ProductCard from './ProductCard';
 
-const ProductSlider = ({ products }) => {
+const ProductSlider = ({ products = [] }) => {
    return (
       <Box my={2}>
          <Swiper

@@ -4,7 +4,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FormControl, FormHelperText, FormLabel } from '@mui/material';
 
 const EditorField = ({ field, fieldState, label }) => {
-   const { name, value, onChange } = { ...field };
+   const { value } = field;
    const { invalid, error } = fieldState;
 
    return (
@@ -14,8 +14,7 @@ const EditorField = ({ field, fieldState, label }) => {
             editor={ClassicEditor}
             data={value}
             onChange={(event, editor) => {
-               const data = editor.getData();
-               field.onChange(data);
+               editor && field.onChange(editor.getData());
             }}
          />
          {invalid ? <FormHelperText>{error?.message}</FormHelperText> : ''}

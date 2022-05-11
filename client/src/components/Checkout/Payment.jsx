@@ -11,10 +11,9 @@ import {
 import { Box } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { getPathPublic } from 'utils';
 
-const momo = getPathPublic('momo.svg');
-const paypal = getPathPublic('paypal.svg');
+const momo = '/images/momo.svg';
+const paypal = '/images/paypal.svg';
 
 const PaymentMethod = ({ value, thumb, title }) => {
    return (

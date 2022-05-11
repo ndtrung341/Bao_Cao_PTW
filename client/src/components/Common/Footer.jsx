@@ -12,9 +12,7 @@ import {
 import React, { forwardRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Email, LocalPhone, LocationOnOutlined } from '@mui/icons-material';
-import { getPathPublic } from 'utils';
-// https://www.lego.com/cdn/cs/set/assets/blt001fa66733a27e4a/42115-PDP-202003-Hero4-Standard-Large.jpg?fit=crop&format=webply&quality=80&width=2200&height=700&dpr=1
-// ${getPathPublic('footer.png')}
+
 const useStyles = makeStyles((theme) => ({
    root: {
       padding: theme.spacing(3, 0),
@@ -72,7 +70,7 @@ const Footer = (props, ref) => {
             <Grid container>
                <Grid item lg={5} md={3} xs={12}>
                   <Box>
-                     <img src={getPathPublic('logo-dark.png')} alt='' width={250}></img>
+                     <img src={'/images/logo120.png'} alt=''></img>
                   </Box>
                   <List>
                      <ListItem>
@@ -138,20 +136,6 @@ const Footer = (props, ref) => {
 
                <Grid item lg={3} md={3} xs={12}>
                   <Box mt={4}>
-                     {/* <Typography variant='subtitle1' className={classes.title}>
-                        Theo dõi chúng tôi
-                     </Typography>
-                     <Box>
-                        <Button className={classes.icon}>
-                           <i className='fa-brands fa-facebook-f'></i>
-                        </Button>
-                        <Button className={classes.icon}>
-                           <i className='fa-brands fa-youtube'></i>
-                        </Button>
-                        <Button className={classes.icon}>
-                           <i className='fa-brands fa-instagram'></i>
-                        </Button>
-                     </Box> */}
                      <Typography variant='subtitle1' className={classes.title} my={2}>
                         Đăng ký nhận tin
                      </Typography>

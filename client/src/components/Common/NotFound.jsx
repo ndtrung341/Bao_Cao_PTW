@@ -1,6 +1,5 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { getPathPublic } from 'utils';
 
 const NotFound = () => {
    return (
@@ -8,7 +7,7 @@ const NotFound = () => {
          <Grid container>
             <Grid item md={3} xs={12} alignItems='center'>
                <Box sx={{ width: { xs: 300 } }}>
-                  <img src={getPathPublic('404.png')} alt='' width='100%' />
+                  <img src={'/images/404.png'} alt='' width='100%' />
                </Box>
             </Grid>
             <Grid item md={9} xs={12}>

@@ -3,6 +3,12 @@ export function capitalize(str) {
    return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
 }
 
-export function formatNumber(value) {
-   return value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+export function numberWithDots(value) {
+   return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+}
+
+export function formatCurrency(value) {
+   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+      +value
+   );
 }

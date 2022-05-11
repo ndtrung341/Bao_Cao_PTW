@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class FileUpload extends Model
 {
     use HasFactory;
+    public $incrementing = false;
+    protected $fillable = ['id', 'url'];
 }

@@ -2,29 +2,37 @@ import { useEffect, useState } from 'react';
 import { productApi } from 'api/productApi';
 import { useNavigate } from 'react-router-dom';
 
-const useProductDetail = (id) => {
+const useProductDetail = (slug) => {
    const [loading, setLoading] = useState(true);
-   const [product, setProduct] = useState(null);
+   const [product, setProduct] = useState({});
    const [relatedList, setRelatedList] = useState([]);
    const navigate = useNavigate();
 
    useEffect(() => {
-      if (!id) return navigate('/404', { replace: true });
+      let isUnmounted = false;
+
       (async () => {
          try {
-            const [product, { data: relatedList }] = await Promise.all([
-               productApi.get(id),
-               productApi.getRelated(id),
-            ]);
+            if (isUnmounted) return;
+            const product = await productApi.get(slug);
+            const { data: relatedList } = await productApi.getRelated(product.id);
+            // const [product, { data: relatedList }] = await Promise.all([
+            //    productApi.get(slug),
+            //    productApi.getRelated(slug),
+            // ]);
             setProduct(product);
             setRelatedList(relatedList);
          } catch (error) {
-            console.error(error);
+            return navigate('/404', { replace: true });
          } finally {
             setLoading(false);
          }
       })();
-   }, [id, navigate]);
+
+      return () => {
+         isUnmounted = true;
+      };
+   }, [slug, navigate]);
 
    return { loading, product, relatedList };
 };

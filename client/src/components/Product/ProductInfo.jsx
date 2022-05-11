@@ -15,7 +15,7 @@ const ProductInfo = ({ product }) => {
          <Typography component={'span'} fontSize={28} fontWeight={600} color='error'>
             {formatCurrency(product.salePrice)}
          </Typography>
-         {product.discountPercent !== 0 && (
+         {product.salePercentage !== 0 && (
             <Typography
                component={'span'}
                fontSize={18}
@@ -35,9 +35,8 @@ const ProductInfo = ({ product }) => {
             color='text.secondary'
             fontSize={16}
             mb={4}
-         >
-            {product.description}
-         </Typography>
+            dangerouslySetInnerHTML={{ __html: product.description }}
+         />
       </>
    );
 };

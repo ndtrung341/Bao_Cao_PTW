@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 const BannerSlider = ({ bannerList }) => {
    const classes = useStyles();
-
    return (
       <Swiper
          modules={[Navigation, Pagination, A11y]}
