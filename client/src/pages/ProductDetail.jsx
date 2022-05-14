@@ -27,11 +27,7 @@ const ProductDetail = () => {
 
    const handleAddItemToCart = (quantity) => {
       const newItem = {
-         id: product.id,
-         name: product.name,
-         thumb: product.thumb,
-         slug: product.slug,
-         price: product.salePrice,
+         productId: product.id,
          quantity,
       };
       dispatch(cartActions.addItemToCart(newItem));
@@ -46,9 +42,7 @@ const ProductDetail = () => {
          </Helmet>
 
          {/* BREADCRUMB */}
-         {loading ? null : (
-            <Breadcrumb parent={product.brand.name} title={product.name} />
-         )}
+         {loading ? null : <Breadcrumb parent={product.brand.name} title={product.name} />}
 
          <Container>
             <Paper sx={{ mb: 3, px: 2, py: 3 }} elevation={0}>
@@ -76,11 +70,7 @@ const ProductDetail = () => {
 
          {/* SLIDER SIMILAR PRODUCT */}
          <Section title={'Sản phẩm tương tự'} subtitle={'Các sản phẩm tương tự'}>
-            {loading ? (
-               <SkeletonProductSlider />
-            ) : (
-               <ProductSlider products={relatedList} />
-            )}
+            {loading ? <SkeletonProductSlider /> : <ProductSlider products={relatedList} />}
          </Section>
       </>
    );

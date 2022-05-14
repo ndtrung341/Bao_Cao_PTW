@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -43,36 +45,45 @@ Route::get('best_seller', function () {
 
 Route::get('related/{product}', [ProductController::class, 'getRelated']);
 
-Route::group([
-    'prefix' => 'brands',
-], function () {
-    Route::get('', [BrandController::class, 'index']);
-    Route::post('', [BrandController::class, 'store'])->middleware(['auth:api', 'role.admin']);
+// route brands
+Route::prefix('brands')->controller(BrandController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store')->middleware(['auth:api', 'role.admin']);
 });
 
-Route::group([
-    'prefix' => 'categories',
-], function () {
-    Route::get('', [CategoryController::class, 'index']);
-    Route::post('', [CategoryController::class, 'store'])->middleware(['auth:api', 'role.admin']);
+// route categories
+Route::prefix('categories')->controller(CategoryController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store')->middleware(['auth:api', 'role.admin']);
 });
 
+// route upload - destroy upload
 Route::post('upload/destroy', [UploadController::class, 'destroy']);
 Route::post('upload', [UploadController::class, 'upload']);
 
-
-Route::group([
-    'prefix' => 'products',
-], function () {
-    Route::get('', [ProductController::class, 'index']);
-    Route::get('{product:id}', [ProductController::class, 'show']);
-    Route::post('', [ProductController::class, 'store'])->middleware(['auth:api', 'role.admin']);
-    Route::patch('{product:id}', [ProductController::class, 'update'])->middleware(['auth:api', 'role.admin']);
-    Route::post('delete_media', [ProductController::class, 'deleteMedia'])->middleware(['auth:api', 'role.admin']);
+// route products
+Route::prefix('products')->controller(ProductController::class)->group(function () {
+    Route::get('', 'index');
+    Route::get('{product:id}', 'show');
+    Route::post('', 'store')->middleware(['auth:api', 'role.admin']);
+    Route::patch('{product:id}', 'update')->middleware(['auth:api', 'role.admin']);
+    Route::post('delete_image', 'deleteImage')->middleware(['auth:api', 'role.admin']);
 });
 
-Route::controller(LocationController::class)->group(function () {
-    Route::get('location/provinces', 'getProvinces');
-    Route::get('location/districts/{province_id}', 'getDistricts');
-    Route::get('location/wards/{district_id}', 'getWards');
+// route cart
+Route::controller(CartController::class)->middleware('auth:api')->prefix('cart')->group(function () {
+    Route::post('get', 'index');
+    Route::post('add_cart', 'store');
+    Route::post('remove', 'destroy');
+    Route::post('update', 'update');
+    Route::post('clear', 'clear');
 });
+
+
+// route order
+Route::prefix('order')->middleware('auth:api')->controller(OrderController::class)->group(function () {
+    Route::post('place_order', 'store');
+});
+
+
+Route::post('order/history', [OrderController::class, 'index']);

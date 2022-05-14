@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'brand_id', 'price', 'sale_price', 'quantity', 'description', 'status', 'thumbnail', 'slug'];
 
     public function brand()
@@ -21,8 +22,9 @@ class Product extends Model
         // return $this->belongsToMany(Category::class, ProductCategory::class, 'product_id', 'category_id')->orderByDesc('created_at', 'id');
     }
 
-    public function media()
+    public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        // return $this->hasMany(ProductImage::class);
+        return $this->belongsToMany(FileUpload::class, ProductImage::class, 'product_id', 'public_id');
     }
 }

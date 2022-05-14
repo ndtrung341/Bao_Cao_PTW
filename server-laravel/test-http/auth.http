@@ -4,7 +4,7 @@ content-type: application/json
 
 {
    "email":"duytrung341@gmail.com",
-   "password":"12345"
+   "password":"123456"
 }
 
 ### REGISTER

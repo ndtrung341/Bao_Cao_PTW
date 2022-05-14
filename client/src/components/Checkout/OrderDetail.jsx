@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import CartSummary from 'components/Cart/CartSummary';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ const OrderItem = ({ item }) => {
 const OrderDetail = () => {
    const cartItems = useSelector(selectCartItems);
    return (
-      <Paper sx={{ p: 3 }}>
+      <>
          <Typography variant='h6' mb={1}>
             Thông tin đơn hàng
          </Typography>
@@ -37,7 +37,7 @@ const OrderDetail = () => {
          <Divider sx={{ my: 2 }} />
 
          <CartSummary />
-      </Paper>
+      </>
    );
 };
 

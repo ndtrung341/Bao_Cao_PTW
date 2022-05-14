@@ -1,13 +1,22 @@
-import { Container, Grid } from '@mui/material';
+import { Container } from '@mui/material';
+import { orderApi } from 'api/orderApi';
 import CheckoutForm from 'components/Checkout/CheckoutForm';
-import OrderDetail from 'components/Checkout/OrderDetail';
 import Breadcrumb from 'components/Common/Breadcrumb';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { cartActions, selectCartItems } from 'redux/cartSlice';
 
 const Checkout = () => {
-   const handlePlaceOrder = (values) => {
-      console.log(values);
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const cartItems = useSelector(selectCartItems);
+
+   const handlePlaceOrder = async (values, payment) => {
+      await orderApi.placeOrder(values);
+      dispatch(cartActions.emptyCart());
+      navigate('/order-success', { state: { payment } });
    };
 
    return (
@@ -18,16 +27,8 @@ const Checkout = () => {
 
          <Breadcrumb title={'Thanh toán'} />
 
-         <Container sx={{ mb: 3 }}>
-            <Grid container spacing={2} mb={2}>
-               <Grid item lg={7}>
-                  <CheckoutForm onSubmit={handlePlaceOrder} />
-               </Grid>
-
-               <Grid item lg={5}>
-                  <OrderDetail />
-               </Grid>
-            </Grid>
+         <Container>
+            <CheckoutForm onSubmit={handlePlaceOrder} />
          </Container>
       </>
    );

@@ -29,7 +29,7 @@ export const productApi = {
       return axiosClient.patch('products/' + id, data);
    },
 
-   deleteMedia(data) {
-      return axiosClient.post('products/delete_media', data);
+   deleteImage(data) {
+      return axiosClient.post('products/delete_image', data);
    },
 };

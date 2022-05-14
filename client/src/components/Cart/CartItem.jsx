@@ -59,14 +59,14 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
          type: 'warning',
          title: 'Bạn có muốn xóa sản phẩm này?',
          content: item.name,
-         onSubmit: () => onRemoveFromCart(item.product_id),
+         onSubmit: () => onRemoveFromCart(item.productId),
       });
    };
 
    const handleQuantityChange = (value) => {
       value === 0
          ? showConfirmRemove()
-         : onUpdateCart({ productId: item.product_id, quantity: value });
+         : onUpdateCart({ productId: item.productId, quantity: value });
    };
 
    return (
@@ -87,13 +87,8 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
             </Box>
 
             <Box>
-               <Typography
-                  component={'span'}
-                  fontSize={16}
-                  fontWeight={600}
-                  color='error'
-               >
-                  {formatCurrency(item.price)}
+               <Typography component={'span'} fontSize={16} fontWeight={600} color='error'>
+                  {formatCurrency(item.salePrice)}
                </Typography>
             </Box>
 
@@ -106,13 +101,8 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
             </Box>
 
             <Box>
-               <Typography
-                  component={'span'}
-                  fontSize={16}
-                  fontWeight={600}
-                  color='error'
-               >
-                  {formatCurrency(item.price * item.quantity)}
+               <Typography component={'span'} fontSize={16} fontWeight={600} color='error'>
+                  {formatCurrency(item.salePrice * item.quantity)}
                </Typography>
             </Box>
          </Box>

@@ -17,6 +17,8 @@ import MainLayout from 'components/Layouts/MainLayout';
 import AuthLayout from 'components/Layouts/AuthLayout';
 import AddEditProduct from 'pages/Admin/AddEditProduct';
 import AdminProductList from 'pages/Admin/AdminProductList';
+import OrderSuccess from 'pages/OrderSuccess';
+import OrderHistory from 'pages/OrderHistory';
 
 function App() {
    return (
@@ -30,6 +32,8 @@ function App() {
             <Route element={<PrivateRoute />}>
                <Route path='cart' element={<Cart />} />
                <Route path='checkout' element={<Checkout />} />
+               <Route path='order-success' element={<OrderSuccess />} />
+               <Route path='order/history' element={<OrderHistory />} />
             </Route>
 
             <Route path='404' element={<NotFound />} />

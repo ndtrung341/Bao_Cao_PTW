@@ -1,13 +1,13 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import SelectField from 'components/FormFields/SelectField';
 import InputField from 'components/FormFields/InputField';
 import { Paper, Typography } from '@mui/material';
 import useAddress from 'hooks/useAddress';
+import AutocompleteField from 'components/FormFields/AutocompleteField';
 
 const ShippingInfo = ({ form }) => {
-   const { control } = form;
-   const { state, handleDistrictSelect, handleProvinceSelect } = useAddress();
+   const { control, setValue } = form;
+   const { state, handleDistrictSelected, handleProvinceSelected } = useAddress();
    const { provinceOptions, districtOptions, wardOptions } = state;
 
    return (
@@ -18,14 +18,9 @@ const ShippingInfo = ({ form }) => {
 
          <Controller
             control={control}
-            name='fullName'
+            name='customerName'
             render={({ field, fieldState }) => (
-               <InputField
-                  field={field}
-                  fieldState={fieldState}
-                  label='Họ tên'
-                  type='text'
-               />
+               <InputField field={field} fieldState={fieldState} label='Họ tên' type='text' />
             )}
          />
 
@@ -46,12 +41,16 @@ const ShippingInfo = ({ form }) => {
             control={control}
             name='province'
             render={({ field, fieldState }) => (
-               <SelectField
+               <AutocompleteField
                   field={field}
                   fieldState={fieldState}
                   label={'Tỉnh/Thành phố'}
                   options={provinceOptions}
-                  onChange={handleProvinceSelect}
+                  onChange={(option) => {
+                     handleProvinceSelected(option.value);
+                     setValue('district', '');
+                     setValue('ward', '');
+                  }}
                />
             )}
          />
@@ -60,12 +59,15 @@ const ShippingInfo = ({ form }) => {
             control={control}
             name='district'
             render={({ field, fieldState }) => (
-               <SelectField
+               <AutocompleteField
                   field={field}
                   fieldState={fieldState}
                   label={'Quận/Huyện'}
                   options={districtOptions}
-                  onChange={handleDistrictSelect}
+                  onChange={(option) => {
+                     handleDistrictSelected(option.value);
+                     setValue('ward', '');
+                  }}
                />
             )}
          />
@@ -74,7 +76,7 @@ const ShippingInfo = ({ form }) => {
             control={control}
             name='ward'
             render={({ field, fieldState }) => (
-               <SelectField
+               <AutocompleteField
                   field={field}
                   fieldState={fieldState}
                   label={'Phường/Xã'}

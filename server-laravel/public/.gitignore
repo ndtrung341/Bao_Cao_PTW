@@ -1,3 +1,4 @@
 *
-upload/
+!storage/
+!upload/
 !.gitignore

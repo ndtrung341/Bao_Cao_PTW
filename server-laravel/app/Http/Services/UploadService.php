@@ -2,9 +2,10 @@
 
 namespace App\Http\Services;
 
+use App\Models\FileUpload;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Http\File;
-use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class UploadService
 {
@@ -30,19 +31,14 @@ class UploadService
 
    static function destroy($public_id)
    {
-      try {
-         // find file
-         $file = FileUpload::where('id', $public_id)->firstOrFail();
-         // get path
-         $baseUrl = \preg_quote(URL::to('/'), '/');
-         $path = preg_split("/$baseUrl(:\d+)?\//", $file->url)[1];
-         // delete file
-         Storage::delete($path);
-         // delete data
-         FileUpload::where('id', $public_id)->delete();
-         return true;
-      } catch (\Throwable $th) {
-         return false;
-      }
+      // find file
+      $file = FileUpload::where('id', $public_id)->firstOrFail();
+      // get path
+      $baseUrl = \preg_quote(URL::to('/'), '/');
+      $path = \preg_split("/^$baseUrl(:\d+)?\//", $file->url);
+      // delete file
+      Storage::delete($path);
+      // delete data
+      $file->delete();
    }
 }

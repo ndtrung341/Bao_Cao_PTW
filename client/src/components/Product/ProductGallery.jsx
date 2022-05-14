@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
 
       '& img': {
          width: '100%',
+         aspectRatio: '1/1',
+         objectFit: 'contain',
+         padding: 5,
       },
    },
 }));
@@ -78,11 +81,7 @@ const ProductGallery = ({ thumbs, loading }) => {
             order={{ xs: 1, lg: 2 }}
             sx={{ px: { lg: 2, sx: 0 }, my: { xs: 2, lg: 0 } }}
          >
-            <Swiper
-               modules={[Thumbs]}
-               thumbs={{ swiper: thumbsSwiper }}
-               spaceBetween={10}
-            >
+            <Swiper modules={[Thumbs]} thumbs={{ swiper: thumbsSwiper }} spaceBetween={10}>
                {loading ? (
                   <Skeleton variant='rectangular' width='100%' height={400} />
                ) : (

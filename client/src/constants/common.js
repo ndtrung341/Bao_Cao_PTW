@@ -25,8 +25,8 @@ export const ADMIN_LINKS = [
 
 export const SETTING_LINKS = [
    {
-      name: 'Thông tin cá nhân',
-      path: '/user/profile',
+      name: 'Lịch sử mua hàng',
+      path: '/order/history',
       icon: <InfoOutlinedIcon />,
    },
    {

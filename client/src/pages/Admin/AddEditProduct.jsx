@@ -72,6 +72,7 @@ const AddEditProduct = () => {
             toast.success('Thêm thành công');
          }
       } catch (error) {
+         console.log(error);
          modal({ type: 'error', title: 'Error', content: error });
       }
    };

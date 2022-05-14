@@ -6,7 +6,7 @@ import { getToken, isTokenExpired } from 'utils/auth';
 let refreshTokenRequest = null;
 
 const axiosClient = axios.create({
-   baseURL: 'http://127.0.0.1:8000/api/',
+   baseURL: 'http://localhost:8000/api/',
    headers: {
       'content-type': 'application/json',
    },

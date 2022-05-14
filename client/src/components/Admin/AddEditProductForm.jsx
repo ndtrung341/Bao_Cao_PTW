@@ -24,7 +24,7 @@ const schema = yup.object().shape({
       .number()
       .transform((value) => (isNaN(value) ? undefined : value))
       .required('Vui lòng nhập giá giảm')
-      .lessThan(yup.ref('price'), 'Giá giảm phải nhỏ hơn giá gốc')
+      .max(yup.ref('price'), 'Giá giảm phải nhỏ hơn giá gốc')
       .default(0),
    quantity: yup
       .number()
@@ -57,7 +57,7 @@ const AddEditProductForm = ({ product, categories, brands, onSubmit }) => {
       criteriaMode: 'all',
    });
 
-   console.log(getValues());
+   // console.log(getValues());
 
    const handleFormSubmit = (values) => {
       const newValues = { ...values };
@@ -67,12 +67,8 @@ const AddEditProductForm = ({ product, categories, brands, onSubmit }) => {
    };
 
    const handleRemoveImage = async (image) => {
-      console.log(getValues('images'));
-      const newValues = getValues('images').filter((img) => img.public_id !== image.public_id);
-      setValue('images', newValues);
-
       if (product) {
-         await productApi.deleteMedia({
+         await productApi.deleteImage({
             productId: product.id,
             publicId: image.public_id,
          });
@@ -81,6 +77,9 @@ const AddEditProductForm = ({ product, categories, brands, onSubmit }) => {
             publicId: image.public_id,
          });
       }
+
+      const newValues = getValues('images').filter((img) => img.public_id !== image.public_id);
+      setValue('images', newValues);
    };
 
    return (

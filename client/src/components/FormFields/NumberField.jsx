@@ -8,7 +8,7 @@ const NumberField = ({ field, fieldState, thousandSeparator, placeholder, label 
 
    const handleChange = (e) => {
       const { value } = e.target;
-      field.onChange(+value.replace(thousandSeparator, ''));
+      field.onChange(+value.replaceAll(thousandSeparator, ''));
    };
 
    const handleKeyPress = (e) => {

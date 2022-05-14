@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { locationApi } from 'api/locationApi';
 
 const useAddress = () => {
@@ -6,79 +6,82 @@ const useAddress = () => {
       provinceOptions: [],
       districtOptions: [],
       wardOptions: [],
-      provinceIdSelected: null,
-      districtIdSelected: null,
    });
 
-   const mappingOptions = (data) =>
-      data.map((item) => ({ value: item.id, label: item.name }));
+   const mappingOptions = useCallback(
+      (data, getValue, getLabel) =>
+         data.map((item) => ({ value: getValue(item), label: getLabel(item) })),
+      []
+   );
 
-   useEffect(() => {});
+   const handleProvinceSelected = async (provinceId) => {
+      if (!provinceId) return;
+
+      try {
+         const { results } = await locationApi.getDistricts(provinceId);
+
+         const districtOptions = mappingOptions(
+            results,
+            (item) => item.district_id,
+            (item) => item.district_name
+         );
+
+         setState({
+            ...state,
+            districtOptions,
+            wardOptions: [],
+         });
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
+   const handleDistrictSelected = async (districtId) => {
+      if (!districtId) return;
+      try {
+         const { results } = await locationApi.getWards(districtId);
+
+         const wardOptions = mappingOptions(
+            results,
+            (item) => item.ward_id,
+            (item) => item.ward_name
+         );
+
+         setState({
+            ...state,
+            wardOptions,
+         });
+      } catch (error) {
+         console.log(error);
+      }
+   };
 
    // fetch province list
    useEffect(() => {
       (async () => {
          try {
-            const { data } = await locationApi.getProvices();
-            setState((state) => ({ ...state, provinceOptions: mappingOptions(data) }));
+            const { results } = await locationApi.getProvinces();
+
+            const provinceOptions = mappingOptions(
+               results,
+               (item) => item.province_id,
+               (item) => item.province_name
+            );
+
+            setState((state) => ({
+               ...state,
+               provinceOptions,
+            }));
          } catch (error) {
             console.log(error);
          }
       })();
-   }, []);
-
-   // fetch district list when province selected change
-   useEffect(() => {
-      const provinceId = state.provinceIdSelected;
-      if (!provinceId) return;
-
-      (async (provinceId) => {
-         try {
-            const { data } = await locationApi.getDistricts(provinceId);
-            setState((state) => ({
-               ...state,
-               districtOptions: mappingOptions(data),
-               wardOptions: [],
-               districtIdSelected: null,
-               wardIdSelected: null,
-            }));
-         } catch (error) {
-            console.log(error);
-         }
-      })(provinceId);
-   }, [state.provinceIdSelected]);
-
-   // fetch ward options when districts selected change
-   useEffect(() => {
-      const districtId = state.districtIdSelected;
-      if (!districtId) return;
-
-      (async (districtId) => {
-         try {
-            const { data } = await locationApi.getWards(districtId);
-            setState((state) => ({
-               ...state,
-               wardOptions: mappingOptions(data),
-               wardIdSelected: null,
-            }));
-         } catch (error) {
-            console.log(error);
-         }
-      })(districtId);
-   }, [state.districtIdSelected]);
-
-   const handleProvinceSelect = (provinceIdSelected) => {
-      setState({ ...state, provinceIdSelected });
-   };
-
-   const handleDistrictSelect = (districtIdSelected) => {
-      setState({ ...state, districtIdSelected });
-   };
+   }, [mappingOptions]);
 
    return {
       state,
-      handleProvinceSelect,
-      handleDistrictSelect,
+      handleProvinceSelected,
+      handleDistrictSelected,
    };
 };
 

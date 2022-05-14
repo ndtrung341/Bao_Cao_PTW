@@ -1,12 +1,16 @@
-import { Box, Button } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import Payment from './Payment';
 import ShippingInfo from './ShippingInfo';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import OrderDetail from './OrderDetail';
+import { Box } from '@mui/system';
+import PaypalButton from './PaypalButton';
+import { useSelector } from 'react-redux';
+import { selectCartItems, selectCartTotal } from 'redux/cartSlice';
 
 const defaultValues = {
    fullName: '',
@@ -15,11 +19,10 @@ const defaultValues = {
    district: '',
    ward: '',
    payment: '',
-   address: '',
 };
 
 const schema = yup.object().shape({
-   fullName: yup
+   customerName: yup
       .string()
       .required('Vui lòng nhập họ tên')
       .test({
@@ -32,33 +35,81 @@ const schema = yup.object().shape({
       .matches(/[0-9]+/, {
          message: 'Số điện thoại không hợp lệ',
       }),
-   province: yup.object().nullable().required('Vui lòng chọn Tỉnh/Thành phố'),
-   district: yup.object().nullable().required('Vui lòng chọn Quận/Huyện'),
-   ward: yup.object().nullable().required('Vui lòng chọn Phường/Xã'),
-   payment: yup.string().required('Vui lòng chọn phương thức thanh toán'),
+   province: yup.mixed().test('required', 'Vui lòng chọn Tỉnh/Thành phố', (value) => !!value),
+   district: yup.mixed().test('required', 'Vui lòng chọn Quận/Huyện', (value) => !!value),
+   ward: yup.mixed().test('required', 'Vui lòng chọn Phường/Xã', (value) => !!value),
 });
 
 const CheckoutForm = ({ onSubmit }) => {
+   const total = useSelector(selectCartTotal);
+   const cartItems = useSelector(selectCartItems);
+
    const form = useForm({
       defaultValues,
       mode: 'all',
       resolver: yupResolver(schema),
    });
 
-   const handleCheckout = (values) => {
-      onSubmit && onSubmit(values);
+   const handleCreateOrder = (data, actions) => {
+      return actions.order.create({
+         purchase_units: [
+            {
+               amount: {
+                  value: '0.01',
+               },
+            },
+         ],
+      });
+   };
+
+   // payment success
+   const handleApprove = async (data, actions) => {
+      const order = await actions.order.capture();
+      const values = form.getValues();
+
+      const address = [values.ward, values.district, values.province]
+         .map((item) => item.label)
+         .join(', ');
+
+      const newValues = {
+         ...values,
+         address,
+         cartItems,
+         transactionID: order.id,
+         province: undefined,
+         district: undefined,
+         ward: undefined,
+      };
+
+      onSubmit?.(JSON.parse(JSON.stringify(newValues)), order);
+   };
+
+   // validate before checkout
+   const handlePaypalClick = async (data, actions) => {
+      const isValid = await form.trigger();
+      return isValid ? actions.resolve() : actions.reject();
    };
 
    return (
-      <Box component={'form'} onSubmit={form.handleSubmit(handleCheckout)}>
-         <ShippingInfo form={form} />
+      <Grid container spacing={2} mb={2}>
+         <Grid item lg={7}>
+            <ShippingInfo form={form} />
+         </Grid>
 
-         <Payment form={form} />
-
-         <Button sx={{ mt: 2 }} variant='contained' type='submit'>
-            Đặt mua
-         </Button>
-      </Box>
+         <Grid item lg={5}>
+            <Paper sx={{ p: 3, mb: 2 }}>
+               <OrderDetail />
+               <Box sx={{ mt: 2 }}>
+                  <PaypalButton
+                     onClick={handlePaypalClick}
+                     onCreateOrder={handleCreateOrder}
+                     onApprove={handleApprove}
+                     total={total * 0.000043}
+                  />
+               </Box>
+            </Paper>
+         </Grid>
+      </Grid>
    );
 };
 

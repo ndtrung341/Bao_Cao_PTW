@@ -7,6 +7,7 @@ use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\UploadService;
 use App\Models\Category;
+use App\Models\FileUpload;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
@@ -64,11 +65,11 @@ class ProductController extends Controller
                 "created_at" => Carbon::now()->timestamp
             ]);
 
-            $media = [];
+            $images = [];
             foreach ($request->images as $image) {
-                $media[] = ['product_id' => $product->id, 'url' => $image['url'], 'public_id' => $image['public_id']];
+                $images[] = ['product_id' => $product->id, 'public_id' => $image['public_id']];
             }
-            ProductImage::insert($media);
+            ProductImage::insert($images);
 
 
             $categories = [];
@@ -118,7 +119,7 @@ class ProductController extends Controller
             $product->save();
 
             foreach ($request->images as $image) {
-                ProductImage::updateOrCreate(['product_id' => $product->id, 'public_id' => $image['public_id']], ['url' => $image['url']]);
+                ProductImage::updateOrCreate(['product_id' => $product->id, 'public_id' => $image['public_id']]);
             }
 
             foreach ($request->categories as $category_id) {
@@ -145,17 +146,20 @@ class ProductController extends Controller
         //
     }
 
-    public function deleteMedia(Request $request)
+    public function deleteImage(Request $request)
     {
-        $product_id = $request->productId;
-        $public_id = $request->mediaId;
+        try {
+            $product_id = $request->productId;
+            $public_id = $request->publicId;
 
-        // UploadService::destroyCloudinary($media_id);
-        UploadService::destroy($public_id);
+            // UploadService::destroyCloudinary($media_id);
+            UploadService::destroy($public_id);
+            ProductImage::where([['product_id', '=', $product_id], ['public_id', '=', $public_id]])->delete();
 
-        ProductImage::where([['product_id', '=', $product_id], ['public_id', '=', $public_id]])->delete();
-
-        return response()->json(['message' => 'ok']);
+            return response()->json(['message' => 'ok'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()], 400);
+        }
     }
 
     public function getRelated(Product $product)

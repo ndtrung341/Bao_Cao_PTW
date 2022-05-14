@@ -1,9 +1,5 @@
 import axiosClient from './axiosClient';
 export const authApi = {
-   checkUniqueEmail(email) {
-      return axiosClient.post('auth/check_unique_email', { email });
-   },
-
    register(data) {
       return axiosClient.post('auth/register', data);
    },

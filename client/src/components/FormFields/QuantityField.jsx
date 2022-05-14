@@ -46,8 +46,7 @@ const QuantityField = ({ value, size, onChange }) => {
    }, [value]);
 
    const handleValueChange = (value) => {
-      if (!onChange) return;
-      onChange(value);
+      onChange?.(value);
    };
 
    return (

@@ -93,7 +93,7 @@ const ProductCard = ({ product }) => {
 
    const handleAddCartClick = () => {
       const newItem = {
-         product_id: product.id,
+         productId: product.id,
          quantity: 1,
       };
       handleAddToCart(newItem);
@@ -101,7 +101,11 @@ const ProductCard = ({ product }) => {
 
    return (
       <Card className={classes.root} elevation={0}>
-         <CardMedia component='img' image={product.thumbnail} sx={{ minHeight: 220 }} />
+         <CardMedia
+            component='img'
+            image={product.thumbnail}
+            sx={{ height: 220, p: 1, objectFit: 'contain' }}
+         />
          <CardContent className={classes.content}>
             {product.salePercentage !== 0 && (
                <Box className={classes.percent}>-{product.salePercentage}%</Box>
@@ -124,13 +128,7 @@ const ProductCard = ({ product }) => {
                )}
             </Box>
 
-            <Rating
-               name='read-only'
-               value={4}
-               readOnly
-               sx={{ mt: 'auto' }}
-               size='small'
-            />
+            <Rating name='read-only' value={4} readOnly sx={{ mt: 'auto' }} size='small' />
          </CardContent>
 
          <CardActions className={classes.actions} disableSpacing>

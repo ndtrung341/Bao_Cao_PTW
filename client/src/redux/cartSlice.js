@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 const initialState = {
    items: [],
    isUpdated: true,
+   isLoading: true,
 };
 
 export const fetchCart = createAsyncThunk('cart/fetch', async () => {
@@ -12,17 +13,18 @@ export const fetchCart = createAsyncThunk('cart/fetch', async () => {
    return response.items;
 });
 
-export const updateCart = createAsyncThunk(
-   'cart/update',
-   async ({ productId, quantity }) => {
-      const params = { product_id: productId, quantity };
-      quantity === 0 ? cartApi.removeItem(productId) : cartApi.updateItem(params);
-   }
-);
+export const updateCart = createAsyncThunk('cart/update', async ({ productId, quantity }) => {
+   const params = { productId: productId, quantity };
+   await (quantity === 0 ? cartApi.removeItem(productId) : cartApi.updateItem(params));
+});
 
-export const addCart = createAsyncThunk('cart/add', async ({ product_id, quantity }) => {
-   const params = { product_id, quantity };
+export const addCart = createAsyncThunk('cart/add', async ({ productId, quantity }) => {
+   const params = { productId, quantity };
    await cartApi.addItem(params);
+});
+
+export const clearCart = createAsyncThunk('cart/clear', async () => {
+   await cartApi.clear();
 });
 
 const cartSlice = createSlice({
@@ -35,11 +37,18 @@ const cartSlice = createSlice({
    },
    extraReducers(builder) {
       builder
+         .addCase(fetchCart.pending, (state) => {
+            state.isLoading = true;
+         })
          .addCase(fetchCart.fulfilled, (state, action) => {
             state.items = action.payload;
             state.isUpdated = false;
+            state.isLoading = false;
          })
-         .addMatcher(isAnyOf(updateCart.fulfilled, addCart.fulfilled), (state) => {
+         .addCase(clearCart.fulfilled, (state) => {
+            state.items = [];
+         })
+         .addMatcher(isAnyOf(updateCart.fulfilled, addCart.fulfilled), (state, action) => {
             state.isUpdated = true;
          });
    },
@@ -55,12 +64,12 @@ export const cartActions = cartSlice.actions;
 // selectors
 export const selectCartItems = (state) => state.cart.items;
 export const selectCartIsUpdated = (state) => state.cart.isUpdated;
-export const selectCartDisabled = (state) => state.cart.disabled;
+export const selectCartLoading = (state) => state.cart.isLoading;
 
 export const selectCartCount = createSelector(selectCartItems, (list) =>
    list.reduce((val, item) => val + 1, 0)
 );
 
 export const selectCartTotal = createSelector(selectCartItems, (list) =>
-   list.reduce((val, item) => (val += item.quantity * item.price), 0)
+   list.reduce((val, item) => (val += item.quantity * item.salePrice), 0)
 );

@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Paper } from '@mui/material';
+import { Backdrop, Button, CircularProgress, Container, Grid, Paper } from '@mui/material';
 import CartList from 'components/Cart/CartList';
 import CartSummary from 'components/Cart/CartSummary';
 import Breadcrumb from 'components/Common/Breadcrumb';
@@ -11,6 +11,18 @@ import { selectCartCount } from 'redux/cartSlice';
 
 const Cart = () => {
    const cartCount = useSelector(selectCartCount);
+   const loading = useSelector((state) => state.cart.isLoading);
+
+   if (loading) {
+      return (
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+         >
+            <CircularProgress color='inherit' size={50} />
+         </Backdrop>
+      );
+   }
 
    return (
       <>
@@ -21,16 +33,16 @@ const Cart = () => {
          {/* BREADCRUMB */}
          <Breadcrumb title={'Giỏ hàng'} />
 
-         <Paper elevation={0} sx={{ mb: 3, p: 2 }}>
+         <Paper elevation={0} sx={{ py: 3 }}>
             <Container>
                {cartCount === 0 ? (
                   <CartEmpty />
                ) : (
                   <Grid container spacing={2}>
-                     <Grid item lg={12}>
+                     <Grid item xs={12}>
                         <CartList />
                      </Grid>
-                     <Grid item lg={3} ml='auto'>
+                     <Grid item xs={3} ml='auto'>
                         <CartSummary />
                         <Link to={'/checkout'} style={{ display: 'block' }}>
                            <Button variant='contained' fullWidth sx={{ mt: 1 }}>

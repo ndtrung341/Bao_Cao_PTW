@@ -91,9 +91,11 @@ const HeaderMenu = ({ isAdmin }) => {
                </Button>
             ))}
             {isAdmin && (
-               <NavLink to={'/admin'} className={classes.link}>
-                  <Button>Admin Panel</Button>
-               </NavLink>
+               <Button>
+                  <NavLink to={'/admin'} className={classes.link}>
+                     Admin Panel
+                  </NavLink>
+               </Button>
             )}
          </Box>
       </>

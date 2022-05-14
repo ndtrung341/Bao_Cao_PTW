@@ -6,7 +6,7 @@ export const cartApi = {
    },
 
    addItem(params) {
-      return axiosClient.post('cart/add_to_cart', params);
+      return axiosClient.post('cart/add_cart', params);
    },
 
    get() {
@@ -14,8 +14,7 @@ export const cartApi = {
    },
 
    removeItem(productId) {
-      console.log(productId);
-      const params = { product_id: productId };
+      const params = { productId: productId };
       return axiosClient.post('cart/remove', params);
    },
 };

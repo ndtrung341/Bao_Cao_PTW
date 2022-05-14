@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { Box, Button, Container, Pagination, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Pagination, Typography } from '@mui/material';
 import { productApi } from 'api/productApi';
 import ProductTable from 'components/Admin/ProductTable';
 import React, { useEffect, useState } from 'react';
@@ -25,16 +25,33 @@ const AdminProductList = () => {
    });
 
    useEffect(() => {
+      let isUnmounted = false;
       (async () => {
          setLoading(true);
 
          const res = await productApi.getAll(filters);
+         if (isUnmounted) return;
 
          setProductList(res.data);
          setPagination(res.pagination);
          setLoading(false);
       })();
+
+      return () => {
+         isUnmounted = true;
+      };
    }, [filters]);
+
+   if (loading) {
+      return (
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+         >
+            <CircularProgress color='inherit' size={50} />
+         </Backdrop>
+      );
+   }
 
    return (
       <Box>

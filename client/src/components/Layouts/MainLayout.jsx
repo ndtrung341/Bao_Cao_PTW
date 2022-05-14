@@ -27,6 +27,7 @@ const MainLayout = () => {
 
    // fetch cart when changed
    useEffect(() => {
+      // console.log({ isUpdated });
       if (!isUpdated || !isLoggedIn) return;
       dispatch(fetchCart());
    }, [isUpdated, isLoggedIn, dispatch]);
@@ -34,9 +35,9 @@ const MainLayout = () => {
    // fetch user info
    useEffect(() => {
       if (!getToken()) return;
-      console.log('fetch user');
+      // console.log('fetch user');
       dispatch(getMe()).unwrap();
-   });
+   }, [location.pathname, dispatch]);
 
    return (
       <>

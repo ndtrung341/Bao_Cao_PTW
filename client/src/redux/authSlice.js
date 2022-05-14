@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 
 const initialState = {
    isLogging: false,
-   isLoggedIn: false,
    currentUser: null,
 };
 
@@ -28,6 +27,7 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
 export const logout = createAsyncThunk('auth/logout', async () => {
    await authApi.logout();
    removeItemStorage('access_token');
+   removeItemStorage('user');
 });
 
 export const refreshToken = createAsyncThunk(
@@ -58,18 +58,15 @@ const authSlice = createSlice({
       });
 
       builder.addMatcher(isAnyOf(register.pending, login.pending), (state) => {
-         state.isLoggedIn = false;
          state.isLogging = true;
       });
 
-      builder.addMatcher(isAnyOf(register.rejected, login.rejected), (state) => {
-         state.isLogging = false;
-      });
-
-      builder.addMatcher(isAnyOf(register.fulfilled, login.fulfilled), (state) => {
-         state.isLoggedIn = true;
-         state.isLogging = false;
-      });
+      builder.addMatcher(
+         isAnyOf(register.rejected, login.rejected, register.fulfilled, login.fulfilled),
+         (state) => {
+            state.isLogging = false;
+         }
+      );
    },
 });
 
@@ -83,4 +80,4 @@ export const authActions = authSlice.actions;
 // selectors
 export const selectCurrentUser = (state) => state.auth.currentUser;
 export const selectIsLogging = (state) => state.auth.isLogging;
-export const selectIsLoggedIn = (state) => state.auth.isL;
+export const selectIsLoggedIn = createSelector(selectCurrentUser, (user) => Boolean(user));

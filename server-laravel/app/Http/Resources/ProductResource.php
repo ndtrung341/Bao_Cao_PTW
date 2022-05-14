@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\FileUpload;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection as IlluminateCollection;
@@ -19,6 +21,10 @@ class ProductResource extends JsonResource
 
     public function toArray($request)
     {
+        $images = [];
+        foreach ($this->images()->get() as $image) {
+            $images[] = ['public_id' => $image->pivot->public_id, 'url' => $image->url];
+        };
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -31,7 +37,7 @@ class ProductResource extends JsonResource
             'brand' => $this->brand()->first()->makeHidden(['created_at', 'updated_at']),
             'categories' => $this->categories()->get()->makeHidden(['created_at', 'updated_at']),
             'thumbnail' => $this->thumbnail,
-            'productImages' => $this->media()->get(['media_id', 'url']),
+            'productImages' => $images,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-   Close,
-   LogoutOutlined,
-   SearchOutlined,
-   ShoppingCartOutlined,
-} from '@mui/icons-material';
+import { Close, LogoutOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 import {
    Avatar,
    Badge,
@@ -20,6 +15,7 @@ import {
    MenuItem,
    TextField,
    Tooltip,
+   Link as MUILink,
 } from '@mui/material';
 import { SETTING_LINKS } from 'constants';
 import { Link, useNavigate } from 'react-router-dom';
@@ -105,10 +101,15 @@ const HeaderRight = ({ currentUser }) => {
                      open={Boolean(anchorElUser)}
                      onClose={handleCloseUserMenu}
                   >
-                     {SETTING_LINKS.map((setting) => (
-                        <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                           <ListItemIcon>{setting.icon}</ListItemIcon>
-                           <ListItemText>{setting.name}</ListItemText>
+                     {SETTING_LINKS.map((item) => (
+                        <MenuItem
+                           key={item.name}
+                           onClick={handleCloseUserMenu}
+                           component={MUILink}
+                           href={item.path}
+                        >
+                           <ListItemIcon>{item.icon}</ListItemIcon>
+                           <ListItemText>{item.name}</ListItemText>
                         </MenuItem>
                      ))}
                      <Divider />

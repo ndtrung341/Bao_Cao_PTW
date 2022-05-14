@@ -34,8 +34,8 @@ const ProductTable = ({ productList }) => {
                               src={product.thumbnail}
                               alt=''
                               style={{
-                                 width: 120,
-                                 height: 60,
+                                 width: 80,
+                                 aspectRatio: '1 / 1',
                                  objectFit: 'contain',
                                  marginRight: 16,
                                  padding: 5,
