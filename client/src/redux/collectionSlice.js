@@ -18,9 +18,13 @@ const initialState = {
 
 export const fetchCollection = createAsyncThunk(
    'collection/fetchCollection',
-   async (filters) => {
-      const { data, pagination } = await productApi.getAll(filters);
-      return { data, pagination };
+   async ({ filters, pathname }, thunkAPI) => {
+      try {
+         const { data, pagination } = await productApi.getAll(filters, pathname);
+         return { data, pagination, filters };
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
    }
 );
 
@@ -41,6 +45,7 @@ const collectionSlice = createSlice({
          state.loading = false;
          state.list = action.payload.data;
          state.pagination = action.payload.pagination;
+         state.filters = action.payload.filters;
       },
    },
 });
@@ -58,9 +63,6 @@ export const selectCollection = (state) => state.collection.list;
 export const selectFilters = (state) => state.collection.filters;
 export const selectPagination = (state) => state.collection.pagination;
 
-export const selectTotalPage = createSelector(
-   [selectPagination],
-   ({ _total, _limit }) => {
-      return Math.ceil(_total / _limit);
-   }
-);
+export const selectTotalPage = createSelector([selectPagination], ({ _total, _limit }) => {
+   return Math.ceil(_total / _limit);
+});

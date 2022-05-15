@@ -6,16 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\UploadService;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\FileUpload;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 class ProductController extends Controller
 {
@@ -26,22 +29,77 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        try {
+            $pathname = $request->post('pathname');
+            $slug = Str::match('/[^\/]+$/', $pathname);
+
+            $query = Product::with(['categories', 'brand']);
+
+            if (Str::startsWith($pathname, '/categories')) {
+                $category = Category::where('slug', $slug)->firstOrFail();
+                $query = $query->whereHas('categories', function (Builder $q) use ($category) {
+                    $q->where('categories.id', $category->id);
+                });
+            } else if (Str::startsWith($pathname, '/brands')) {
+                $brand = Brand::where('slug', $slug)->firstOrFail();
+                $query = Product::where('brand_id', $brand->id);
+            }
+
+            $filters = $this->getFilterOptions($query->get());
+
+            $paginateResult = $this->getPaginate($request, $query);
+
+            return new ProductCollection($paginateResult, $filters);
+        } catch (\Throwable $th) {
+            if ($th instanceof ModelNotFoundException) {
+                return response()->json(['message' => 'Not found'], 404);
+            }
+            return response()->json(['message' => $th->getMessage()], 400);
+        }
+    }
+    public function getFilterOptions($productList)
+    {
+        $categoryList = collect();
+        $brandList = collect();
+
+        $productList->each(function ($product) use (&$categoryList, &$brandList) {
+            foreach ($product->categories as $category) {
+                if (!$categoryList->contains('id', $category->id)) {
+                    $categoryList->push($category);
+                }
+            }
+
+            if (!$brandList->contains('id', $product->brand->id)) {
+                $brandList->push($product->brand);
+            }
+        });
+
+        return [
+            'categories' => $categoryList->sortBy('name'),
+            'brands' => $brandList->sortBy('name')
+        ];
+    }
+
+    public function getPaginate(Request $request, Builder $query)
+    {
+
         $page = (int) $request->query('page', 1);
         $limit = (int) $request->query('limit', 12);
         $sort = $request->query('sort', 'id');
         $order = $request->query('order', 'desc');
         $minPrice = $request->query('minPrice');
         $maxPrice = $request->query('maxPrice');
+        $brands = $request->query('brands', []);
+        $categories = $request->query('categories', []);
 
-        $product = Product::when(($minPrice !== null && $maxPrice !== null), function ($q) use ($minPrice, $maxPrice) {
+        $result = $query->when(($minPrice !== null && $maxPrice !== null), function ($q) use ($minPrice, $maxPrice) {
             $q->whereBetween('sale_price', [(int) $minPrice, (int) $maxPrice]);
         })
             ->orderBy(Str::snake($sort), $order)
             ->paginate($limit, ['*'], '_page', $page);
 
-        return new ProductCollection($product);
+        return $result;
     }
-
     /**
      * Store a newly created resource in storage.
      *

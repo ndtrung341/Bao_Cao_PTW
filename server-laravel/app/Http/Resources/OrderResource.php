@@ -15,7 +15,6 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
         return [
             'id' => $this->id,
             'userId' => $this->user_id,
@@ -31,6 +30,7 @@ class OrderResource extends JsonResource
                     'quantity' => $value->quantity,
                     'product_name' => $value->product->name,
                     'thumbnail' => $value->product->thumbnail,
+                    'total' => $value->total,
                 ];
             }),
             'created_at' => $this->created_at,

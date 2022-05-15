@@ -17,8 +17,8 @@ export const productApi = {
       return axiosClient.get(`related/${id}`);
    },
 
-   getAll(params) {
-      return axiosClient.get('products', { params });
+   getAll(params, pathname) {
+      return axiosClient.post('products', { pathname }, { params });
    },
 
    create(data) {

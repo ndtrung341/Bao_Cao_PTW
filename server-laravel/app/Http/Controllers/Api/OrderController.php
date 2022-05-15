@@ -20,10 +20,10 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $order = Order::with('orderItems.product')->orderByDesc('created_at')->get();
-        return new OrderResource($order[0]);
+        return OrderResource::collection($order);
         // return \response()->json($order);
     }
 

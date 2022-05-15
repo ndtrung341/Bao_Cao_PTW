@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import queryString from 'query-string';
-import { collectionActions, fetchCollection, selectFilters } from 'redux/collectionSlice';
+import { fetchCollection, selectFilters } from 'redux/collectionSlice';
 
-const useCollectionQuery = () => {
+const useCollectionQuery = (pathname) => {
    const filters = useSelector(selectFilters);
+   const navigate = useNavigate();
    const [searchParams, setSearchParams] = useSearchParams();
-
    const dispatch = useDispatch();
 
    // handle filters change
@@ -16,12 +16,11 @@ const useCollectionQuery = () => {
       setSearchParams(queryString.stringify(filters));
    };
 
-   // update filters state,scroll top and fetching when search change
+   // update filters state, scroll top
    useEffect(() => {
-      console.log('fetching');
       const params = Object.fromEntries(new URLSearchParams(searchParams));
 
-      const newFilters = {
+      const filters = {
          ...params,
          page: searchParams.get('page') || 1,
          category: +searchParams.get('category') || undefined,
@@ -30,9 +29,14 @@ const useCollectionQuery = () => {
       };
 
       window.scrollTo(0, 0);
-      dispatch(collectionActions.setFilters(newFilters));
-      dispatch(fetchCollection(newFilters));
-   }, [searchParams, dispatch]);
+
+      dispatch(fetchCollection({ filters, pathname }))
+         .unwrap()
+         .catch((err) => {
+            console.log(err);
+            // navigate('/404', { replace: true });
+         });
+   }, [searchParams, pathname, navigate, dispatch]);
 
    return { filters, handleFiltersChange };
 };

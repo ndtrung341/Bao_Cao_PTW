@@ -6,8 +6,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductCollection extends ResourceCollection
 {
-
-    public function __construct($resource)
+    public function __construct($resource, $filters)
     {
         $this->pagination = [
             '_total' => $resource->total(),
@@ -17,6 +16,8 @@ class ProductCollection extends ResourceCollection
             '_limit' => $resource->perPage(),
             '_count' => $resource->count(),
         ];
+
+        $this->filters = $filters;
 
         $resource =  $resource->getCollection();
         parent::__construct($resource);
@@ -32,7 +33,8 @@ class ProductCollection extends ResourceCollection
     {
         return [
             'data' => $this->collection,
-            'pagination' => $this->pagination
+            'filters' => $this->filters,
+            'pagination' => $this->pagination,
         ];
     }
 }

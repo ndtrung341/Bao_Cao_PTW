@@ -10,7 +10,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import store from 'redux/store';
 import { CssBaseline } from '@material-ui/core';
-import { setupAxios } from 'api/axiosClient';
+import { setupAxiosRequest } from 'api/axiosClient';
 
 const customTheme = createTheme({
    palette: {
@@ -28,7 +28,7 @@ const customTheme = createTheme({
    },
 });
 
-setupAxios(store);
+setupAxiosRequest(store);
 
 ReactDOM.render(
    <BrowserRouter>

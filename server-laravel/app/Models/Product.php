@@ -22,6 +22,11 @@ class Product extends Model
         // return $this->belongsToMany(Category::class, ProductCategory::class, 'product_id', 'category_id')->orderByDesc('created_at', 'id');
     }
 
+    public function productCategories()
+    {
+        return $this->hasMany(ProductCategory::class);
+    }
+
     public function images()
     {
         // return $this->hasMany(ProductImage::class);

@@ -8,10 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Services\UploadService;
 use App\Models\FileUpload;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Doctrine\DBAL\Exception;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class UploadController extends Controller
@@ -69,25 +67,5 @@ class UploadController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['status' => 'failed', 'message' => $th->getMessage()], 400);
         }
-    }
-
-    public function uploadCloudinary(Request $request)
-    {
-        try {
-            $file = $request->file('file');
-            $result = UploadService::uploadCloudinary($file, 'products');
-            return response()->json($result);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Can not upload file'
-            ], 402);
-        }
-    }
-
-    public function destroyCloudinary(Request $request)
-    {
-        $result = UploadService::destroy($request->mediaId);
-        return response()->json($result);
     }
 }
