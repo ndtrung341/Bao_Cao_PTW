@@ -8,7 +8,7 @@ import { formatCurrency } from 'utils';
 const OrderItem = ({ item }) => {
    return (
       <Box display='flex' py={1}>
-         <img src={item.thumbnail} alt='' width={50} height={50} />
+         <img src={item.thumbnail} alt='' width={70} height={70} style={{ objectFit: 'contain' }} />
          <Box sx={{ mx: 1.5, flexGrow: 1 }}>
             <Typography variant={'body2'}>{item.name}</Typography>
             <Typography variant={'body2'} color='text.secondary' mt={0.5}>
@@ -16,7 +16,7 @@ const OrderItem = ({ item }) => {
             </Typography>
          </Box>
          <Typography variant={'body2'} color='error' sx={{ alignSelf: 'center' }}>
-            {formatCurrency(item.price)}
+            {formatCurrency(item.salePrice)}
          </Typography>
       </Box>
    );

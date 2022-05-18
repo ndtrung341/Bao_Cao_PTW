@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Container, Grid, Paper } from '@mui/material';
 
@@ -12,27 +12,31 @@ import AddCartForm from 'components/Product/AddCartForm';
 import ProductGallery from 'components/Product/ProductGallery';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 
 import useProductDetail from 'hooks/useProductDetail';
 import SkeletonInfo from 'components/Skeleton/SkeletonProductInfo';
-import { useDispatch } from 'react-redux';
-import { cartActions } from 'redux/cartSlice';
-import { toast } from 'react-toastify';
+import useAddToCart from 'hooks/useAddToCart';
+import { selectCartItems } from 'redux/cartSlice';
+import { useSelector } from 'react-redux';
 
 const ProductDetail = () => {
-   const { slug } = useParams();
-   const { product, relatedList, loading } = useProductDetail(slug);
-   const dispatch = useDispatch();
+   const { product, relatedList, loading } = useProductDetail();
+   const cart = useSelector(selectCartItems);
+   const { handleAddToCart } = useAddToCart();
+
+   console.log('render');
+
+   const qtyInCart = useMemo(
+      () => cart.find((item) => item.productId === product.id)?.quantity || 0,
+      [cart, product.id]
+   );
 
    const handleAddItemToCart = (quantity) => {
       const newItem = {
          productId: product.id,
          quantity,
       };
-      dispatch(cartActions.addItemToCart(newItem));
-
-      toast.success('Thêm vào giỏ hàng thành công');
+      handleAddToCart(newItem);
    };
 
    return (
@@ -60,7 +64,10 @@ const ProductDetail = () => {
                            {/* PRODUCT INFO */}
                            <ProductInfo product={product} />
                            {/* ADD TO CART FORM */}
-                           <AddCartForm onSubmit={handleAddItemToCart} />
+                           <AddCartForm
+                              onSubmit={handleAddItemToCart}
+                              maxQty={product.quantity - qtyInCart}
+                           />
                         </>
                      )}
                   </Grid>

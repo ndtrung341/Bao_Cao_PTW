@@ -1,8 +1,8 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import QuantityField from 'components/FormFields/QuantityField';
 import React, { useState } from 'react';
 
-const AddCartForm = ({ onSubmit }) => {
+const AddCartForm = ({ onSubmit, maxQty }) => {
    const [quantity, setQuantity] = useState(1);
 
    const handleQuantityChange = (value) => {
@@ -10,13 +10,15 @@ const AddCartForm = ({ onSubmit }) => {
    };
 
    const handleAddButtonClick = () => {
-      if (!onSubmit) return;
-      onSubmit(quantity);
+      onSubmit?.(quantity);
    };
 
    return (
       <Box>
-         <QuantityField value={quantity} onChange={handleQuantityChange} />
+         <Box display={'flex'} alignItems='center'>
+            <QuantityField value={quantity} onChange={handleQuantityChange} max={maxQty} />
+            <Typography sx={{ ml: 2 }}>{maxQty} sản phẩm có sẵn</Typography>
+         </Box>
          <Button variant='contained' sx={{ mt: 2 }} onClick={handleAddButtonClick}>
             Thêm vào giỏ hàng
          </Button>

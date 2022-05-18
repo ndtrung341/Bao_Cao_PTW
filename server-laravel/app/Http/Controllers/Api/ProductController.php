@@ -30,17 +30,17 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            $pathname = $request->post('pathname');
-            $slug = Str::match('/[^\/]+$/', $pathname);
+            $urlKey = $request->query('urlKey', '');
+            $slug = Str::match('/[^\/]+$/', $urlKey);
 
             $query = Product::with(['categories', 'brand']);
 
-            if (Str::startsWith($pathname, '/categories')) {
+            if (Str::startsWith($urlKey, '/categories')) {
                 $category = Category::where('slug', $slug)->firstOrFail();
                 $query = $query->whereHas('categories', function (Builder $q) use ($category) {
                     $q->where('categories.id', $category->id);
                 });
-            } else if (Str::startsWith($pathname, '/brands')) {
+            } else if (Str::startsWith($urlKey, '/themes')) {
                 $brand = Brand::where('slug', $slug)->firstOrFail();
                 $query = Product::where('brand_id', $brand->id);
             }
@@ -57,6 +57,7 @@ class ProductController extends Controller
             return response()->json(['message' => $th->getMessage()], 400);
         }
     }
+
     public function getFilterOptions($productList)
     {
         $categoryList = collect();
@@ -89,14 +90,31 @@ class ProductController extends Controller
         $order = $request->query('order', 'desc');
         $minPrice = $request->query('minPrice');
         $maxPrice = $request->query('maxPrice');
-        $brands = $request->query('brands', []);
-        $categories = $request->query('categories', []);
+        $brands = $request->query('brands');
+        $categories = $request->query('categories');
 
-        $result = $query->when(($minPrice !== null && $maxPrice !== null), function ($q) use ($minPrice, $maxPrice) {
+        // filter brand
+        $query = $query->when($brands, function (Builder $q, $brands) {
+            $q->whereIn('brand_id', explode(',', $brands));
+        });
+
+        // filter categories
+        $query = $query->when($categories, function (Builder $q, $categories) {
+            $q->whereHas('categories', function ($q) use ($categories) {
+                $q->where('categories.id', explode(',', $categories));
+            });
+        });
+
+        // filter price
+        $query = $query->when(($minPrice && $maxPrice), function (Builder $q) use ($minPrice, $maxPrice) {
             $q->whereBetween('sale_price', [(int) $minPrice, (int) $maxPrice]);
-        })
-            ->orderBy(Str::snake($sort), $order)
-            ->paginate($limit, ['*'], '_page', $page);
+        });
+
+        // sort
+        $query = $query->orderBy(Str::snake($sort), $order);
+
+        // paginate
+        $result = $query->paginate($limit, ['*'], '_page', $page);
 
         return $result;
     }

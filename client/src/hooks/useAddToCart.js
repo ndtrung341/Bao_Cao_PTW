@@ -11,9 +11,8 @@ const useAddToCart = () => {
 
    const handleAddToCart = (cartItem) => {
       if (!isLoggedIn) {
-         navigate('/auth/login');
+         navigate('/auth/login', { replace: true });
       } else {
-         // dispatch(cartActions.addItemToCart(cartItem));
          dispatch(addCart(cartItem));
          toast.success('Thêm vào giỏ hàng thành công');
       }

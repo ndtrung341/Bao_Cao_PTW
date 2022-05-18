@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const QuantityField = ({ value, size, onChange }) => {
+const QuantityField = ({ value, size, onChange, onBlur, max }) => {
    const classes = useStyles({ size });
    const [inputValue, setInputValue] = useState(1);
 
@@ -45,15 +45,22 @@ const QuantityField = ({ value, size, onChange }) => {
       setInputValue(value);
    }, [value]);
 
-   const handleValueChange = (value) => {
-      onChange?.(value);
+   const handleBlur = (value) => {
+      onBlur?.(value);
+   };
+
+   const handleChange = (value) => {
+      const newValue = value > max ? max : value;
+      setInputValue(newValue);
+      onChange?.(newValue);
    };
 
    return (
       <Box className={classes.root}>
          <Button
             className={`${classes.button} decrease`}
-            onClick={() => handleValueChange(value - 1)}
+            disabled={inputValue === 1}
+            onClick={() => handleChange(value - 1)}
          >
             <RemoveIcon fontSize='inherit' />
          </Button>
@@ -64,13 +71,14 @@ const QuantityField = ({ value, size, onChange }) => {
             color='primary'
             value={inputValue}
             size='small'
-            onChange={(e) => setInputValue(+e.target.value || 1)}
-            onBlur={() => handleValueChange(inputValue)}
+            onChange={(e) => handleChange(+e.target.value || 1)}
+            onBlur={() => handleBlur(inputValue)}
          />
 
          <Button
             className={`${classes.button} increase`}
-            onClick={() => handleValueChange(value + 1)}
+            disabled={inputValue === max}
+            onClick={() => handleChange(value + 1)}
          >
             <AddIcon fontSize='inherit' />
          </Button>

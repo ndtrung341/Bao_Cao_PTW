@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { makeStyles } from '@material-ui/core';
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { selectFilters, selectPagination } from 'redux/collectionSlice';
+import { selectPagination } from 'redux/collectionSlice';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -16,15 +16,13 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const ProductSort = ({ onFiltersChange }) => {
+const ProductSort = ({ onSortChange, values }) => {
    const classes = useStyles();
    const pagination = useSelector(selectPagination);
-   const filters = useSelector(selectFilters);
 
    const handleSortChange = (event) => {
-      if (!onFiltersChange) return;
       const [sort, order] = event.target.value.split(':');
-      onFiltersChange({ ...filters, sort, order, page: 1 });
+      onSortChange(sort, order);
    };
 
    return (
@@ -40,7 +38,7 @@ const ProductSort = ({ onFiltersChange }) => {
                   labelId='demo-simple-select-label'
                   id='demo-simple-select'
                   label='Sắp xếp'
-                  value={`${filters.sort || 'id'}:${filters.order || 'desc'}`}
+                  value={`${values.sort || 'id'}:${values.order || 'desc'}`}
                   onChange={handleSortChange}
                >
                   <MenuItem value='id:desc'>Mới nhát</MenuItem>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { productApi } from 'api/productApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const useProductDetail = (slug) => {
+const useProductDetail = () => {
+   const { slug } = useParams();
    const [loading, setLoading] = useState(true);
    const [product, setProduct] = useState({});
    const [relatedList, setRelatedList] = useState([]);
@@ -16,10 +17,7 @@ const useProductDetail = (slug) => {
             if (isUnmounted) return;
             const product = await productApi.get(slug);
             const { data: relatedList } = await productApi.getRelated(product.id);
-            // const [product, { data: relatedList }] = await Promise.all([
-            //    productApi.get(slug),
-            //    productApi.getRelated(slug),
-            // ]);
+
             setProduct(product);
             setRelatedList(relatedList);
          } catch (error) {

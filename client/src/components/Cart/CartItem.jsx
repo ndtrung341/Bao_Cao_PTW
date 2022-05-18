@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
    thumb: {
       width: 100,
       height: 100,
+      objectFit: 'contain',
       display: ' flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
    const classes = useStyles();
    const { modal } = useModal();
-
+   console.log(item);
    const showConfirmRemove = () => {
       modal({
          type: 'warning',
@@ -97,6 +98,8 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
                   size={'small'}
                   value={item.quantity}
                   onChange={handleQuantityChange}
+                  onBlur={handleQuantityChange}
+                  max={item.qtyInStock}
                />
             </Box>
 

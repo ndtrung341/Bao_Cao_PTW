@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { productApi } from 'api/productApi';
-import { createSelector } from 'reselect';
 
 const initialState = {
-   loading: false,
+   loading: true,
    list: [],
    filters: {},
    pagination: {
@@ -18,10 +17,10 @@ const initialState = {
 
 export const fetchCollection = createAsyncThunk(
    'collection/fetchCollection',
-   async ({ filters, pathname }, thunkAPI) => {
+   async ({ filters, urlKey }, thunkAPI) => {
       try {
-         const { data, pagination } = await productApi.getAll(filters, pathname);
-         return { data, pagination, filters };
+         const res = await productApi.getAll({ ...filters, urlKey });
+         return res;
       } catch (error) {
          return thunkAPI.rejectWithValue(error.response.data);
       }
@@ -31,21 +30,17 @@ export const fetchCollection = createAsyncThunk(
 const collectionSlice = createSlice({
    name: 'collection',
    initialState,
-   reducers: {
-      setFilters(state, action) {
-         // console.log(action);
-         state.filters = action.payload;
-      },
-   },
    extraReducers: {
-      [fetchCollection.pending]: (state) => {
+      [fetchCollection.pending]: (state, action) => {
+         console.log(action);
          state.loading = true;
       },
       [fetchCollection.fulfilled]: (state, action) => {
+         const { filters, data, pagination } = action.payload;
          state.loading = false;
-         state.list = action.payload.data;
-         state.pagination = action.payload.pagination;
-         state.filters = action.payload.filters;
+         state.list = data;
+         state.pagination = pagination;
+         state.filters = filters;
       },
    },
 });
@@ -62,7 +57,3 @@ export const selectCollectionLoading = (state) => state.collection.loading;
 export const selectCollection = (state) => state.collection.list;
 export const selectFilters = (state) => state.collection.filters;
 export const selectPagination = (state) => state.collection.pagination;
-
-export const selectTotalPage = createSelector([selectPagination], ({ _total, _limit }) => {
-   return Math.ceil(_total / _limit);
-});

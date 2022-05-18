@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { selectCartItems, selectCartTotal } from 'redux/cartSlice';
 
 const defaultValues = {
-   fullName: '',
+   customerName: '',
    phone: '',
    province: '',
    district: '',
@@ -43,24 +43,12 @@ const schema = yup.object().shape({
 const CheckoutForm = ({ onSubmit }) => {
    const total = useSelector(selectCartTotal);
    const cartItems = useSelector(selectCartItems);
-
+   console.log('render');
    const form = useForm({
       defaultValues,
       mode: 'all',
       resolver: yupResolver(schema),
    });
-
-   const handleCreateOrder = (data, actions) => {
-      return actions.order.create({
-         purchase_units: [
-            {
-               amount: {
-                  value: '0.01',
-               },
-            },
-         ],
-      });
-   };
 
    // payment success
    const handleApprove = async (data, actions) => {
@@ -93,16 +81,16 @@ const CheckoutForm = ({ onSubmit }) => {
    return (
       <Grid container spacing={2} mb={2}>
          <Grid item lg={7}>
-            <ShippingInfo form={form} />
+            <Box component={'form'}>
+               <ShippingInfo form={form} />
+            </Box>
          </Grid>
-
          <Grid item lg={5}>
             <Paper sx={{ p: 3, mb: 2 }}>
                <OrderDetail />
                <Box sx={{ mt: 2 }}>
                   <PaypalButton
                      onClick={handlePaypalClick}
-                     onCreateOrder={handleCreateOrder}
                      onApprove={handleApprove}
                      total={total * 0.000043}
                   />

@@ -11,6 +11,9 @@ import { Provider } from 'react-redux';
 import store from 'redux/store';
 import { CssBaseline } from '@material-ui/core';
 import { setupAxiosRequest } from 'api/axiosClient';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+
+setupAxiosRequest(store);
 
 const customTheme = createTheme({
    palette: {
@@ -28,16 +31,20 @@ const customTheme = createTheme({
    },
 });
 
-setupAxiosRequest(store);
+const initPaypalOptions = {
+   'client-id': 'AfssvtxLheed0qllinprUTgkToe3R4YoW4g8UYzPXWlCeOIOUAPHgpixLObah5mfsF_RLQ4WewFAWWZz',
+};
 
 ReactDOM.render(
    <BrowserRouter>
       <Provider store={store}>
          <HelmetProvider>
-            <ThemeProvider theme={customTheme}>
-               <CssBaseline />
-               <App />
-            </ThemeProvider>
+            <PayPalScriptProvider options={initPaypalOptions}>
+               <ThemeProvider theme={customTheme}>
+                  <CssBaseline />
+                  <App />
+               </ThemeProvider>
+            </PayPalScriptProvider>
          </HelmetProvider>
       </Provider>
    </BrowserRouter>,

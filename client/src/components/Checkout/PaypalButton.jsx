@@ -1,7 +1,5 @@
+import { PayPalButtons } from '@paypal/react-paypal-js';
 import React from 'react';
-
-import ReactDOM from 'react-dom';
-const PayPalButton = window.paypal.Buttons.driver('react', { React, ReactDOM });
 
 const style = {
    color: 'gold',
@@ -13,22 +11,24 @@ const style = {
 };
 
 const PaypalButton = ({ onClick, onApprove, total }) => {
+   console.log(total);
    return (
-      <PayPalButton
+      <PayPalButtons
          style={style}
          onClick={onClick}
+         forceReRender={[total]}
          onApprove={onApprove}
-         createOrder={(data, actions) =>
-            actions.order.create({
+         createOrder={(data, actions) => {
+            return actions.order.create({
                purchase_units: [
                   {
                      amount: {
-                        value: total.toFixed(2),
+                        value: total,
                      },
                   },
                ],
-            })
-         }
+            });
+         }}
       />
    );
 };

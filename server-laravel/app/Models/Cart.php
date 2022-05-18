@@ -23,6 +23,7 @@ class Cart extends Model
             'name',
             'sale_price as salePrice',
             'price',
+            'products.quantity as qtyInStock',
             'slug',
             'thumbnail',
             'cart_items.quantity'

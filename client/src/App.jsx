@@ -19,7 +19,6 @@ import AddEditProduct from 'pages/Admin/AddEditProduct';
 import AdminProductList from 'pages/Admin/AdminProductList';
 import OrderSuccess from 'pages/OrderSuccess';
 import OrderHistory from 'pages/OrderHistory';
-import Test from 'pages/Test';
 
 function App() {
    return (
@@ -28,11 +27,9 @@ function App() {
          <Route path='/' element={<MainLayout />}>
             <Route path='' element={<Home />} />
             <Route path=':slug' element={<ProductDetail />} />
-            {/* <Route path='collection' element={<Collection />} /> */}
-
-            {/* ĐANG LÀM */}
-            <Route path='themes/:slug' element={<Test />} />
-            <Route path='categories/:slug' element={<Test />} />
+            {/* product list */}
+            <Route path='themes/:slug' element={<Collection />} />
+            <Route path='categories/:slug' element={<Collection />} />
 
             <Route element={<PrivateRoute />}>
                <Route path='cart' element={<Cart />} />
@@ -62,7 +59,7 @@ function App() {
          </Route>
 
          {/* redirect to 404 page */}
-         <Route path='*' element={<Navigate to='404' />} />
+         <Route path='*' element={<Navigate to='404' replace={true} />} />
       </Routes>
    );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Checkbox, FormControlLabel, List, ListItem, Typography } from '@mui/material';
-import { makeStyles } from '@material-ui/core';
+import { Box, Checkbox, List, ListItem, Typography } from '@mui/material';
+import { FormControlLabel, makeStyles } from '@material-ui/core';
 import FilterLabel from './FilterLabel';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,21 +18,21 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const FilterByCategory = ({ onCategoryChange, categoryList = [], values = [] }) => {
+const FilterByCategory = ({ onBrandChange, brandList = [], values = [] }) => {
    const classes = useStyles();
 
    const handleChange = (e) => {
       const { checked, value } = e.target;
       const newValues = checked ? [...values, value] : values.filter((item) => item !== `${value}`);
 
-      onCategoryChange(newValues);
+      onBrandChange(newValues);
    };
 
    return (
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-         <FilterLabel>danh mục</FilterLabel>
+         <FilterLabel>thương hiệu</FilterLabel>
          <List sx={{ pt: 0, pb: 1 }}>
-            {categoryList.map((item) => (
+            {brandList.map((item) => (
                <ListItem key={item.id} sx={{ pt: 0 }} className={classes.item}>
                   <FormControlLabel
                      control={
