@@ -34,7 +34,6 @@ class CategoryController extends Controller
 
         $category = new Category;
         $category->name = $request->name;
-        $category->key = $request->key;
         $category->slug = '/categories/' . Str::slug($category->name, '-');
         $category->save();
 

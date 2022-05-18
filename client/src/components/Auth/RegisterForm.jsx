@@ -1,27 +1,17 @@
 import { Box, Button, Typography } from '@mui/material';
 import InputField from 'components/FormFields/InputField';
 import PasswordField from 'components/FormFields/PasswordField';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { debounce } from 'lodash';
-import { authApi } from 'api/authApi';
+
 const defaultValues = {
    fullname: '',
    email: '',
    password: '',
    confirmPassword: '',
-};
-
-const debounceCheckUniqueEmail = (email) => {
-   const checkUnique = async (email) => {
-      const { error } = await authApi.checkUniqueEmail(email);
-      return error === false;
-   };
-
-   return new Promise((resovle) => debounce(resovle(checkUnique(email)), 1200));
 };
 
 const schema = yup.object().shape({
@@ -33,10 +23,6 @@ const schema = yup.object().shape({
          message: 'Họ tên phải có 2 từ trở lên',
       }),
    email: yup.string().email('Email không hợp lệ').required('Email không được để trống'),
-   // .test({
-   //    message: 'Email đã được sử dụng',
-   //    test: debounceCheckUniqueEmail,
-   // }),
    password: yup
       .string()
       .min(4, 'Mật khẩu tối thiểu 4 kí tự')

@@ -9,10 +9,22 @@ import {
    TableHead,
    TableRow,
 } from '@mui/material';
+import useModal from 'hooks/useModal';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProductTable = ({ productList }) => {
+const ProductTable = ({ productList, onDeleteProduct }) => {
+   const { modal } = useModal();
+
+   const handleRemoveClick = (product) => {
+      modal({
+         type: 'warning',
+         title: 'Bạn có muốn xóa sản phẩm này mà không thể khôi phục lại?',
+         content: `Xóa '${product.name}'`,
+         onSubmit: () => onDeleteProduct(product.id),
+      });
+   };
+
    return (
       <TableContainer component={Paper}>
          <Table size='small' aria-label='simple table'>
@@ -57,7 +69,7 @@ const ProductTable = ({ productList }) => {
                            color='error'
                            variant='contained'
                            sx={{ ml: 1 }}
-                           // onClick={() => handleRemoveClick(student)}
+                           onClick={() => handleRemoveClick(product)}
                         >
                            Xóa
                         </Button>

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
    },
    wrapper: {
       '&&': {
-         maxWidth: '30vw',
+         maxWidth: '25vw',
          height: '100%',
          backgroundColor: 'transparent',
          borderRadius: 8,

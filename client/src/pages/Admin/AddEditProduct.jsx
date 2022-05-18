@@ -73,7 +73,7 @@ const AddEditProduct = () => {
          }
       } catch (error) {
          console.log(error);
-         modal({ type: 'error', title: 'Error', content: error });
+         modal({ type: 'error', title: 'Error', content: error.message });
       }
    };
 

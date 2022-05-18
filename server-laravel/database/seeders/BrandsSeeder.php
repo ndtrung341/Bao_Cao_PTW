@@ -15,11 +15,11 @@ class BrandsSeeder extends Seeder
     public function run()
     {
         $brands = array(
-            array('id' => '1', 'name' => 'Creator Expert', 'slug' => 'creator-expert', 'created_at' => '2022-05-01 06:37:03', 'updated_at' => '2022-05-01 06:37:03'),
-            array('id' => '2', 'name' => 'Architecture', 'slug' => 'architecture', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
-            array('id' => '3', 'name' => 'Batman™', 'slug' => 'batman', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
-            array('id' => '4', 'name' => 'City', 'slug' => 'city', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
-            array('id' => '5', 'name' => 'Creator 3-in-1', 'slug' => 'creator-3-in-1', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
+            array('id' => '1', 'name' => 'Architecture', 'slug' => 'architecture', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
+            array('id' => '2', 'name' => 'Batman™', 'slug' => 'batman', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
+            array('id' => '3', 'name' => 'City', 'slug' => 'city', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
+            array('id' => '4', 'name' => 'Creator 3-in-1', 'slug' => 'creator-3-in-1', 'created_at' => '2022-05-01 06:37:04', 'updated_at' => '2022-05-01 06:37:04'),
+            array('id' => '5', 'name' => 'Creator Expert', 'slug' => 'creator-expert', 'created_at' => '2022-05-01 06:37:03', 'updated_at' => '2022-05-01 06:37:03'),
             array('id' => '6', 'name' => 'DC', 'slug' => 'dc', 'created_at' => '2022-05-01 06:37:05', 'updated_at' => '2022-05-01 06:37:05'),
             array('id' => '7', 'name' => 'Disney™', 'slug' => 'disney', 'created_at' => '2022-05-01 06:37:05', 'updated_at' => '2022-05-01 06:37:05'),
             array('id' => '8', 'name' => 'Friends', 'slug' => 'friends', 'created_at' => '2022-05-01 06:37:05', 'updated_at' => '2022-05-01 06:37:05'),

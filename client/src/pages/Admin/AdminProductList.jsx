@@ -4,6 +4,7 @@ import { productApi } from 'api/productApi';
 import ProductTable from 'components/Admin/ProductTable';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
    title: {
@@ -26,6 +27,7 @@ const AdminProductList = () => {
 
    useEffect(() => {
       let isUnmounted = false;
+
       (async () => {
          setLoading(true);
 
@@ -41,6 +43,17 @@ const AdminProductList = () => {
          isUnmounted = true;
       };
    }, [filters]);
+
+   const handleDeleteProduct = async (id) => {
+      try {
+         await productApi.delete(id);
+         toast.success('Xóa sản phẩm thành công');
+         setFilters({ ...filters });
+      } catch (error) {
+         console.log(error);
+         toast.error('Xóa sản phẩm thất bại');
+      }
+   };
 
    if (loading) {
       return (
@@ -65,7 +78,7 @@ const AdminProductList = () => {
             </Link>
          </Box>
 
-         <ProductTable productList={productList} />
+         <ProductTable productList={productList} onDeleteProduct={handleDeleteProduct} />
 
          <Box my={2} display='flex' justifyContent='center'>
             <Pagination

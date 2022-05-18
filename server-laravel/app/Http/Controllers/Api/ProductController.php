@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
+use App\Http\Services\ProductService;
 use App\Http\Services\UploadService;
 use App\Models\Brand;
 use App\Models\Category;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 
@@ -31,23 +34,22 @@ class ProductController extends Controller
     {
         try {
             $urlKey = $request->query('urlKey', '');
-            $slug = Str::match('/[^\/]+$/', $urlKey);
 
             $query = Product::with(['categories', 'brand']);
 
             if (Str::startsWith($urlKey, '/categories')) {
-                $category = Category::where('slug', $slug)->firstOrFail();
+                $category = Category::where('slug', $urlKey)->firstOrFail();
                 $query = $query->whereHas('categories', function (Builder $q) use ($category) {
                     $q->where('categories.id', $category->id);
                 });
             } else if (Str::startsWith($urlKey, '/themes')) {
-                $brand = Brand::where('slug', $slug)->firstOrFail();
+                $brand = Brand::where('slug', $urlKey)->firstOrFail();
                 $query = Product::where('brand_id', $brand->id);
             }
 
-            $filters = $this->getFilterOptions($query->get());
+            $filters = ProductService::getFilterOptions($query->get());
 
-            $paginateResult = $this->getPaginate($request, $query);
+            $paginateResult = ProductService::paginate($request, $query);
 
             return new ProductCollection($paginateResult, $filters);
         } catch (\Throwable $th) {
@@ -58,66 +60,6 @@ class ProductController extends Controller
         }
     }
 
-    public function getFilterOptions($productList)
-    {
-        $categoryList = collect();
-        $brandList = collect();
-
-        $productList->each(function ($product) use (&$categoryList, &$brandList) {
-            foreach ($product->categories as $category) {
-                if (!$categoryList->contains('id', $category->id)) {
-                    $categoryList->push($category);
-                }
-            }
-
-            if (!$brandList->contains('id', $product->brand->id)) {
-                $brandList->push($product->brand);
-            }
-        });
-
-        return [
-            'categories' => $categoryList->sortBy('name'),
-            'brands' => $brandList->sortBy('name')
-        ];
-    }
-
-    public function getPaginate(Request $request, Builder $query)
-    {
-
-        $page = (int) $request->query('page', 1);
-        $limit = (int) $request->query('limit', 12);
-        $sort = $request->query('sort', 'id');
-        $order = $request->query('order', 'desc');
-        $minPrice = $request->query('minPrice');
-        $maxPrice = $request->query('maxPrice');
-        $brands = $request->query('brands');
-        $categories = $request->query('categories');
-
-        // filter brand
-        $query = $query->when($brands, function (Builder $q, $brands) {
-            $q->whereIn('brand_id', explode(',', $brands));
-        });
-
-        // filter categories
-        $query = $query->when($categories, function (Builder $q, $categories) {
-            $q->whereHas('categories', function ($q) use ($categories) {
-                $q->where('categories.id', explode(',', $categories));
-            });
-        });
-
-        // filter price
-        $query = $query->when(($minPrice && $maxPrice), function (Builder $q) use ($minPrice, $maxPrice) {
-            $q->whereBetween('sale_price', [(int) $minPrice, (int) $maxPrice]);
-        });
-
-        // sort
-        $query = $query->orderBy(Str::snake($sort), $order);
-
-        // paginate
-        $result = $query->paginate($limit, ['*'], '_page', $page);
-
-        return $result;
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -219,7 +161,20 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            // delete product images
+            $imageIdList = $product->images()->pluck('public_id');
+            $product->delete(); // delete product
+            foreach ($imageIdList as $id) {
+                UploadService::destroy($id);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Xóa thành công'], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['message' => $th->getMessage()], 400);
+        }
     }
 
     public function deleteImage(Request $request)
@@ -228,7 +183,6 @@ class ProductController extends Controller
             $product_id = $request->productId;
             $public_id = $request->publicId;
 
-            // UploadService::destroyCloudinary($media_id);
             UploadService::destroy($public_id);
             ProductImage::where([['product_id', '=', $product_id], ['public_id', '=', $public_id]])->delete();
 
@@ -255,5 +209,56 @@ class ProductController extends Controller
             })->inRandomOrder()->limit(8)->get();
 
         return ProductResource::collection($productList);
+    }
+
+    public function insert(Request $request)
+    {
+        $images = [];
+        // return response()->json($request->all());
+        foreach ($request->images as $url) {
+            $contents = file_get_contents($url);
+            $id = md5(\uniqid(rand(), true));
+            $ext = '.png';
+            $path = 'upload/' . $id . $ext;
+            Storage::disk('local')->put($path, $contents);
+            $images[] =  ['id' => $id, 'url' => URL::asset($path)];
+
+            // store db
+            $uploadFile = new FileUpload;
+            $uploadFile->id = $id;
+            $uploadFile->url = URL::asset($path);
+            $uploadFile->save();
+        }
+        // return response()->json(URL::asset('upload/' . $id . $ext));
+
+        $product = Product::create([
+            "name" => $request->name,
+            "sale_price" => $request->salePrice,
+            "price" => $request->price,
+            "brand_id" => $request->brand,
+            "quantity" => $request->quantity,
+            "description" => $request->description,
+            "status" => $request->status || true,
+            "thumbnail" => $images[0]['url'],
+            "slug" => Str::slug($request->name),
+            "created_at" => Carbon::now()->timestamp
+        ]);
+
+        $imgs = [];
+        foreach ($images as $image) {
+            $imgs[] = ['product_id' => $product->id, 'public_id' => $image['id']];
+        }
+        // return response()->json($imgs, 201);
+        ProductImage::insert($imgs);
+
+        $categories = [];
+        foreach ($request->categories as $category_id) {
+            $categories[] = ['product_id' => $product->id, 'category_id' => $category_id];
+        }
+        // return response()->json($categories);
+
+        ProductCategory::insert($categories);
+
+        return response()->json($product, 201);
     }
 }

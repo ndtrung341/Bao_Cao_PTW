@@ -22,11 +22,15 @@ export const productApi = {
    },
 
    create(data) {
-      return axiosClient.post('products', data);
+      return axiosClient.post('products/create', data);
    },
 
    update(data, id) {
-      return axiosClient.patch('products/' + id, data);
+      return axiosClient.patch('products/update/' + id, data);
+   },
+
+   delete(id) {
+      return axiosClient.delete('products/delete/' + id);
    },
 
    deleteImage(data) {

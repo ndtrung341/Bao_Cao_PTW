@@ -46,6 +46,8 @@ const Collection = () => {
    const loading = useSelector(selectCollectionLoading);
    const { filters, syncFiltersURL } = useCollectionQuery(location.pathname);
 
+   console.log(filterOptions);
+
    const pageTitle = useMemo(() => {
       const match = location.pathname.match(/\/(.+)\/(.+)/);
       return [match[1], match[2]].map(capitalize);

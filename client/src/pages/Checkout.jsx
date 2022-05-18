@@ -4,14 +4,13 @@ import CheckoutForm from 'components/Checkout/CheckoutForm';
 import Breadcrumb from 'components/Common/Breadcrumb';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { cartActions, selectCartItems } from 'redux/cartSlice';
+import { cartActions } from 'redux/cartSlice';
 
 const Checkout = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const cartItems = useSelector(selectCartItems);
 
    const handlePlaceOrder = async (values, payment) => {
       await orderApi.placeOrder(values);

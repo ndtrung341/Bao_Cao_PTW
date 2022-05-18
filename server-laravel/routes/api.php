@@ -63,11 +63,13 @@ Route::post('upload', [UploadController::class, 'upload']);
 
 // route products
 Route::prefix('products')->controller(ProductController::class)->group(function () {
-    // Route::get('', 'index');
     Route::get('', 'index');
     Route::get('{product:id}', 'show');
     Route::post('create', 'store')->middleware(['auth:api', 'role.admin']);
-    Route::patch('{product:id}', 'update')->middleware(['auth:api', 'role.admin']);
+    Route::post('insert', 'insert');
+
+    Route::patch('update/{product:id}', 'update')->middleware(['auth:api', 'role.admin']);
+    Route::delete('delete/{product:id}', 'destroy')->middleware(['auth:api', 'role.admin']);
     Route::post('delete_image', 'deleteImage')->middleware(['auth:api', 'role.admin']);
 });
 
