@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const MenuDropdown = ({ title, menuList }) => {
+const DropdownMenu = ({ title, menu = [] }) => {
    const [anchorEl, setAnchorEl] = React.useState(null);
    const open = Boolean(anchorEl);
    const handleClick = (event) => {
@@ -20,8 +20,9 @@ const MenuDropdown = ({ title, menuList }) => {
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
+            sx={{ color: '#000', '&&': { m: 0 } }}
          >
-            Thương hiệu
+            {title}
          </Button>
          <Menu
             id='demo-positioned-menu'
@@ -38,24 +39,16 @@ const MenuDropdown = ({ title, menuList }) => {
                horizontal: 'left',
             }}
          >
-            <Link to='/themes/creator-3-in-1' style={{ display: 'block' }} onClick={handleClose}>
-               <Button>Creator 3 in 1</Button>
-            </Link>
-            <Link to='/themes/architecture' style={{ display: 'block' }} onClick={handleClose}>
-               <Button>Architecture</Button>
-            </Link>
-            <Link to='/themes/batman' style={{ display: 'block' }} onClick={handleClose}>
-               <Button>Batman</Button>
-            </Link>
-            <Link to='/themes/city' style={{ display: 'block' }} onClick={handleClose}>
-               <Button>City</Button>
-            </Link>
-            <Link to='/themes/creator-expert' style={{ display: 'block' }} onClick={handleClose}>
-               <Button>Creator Expert</Button>
-            </Link>
+            {menu.map((item, index) => (
+               <MenuItem key={index}>
+                  <Link to={item.url} style={{ color: '#000' }} onClick={handleClose}>
+                     {item.name}
+                  </Link>
+               </MenuItem>
+            ))}
          </Menu>
       </>
    );
 };
 
-export default MenuDropdown;
+export default DropdownMenu;

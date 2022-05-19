@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { NAV_LINKS } from 'constants';
 import { makeStyles } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
-import MenuDropdown from './MenuDropdown';
+import DropdownMenu from './DropdownMenu';
 
 const useStyles = makeStyles((theme) => ({
    menu: {
@@ -28,6 +28,20 @@ const useStyles = makeStyles((theme) => ({
       },
    },
 }));
+
+const brands = [
+   { name: 'Architecture', url: '/themes/architecture' },
+   { name: 'Batman', url: '/themes/batman' },
+   { name: 'City', url: '/themes/city' },
+   { name: 'Creator 3 in 1', url: '/themes/creator-3-in-1' },
+   { name: 'Creator Expert', url: '/themes/creator-expert' },
+];
+
+const categories = [
+   { name: 'Adults Welcome', url: '/categories/adults-welcome' },
+   { name: 'Buildings', url: '/categories/buildings' },
+   { name: 'Cars', url: '/categories/cars' },
+];
 
 const HeaderMenu = ({ isAdmin }) => {
    const classes = useStyles();
@@ -87,15 +101,11 @@ const HeaderMenu = ({ isAdmin }) => {
             sx={{ flexGrow: 1, flexShrink: 0, display: { xs: 'none', md: 'flex' } }}
             className={classes.menu}
          >
-            {/* {NAV_LINKS.map((item) => (
-               <NavLink to={item.path} key={item.name} className={classes.link}>
-                  <Button>{item.name}</Button>
-               </NavLink>
-            ))} */}
             <NavLink to={'/'} className={classes.link}>
                <Button>Trang chủ</Button>
             </NavLink>
-            <MenuDropdown />
+            <DropdownMenu title={'Thương hiệu'} menu={brands} />
+            <DropdownMenu title={'Danh mục'} menu={categories} />
             {isAdmin && (
                <NavLink to={'/admin'} className={classes.link}>
                   <Button> Admin Panel</Button>
