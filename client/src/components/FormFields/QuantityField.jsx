@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const QuantityField = ({ value, size, onChange, onBlur, max }) => {
+const QuantityField = ({ value, size, onChange, onBlur, max, min }) => {
    const classes = useStyles({ size });
    const [inputValue, setInputValue] = useState(1);
 
@@ -59,7 +59,7 @@ const QuantityField = ({ value, size, onChange, onBlur, max }) => {
       <Box className={classes.root}>
          <Button
             className={`${classes.button} decrease`}
-            disabled={inputValue === 1}
+            disabled={!!min && inputValue === min}
             onClick={() => handleChange(value - 1)}
          >
             <RemoveIcon fontSize='inherit' />

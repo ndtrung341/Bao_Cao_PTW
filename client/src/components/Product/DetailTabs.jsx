@@ -11,11 +11,7 @@ function TabPanel(props) {
 
    return (
       <div hidden={value !== index} {...other}>
-         {value === index && (
-            <Box sx={{ p: 3 }}>
-               <Typography>{children}</Typography>
-            </Box>
-         )}
+         {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
       </div>
    );
 }
@@ -26,7 +22,7 @@ TabPanel.propTypes = {
    value: PropTypes.number.isRequired,
 };
 
-const DetailTabs = () => {
+const DetailTabs = ({ description }) => {
    const [value, setValue] = React.useState(0);
 
    const handleChange = (event, newValue) => {
@@ -41,13 +37,20 @@ const DetailTabs = () => {
             value={value}
             onChange={handleChange}
             aria-label='Vertical tabs example'
-            sx={{ borderRight: 1, borderColor: 'divider' }}
+            sx={{ borderRight: 1, borderColor: 'divider', flexShirk: 0 }}
          >
             <Tab label='Mô tả sản phẩm' />
             <Tab label='Đánh giá' />
          </Tabs>
          <TabPanel value={value} index={0}>
-            Sản phẩm chưa có mô tả
+            <Typography
+               component={'p'}
+               variant='subtitle1'
+               color='text.secondary'
+               fontSize={16}
+               mb={4}
+               dangerouslySetInnerHTML={{ __html: description || 'Sản phẩm chưa có mô tả' }}
+            />
          </TabPanel>
          <TabPanel value={value} index={1}>
             Sản phẩm chưa có đánh giá

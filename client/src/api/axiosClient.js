@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { logout, refreshToken } from 'redux/authSlice';
 import { getToken, isTokenExpired } from 'utils/auth';
-
+import { unwrapResult } from '@reduxjs/toolkit';
 let refreshTokenRequest = null;
 
 const axiosClient = axios.create({
@@ -12,7 +12,7 @@ const axiosClient = axios.create({
 });
 
 // Add a request interceptor
-export const setupAxiosRequest = (store) => {
+export const setupAxiosInterceptors = (store) => {
    axiosClient.interceptors.request.use(
       async function (config) {
          let token = getToken();
@@ -22,7 +22,8 @@ export const setupAxiosRequest = (store) => {
                   ? refreshTokenRequest
                   : store.dispatch(refreshToken());
 
-               token = await refreshTokenRequest;
+               token = await refreshTokenRequest.unwrap();
+               console.log(token);
                refreshTokenRequest = null;
             }
             config.headers.Authorization = `Bearer ${token}`;
@@ -31,29 +32,30 @@ export const setupAxiosRequest = (store) => {
       },
       function (error) {
          // Do something with request error
-         const { config, status } = error.response;
+         return Promise.reject(error);
+      }
+   );
+
+   // Add a response interceptor
+   axiosClient.interceptors.response.use(
+      function (response) {
+         // Any status code that lie within the range of 2xx cause this function to trigger
+         // Do something with response data
+         return response.data;
+      },
+      async function (error) {
+         // Any status codes that falls outside the range of 2xx cause this function to trigger
+         // Do something with response error;
+         // console.log(error);
+         const { config, data, status } = error.response;
          if (config.url === 'auth/token' && status === 401) {
             store.dispatch(logout());
+         } else {
+            throw new Error(data.message);
          }
          return Promise.reject(error);
       }
    );
 };
-
-// Add a response interceptor
-axiosClient.interceptors.response.use(
-   function (response) {
-      // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response data
-      return response.data;
-   },
-   function (error) {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error;
-      const { data } = error.response;
-      throw new Error(data.message);
-      return Promise.reject(error);
-   }
-);
 
 export default axiosClient;

@@ -11,6 +11,7 @@ import { getToken } from 'utils/auth';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Home from 'pages/Home';
 
 toast.configure();
 
@@ -26,16 +27,27 @@ const MainLayout = () => {
    }, [location.pathname]);
 
    // fetch cart when changed
+   // useEffect(() => {
+   //    // console.log({ isUpdated });
+   //    if (!isUpdated || !isLoggedIn) return;
+   //    dispatch(fetchCart());
+   // }, [isUpdated, isLoggedIn, dispatch]);
+
    useEffect(() => {
       // console.log({ isUpdated });
       if (!isUpdated || !isLoggedIn) return;
       dispatch(fetchCart());
-   }, [isUpdated, isLoggedIn, dispatch]);
+   }, [isLoggedIn, dispatch, isUpdated]);
 
    // fetch user info
+   // useEffect(() => {
+   //    if (!getToken()) return;
+   //    // console.log('fetch user');
+   //    dispatch(getMe()).unwrap();
+   // }, [location.pathname, dispatch]);
+
    useEffect(() => {
       if (!getToken()) return;
-      // console.log('fetch user');
       dispatch(getMe()).unwrap();
    }, [location.pathname, dispatch]);
 

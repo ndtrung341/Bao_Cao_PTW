@@ -10,10 +10,10 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import store from 'redux/store';
 import { CssBaseline } from '@material-ui/core';
-import { setupAxiosRequest } from 'api/axiosClient';
+import { setupAxiosInterceptors } from 'api/axiosClient';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-setupAxiosRequest(store);
+setupAxiosInterceptors(store);
 
 const customTheme = createTheme({
    palette: {
@@ -25,6 +25,9 @@ const customTheme = createTheme({
    typography: {
       fontFamily: `'Nunito', sans-serif`,
       fontSize: 15,
+      fontWeightLight: 300,
+      fontWeightRegular: 500,
+      fontWeightMedium: 700,
       button: {
          textTransform: 'none',
       },

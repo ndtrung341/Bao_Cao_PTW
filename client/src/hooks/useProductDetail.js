@@ -27,9 +27,7 @@ const useProductDetail = () => {
          }
       })();
 
-      return () => {
-         isUnmounted = true;
-      };
+      return () => (isUnmounted = true);
    }, [slug, navigate]);
 
    return { loading, product, relatedList };

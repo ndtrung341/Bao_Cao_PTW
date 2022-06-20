@@ -1,10 +1,11 @@
+@token = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC90b2tlbiIsImlhdCI6MTY1NDczODM5NSwiZXhwIjoxNjU0NzM4NTQ0LCJuYmYiOjE2NTQ3Mzg0ODQsImp0aSI6IjhBalVHTkdBWHRxOUZteFkiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fww4ibujzT1peaUlKG0c7RyCRflruRMvp3Z8ayf7DEs
 ### LOGIN
 POST http://localhost:8000/api/auth/login
 content-type: application/json
 
 {
    "email":"duytrung341@gmail.com",
-   "password":"123456"
+   "password":"12345"
 }
 
 ### REGISTER
@@ -27,13 +28,13 @@ content-type: application/json
 
 ### ME
 POST http://localhost:8000/api/auth/me
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTI0MjYxNSwiZXhwIjoxNjUxMjQyNjc1LCJuYmYiOjE2NTEyNDI2MTUsImp0aSI6InpKTGlwbUUyVDJpdFNTdnAiLCJzdWIiOjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.q1n4_JguD8EdmTzG_zPv6-kaWZwU2mdiThLkWMB6c9k
+Authorization: {{token}}
 
 ### LOGOUT
 POST http://localhost:8000/api/auth/logout
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTM4NzM3NCwiZXhwIjoxNjUxNDk1Mzc0LCJuYmYiOjE2NTEzODczNzQsImp0aSI6Im8yY0pRTTFkS0VCWktMUWUiLCJzdWIiOjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.rE22FW5ImNy0_rjM-TxraPxinSd8zhyd0KH4wztmUl8
+Authorization: {{token}}
 
 
 ### token
 POST http://localhost:8000/api/auth/token
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1MTI0MjYxNSwiZXhwIjoxNjUxMjQyNjc1LCJuYmYiOjE2NTEyNDI2MTUsImp0aSI6InpKTGlwbUUyVDJpdFNTdnAiLCJzdWIiOjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.q1n4_JguD8EdmTzG_zPv6-kaWZwU2mdiThLkWMB6c9k
+Authorization:{{token}}

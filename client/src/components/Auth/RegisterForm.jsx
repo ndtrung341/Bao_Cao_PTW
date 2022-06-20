@@ -42,7 +42,7 @@ const RegisterForm = ({ onRegister }) => {
 
    return (
       <>
-         <Box component='form' onSubmit={handleSubmit(onRegister)}>
+         <Box component='form' onSubmit={handleSubmit(onRegister)} autoComplete='off'>
             {/* USERNAME FIELD */}
             <Controller
                control={control}

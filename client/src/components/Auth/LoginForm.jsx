@@ -32,18 +32,13 @@ const LoginForm = ({ onLogin }) => {
 
    return (
       <>
-         <Box component='form' onSubmit={handleSubmit(handleSubmitLogin)}>
+         <Box component='form' onSubmit={handleSubmit(handleSubmitLogin)} autoComplete='off'>
             {/* email field */}
             <Controller
                control={control}
                name='email'
                render={({ field, fieldState }) => (
-                  <InputField
-                     field={field}
-                     fieldState={fieldState}
-                     label='Email'
-                     type='email'
-                  />
+                  <InputField field={field} fieldState={fieldState} label='Email' type='email' />
                )}
             />
 
@@ -52,11 +47,7 @@ const LoginForm = ({ onLogin }) => {
                control={control}
                name='password'
                render={({ field, fieldState }) => (
-                  <PasswordField
-                     field={field}
-                     fieldState={fieldState}
-                     label={'Mật khẩu'}
-                  />
+                  <PasswordField field={field} fieldState={fieldState} label={'Mật khẩu'} />
                )}
             />
 

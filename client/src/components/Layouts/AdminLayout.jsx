@@ -40,7 +40,9 @@ const useStyles = makeStyles((theme) => ({
       color: 'inherit',
       fontSize: 18,
       padding: theme.spacing(1, 2),
-      display: 'block',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
       marginBottom: 8,
       '&.active': {
          color: theme.palette.primary.main,
@@ -76,6 +78,7 @@ const AdminLayout = () => {
             <Box className={classes.sidebar}>
                {ADMIN_LINKS.map((item) => (
                   <NavLink className={classes.link} key={item.path} to={item.path}>
+                     {item.icon}
                      {item.name}
                   </NavLink>
                ))}

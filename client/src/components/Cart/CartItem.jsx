@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
    const classes = useStyles();
    const { modal } = useModal();
-   console.log(item);
+
    const showConfirmRemove = () => {
       modal({
          type: 'warning',

@@ -22,7 +22,8 @@ const PaymentMethod = ({ value, thumb, title }) => {
          control={<Radio />}
          label={
             <Box display={'flex'} alignItems='center'>
-               <Avatar src={thumb} sx={{ mr: 1, mt: 1 }} variant='square' /> {title}
+               {title}
+               {thumb && <Avatar src={thumb} sx={{ ml: 1, mt: 1 }} variant='square' />}
             </Box>
          }
       />
@@ -35,20 +36,16 @@ const PaymentGroup = ({ field, fieldState }) => {
 
    return (
       <FormControl error={invalid}>
-         <RadioGroup {...fieldRest}>
-            <PaymentMethod value={'momo'} title={'Thanh toán bằng Momo'} thumb={momo} />
-            <PaymentMethod
-               value={'paypal'}
-               title={'Thanh toán bằng Paypal'}
-               thumb={paypal}
-            />
+         <RadioGroup value={value} {...fieldRest}>
+            <PaymentMethod value={'cod'} title={'Thanh toán khi nhận hàng'} />
+            <PaymentMethod value={'paypal'} title={'Thanh toán bằng Paypal'} thumb={paypal} />
          </RadioGroup>
          {invalid ? <FormHelperText>{error?.message}</FormHelperText> : ''}
       </FormControl>
    );
 };
 
-const Payment = ({ form }) => {
+const Payment = ({ form, onChange }) => {
    const { control } = form;
 
    return (
@@ -60,8 +57,24 @@ const Payment = ({ form }) => {
          <Controller
             control={control}
             name='payment'
-            render={({ field, fieldState }) => (
-               <PaymentGroup field={field} fieldState={fieldState} />
+            render={({ field, fieldState: { invalid, error } }) => (
+               <FormControl error={invalid}>
+                  <RadioGroup
+                     {...field}
+                     onChange={(e) => {
+                        field.onChange(e.target.value);
+                        onChange(e.target.value);
+                     }}
+                  >
+                     <PaymentMethod value={'cod'} title={'Thanh toán khi nhận hàng'} />
+                     <PaymentMethod
+                        value={'paypal'}
+                        title={'Thanh toán bằng Paypal'}
+                        thumb={paypal}
+                     />
+                  </RadioGroup>
+                  {invalid ? <FormHelperText>{error?.message}</FormHelperText> : ''}
+               </FormControl>
             )}
          />
       </Paper>

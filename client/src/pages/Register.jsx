@@ -1,12 +1,13 @@
 import { makeStyles } from '@material-ui/core';
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
-import { register, selectIsLogging } from 'redux/authSlice';
+import { register, selectIsLogging, getMe } from 'redux/authSlice';
 import RegisterForm from 'components/Auth/RegisterForm';
 import useModal from 'hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { Helmet } from 'react-helmet-async';
 
 const useStyles = makeStyles((theme) => ({
    wrapper: {
@@ -35,7 +36,12 @@ const RegisterPage = () => {
          const resultRegister = await dispatch(register(payload));
          unwrapResult(resultRegister);
 
-         return navigate('/');
+         const getUser = await dispatch(getMe());
+         const user = unwrapResult(getUser);
+
+         return navigate('/auth/verify_email', { state: { user }, replace: true });
+
+         // return navigate('/');
       } catch (error) {
          modal({
             type: 'error',
@@ -47,6 +53,9 @@ const RegisterPage = () => {
 
    return (
       <>
+         <Helmet>
+            <title>{'Đăng ký'}</title>
+         </Helmet>
          <Box className={classes.wrapper}>
             <Box className={classes.header}>
                <Typography

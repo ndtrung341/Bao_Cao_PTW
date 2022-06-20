@@ -23,6 +23,16 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function getAll(Request $request)
+    {
+        $page = $request->page ?? 1;
+        $categories = Category::orderByDesc('created_at')->paginate(6, ['*'], '_page', $page);
+        return response()->json([
+            "status" => 'success',
+            "data" => $categories
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -64,7 +74,10 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->name = $request->name;
+        $category->slug = '/categories/' . Str::slug($category->name, '-');
+        $category->save();
+        return response()->json('success', 200);
     }
 
     /**
@@ -75,6 +88,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->json('success', 200);
     }
 }

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserVerification extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'code', 'user_id'
-    ];
+    public $timestamps = false;
+    protected $fillable = ['user_id', 'code', 'expired'];
 }

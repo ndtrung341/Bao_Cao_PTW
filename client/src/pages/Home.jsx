@@ -58,7 +58,7 @@ const Home = () => {
                {loading ? (
                   <SkeletonProductList length={4} />
                ) : (
-                  topList.map((item) => (
+                  latestList.map((item) => (
                      <Grid item key={item.id} md={6} lg={3} xs={6}>
                         <ProductCard product={item} />
                      </Grid>
@@ -67,15 +67,8 @@ const Home = () => {
             </Grid>
          </Section>
 
-         <Section
-            title={'Sản phẩm bán chạy'}
-            subtitle={'Các sản phẩm bán chạy tại cửa hàng'}
-         >
-            {loading ? (
-               <SkeletonProductSlider />
-            ) : (
-               <ProductSlider products={latestList} />
-            )}
+         <Section title={'Sản phẩm bán chạy'} subtitle={'Các sản phẩm bán chạy tại cửa hàng'}>
+            {loading ? <SkeletonProductSlider /> : <ProductSlider products={topList} />}
          </Section>
       </>
    );

@@ -8,3 +8,11 @@ Authorization: {{token}}
 {
    "pathname":"/categories/fantasy"
 }
+
+### get cart
+POST http://localhost:8000/api/product_reviews
+content-type: application/json
+
+{
+   "productId":14
+}

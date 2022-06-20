@@ -12,10 +12,11 @@ const Checkout = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
-   const handlePlaceOrder = async (values, payment) => {
-      await orderApi.placeOrder(values);
+   const handlePlaceOrder = async (values) => {
+      // console.log(values);
+      const { data: order } = await orderApi.placeOrder(values);
       dispatch(cartActions.emptyCart());
-      navigate('/order-success', { state: { payment } });
+      navigate('/order-success', { state: { order } });
    };
 
    return (

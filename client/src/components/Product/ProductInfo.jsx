@@ -27,16 +27,6 @@ const ProductInfo = ({ product }) => {
          )}
 
          <Divider sx={{ my: 2 }} />
-
-         {/* DESCRIPTION */}
-         <Typography
-            component={'p'}
-            variant='subtitle1'
-            color='text.secondary'
-            fontSize={16}
-            mb={4}
-            dangerouslySetInnerHTML={{ __html: product.description }}
-         />
       </>
    );
 };

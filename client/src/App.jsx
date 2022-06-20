@@ -10,6 +10,7 @@ import Collection from 'pages/Collection';
 import ProductDetail from 'pages/ProductDetail';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
+import Verify from 'pages/Verify';
 import AdminLayout from 'components/Layouts/AdminLayout';
 import PrivateRoute from 'components/Common/PrivateRoute';
 
@@ -19,6 +20,12 @@ import AddEditProduct from 'pages/Admin/AddEditProduct';
 import AdminProductList from 'pages/Admin/AdminProductList';
 import OrderSuccess from 'pages/OrderSuccess';
 import OrderHistory from 'pages/OrderHistory';
+import AdminOrderList from 'pages/Admin/AdminOrderList';
+import UserManagement from 'pages/Admin/UserManagement';
+import ReviewManagement from 'pages/Admin/ReviewManagement';
+import CategoryManagement from 'pages/Admin/CategoryManagement';
+import PurchaseList from 'pages/Purchase';
+import OrderManagement from 'pages/Admin/OrderManagement';
 
 function App() {
    return (
@@ -35,7 +42,8 @@ function App() {
                <Route path='cart' element={<Cart />} />
                <Route path='checkout' element={<Checkout />} />
                <Route path='order-success' element={<OrderSuccess />} />
-               <Route path='order/history' element={<OrderHistory />} />
+               {/* <Route path='purchase' element={<OrderHistory />} /> */}
+               <Route path='purchase' element={<PurchaseList />} />
             </Route>
 
             <Route path='404' element={<NotFound />} />
@@ -49,13 +57,23 @@ function App() {
                   <Route path=':id' element={<AddEditProduct />} />
                   <Route path='add' element={<AddEditProduct />} />
                </Route>
+               {/* <Route path='orders' element={<AdminOrderList />} /> */}
+               <Route path='orders' element={<OrderManagement />} />
+
+               <Route path='users' element={<UserManagement />} />
+               <Route path='reviews' element={<ReviewManagement />} />
+               <Route path='categories' element={<CategoryManagement />} />
             </Route>
          </Route>
 
          {/* ROUTE AUTH */}
-         <Route path='auth' element={<AuthLayout />}>
-            <Route path='login' element={<Login />} />
-            <Route path='register' element={<Register />} />
+         <Route path='auth'>
+            <Route element={<AuthLayout />}>
+               <Route path='login' element={<Login />} />
+               <Route path='register' element={<Register />} />
+            </Route>
+            <Route path='verify_email' element={<Verify />} />
+            <Route path='forgot' element={null} />
          </Route>
 
          {/* redirect to 404 page */}

@@ -15,7 +15,7 @@ class CreateCartItemsTable extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cart_id')->references('id')->on('carts');
+            $table->foreignId('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreignId('product_id')->references('id')->on('products');
             $table->integer('quantity');
             $table->timestamps();

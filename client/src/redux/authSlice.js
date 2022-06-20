@@ -2,6 +2,7 @@ import { authApi } from 'api/authApi';
 import { removeItemStorage, setItemStorage } from 'utils';
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { cartActions } from './cartSlice';
 
 const initialState = {
    isLogging: false,
@@ -10,7 +11,9 @@ const initialState = {
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
    const user = await authApi.getMe();
-   setItemStorage('user', user);
+   if (user.is_verified) {
+      setItemStorage('user', user);
+   }
    return user;
 });
 
@@ -24,10 +27,16 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
    setItemStorage('access_token', res.access_token);
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
    await authApi.logout();
    removeItemStorage('access_token');
    removeItemStorage('user');
+   dispatch(cartActions.emptyCart());
+});
+
+export const verifyEmail = createAsyncThunk('auth/verify', async (payload, { dispatch }) => {
+   await authApi.verify(payload);
+   dispatch(getMe());
 });
 
 export const refreshToken = createAsyncThunk(
@@ -35,10 +44,12 @@ export const refreshToken = createAsyncThunk(
    async (_, { rejectWithValue }) => {
       try {
          const res = await authApi.refreshToken();
+         // console.log(res);
          setItemStorage('access_token', res.access_token);
          return res.access_token;
       } catch (error) {
-         rejectWithValue(error);
+         console.log(error);
+         // rejectWithValue(error);
       }
    }
 );
@@ -50,7 +61,10 @@ const authSlice = createSlice({
 
    extraReducers(builder) {
       builder.addCase(getMe.fulfilled, (state, action) => {
-         state.currentUser = action.payload;
+         const user = action.payload;
+         if (user.is_verified) {
+            state.currentUser = user;
+         }
       });
 
       builder.addCase(logout.fulfilled, () => {

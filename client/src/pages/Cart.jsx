@@ -3,7 +3,7 @@ import CartList from 'components/Cart/CartList';
 import CartSummary from 'components/Cart/CartSummary';
 import Breadcrumb from 'components/Common/Breadcrumb';
 import CartEmpty from 'components/Cart/CartEmpty';
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -13,16 +13,16 @@ const Cart = () => {
    const cartCount = useSelector(selectCartCount);
    const loading = useSelector((state) => state.cart.isLoading);
 
-   if (loading) {
-      return (
-         <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={loading}
-         >
-            <CircularProgress color='inherit' size={50} />
-         </Backdrop>
-      );
-   }
+   // if (loading) {
+   //    return (
+   //       <Backdrop
+   //          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+   //          open={loading}
+   //       >
+   //          <CircularProgress color='inherit' size={50} />
+   //       </Backdrop>
+   //    );
+   // }
 
    return (
       <>
@@ -54,6 +54,13 @@ const Cart = () => {
                )}
             </Container>
          </Paper>
+
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+         >
+            <CircularProgress color='inherit' size={50} />
+         </Backdrop>
       </>
    );
 };

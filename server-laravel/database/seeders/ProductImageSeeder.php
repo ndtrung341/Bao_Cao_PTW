@@ -31,7 +31,7 @@ class ProductImageSeeder extends Seeder
             array('id' => '14', 'product_id' => '14', 'public_id' => 'b8ca68c85ee0a6aa4bafdaee22869245', 'created_at' => NULL, 'updated_at' => NULL)
         );
         if (DB::table('product_images')->count() === 0) {
-            DB::table('fproduct_images')->insert($product_images);
+            DB::table('product_images')->insert($product_images);
         }
     }
 }

@@ -3,11 +3,11 @@ import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
 import LoginForm from 'components/Auth/LoginForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, selectIsLogging } from 'redux/authSlice';
+import { login, getMe, selectIsLogging } from 'redux/authSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Link, useNavigate } from 'react-router-dom';
 import useModal from 'hooks/useModal';
-
+import { Helmet } from 'react-helmet-async';
 const useStyles = makeStyles((theme) => ({
    wrapper: {
       padding: theme.spacing(2),
@@ -32,6 +32,13 @@ const Login = () => {
          const resultLogin = await dispatch(login(values));
          unwrapResult(resultLogin);
 
+         const getUser = await dispatch(getMe());
+         const user = unwrapResult(getUser);
+
+         if (!user.is_verified) {
+            return navigate('/auth/verify_email', { state: { user }, replace: true });
+         }
+
          return navigate('/');
       } catch (error) {
          modal({
@@ -44,6 +51,9 @@ const Login = () => {
 
    return (
       <>
+         <Helmet>
+            <title>{'Đăng nhập'}</title>
+         </Helmet>
          <Box className={classes.wrapper}>
             <Box className={classes.header}>
                <Typography

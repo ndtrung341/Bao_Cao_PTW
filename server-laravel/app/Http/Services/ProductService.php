@@ -53,7 +53,7 @@ class ProductService
       // filter categories
       $query = $query->when($categories, function (Builder $q, $categories) {
          $q->whereHas('categories', function ($q) use ($categories) {
-            $q->where('categories.id', explode(',', $categories));
+            $q->whereIn('categories.id', explode(',', $categories));
          });
       });
 

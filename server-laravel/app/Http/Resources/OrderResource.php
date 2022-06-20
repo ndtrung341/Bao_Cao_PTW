@@ -18,11 +18,12 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'userId' => $this->user_id,
-            'transactionID' => $this->transaction_id,
+            'phone' => $this->phone,
+            // 'transactionID' => $this->transaction_id,
             'customerName' => $this->customer_name,
             'address' => $this->address,
+            'status' => (int)$this->type,
             'total' => $this->total,
-            'status' => $this->status,
             'items' => $this->orderItems->map(function ($value) {
                 return [
                     'product_id' => $value->product_id,

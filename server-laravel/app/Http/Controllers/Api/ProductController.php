@@ -214,7 +214,6 @@ class ProductController extends Controller
     public function insert(Request $request)
     {
         $images = [];
-        // return response()->json($request->all());
         foreach ($request->images as $url) {
             $contents = file_get_contents($url);
             $id = md5(\uniqid(rand(), true));
@@ -229,7 +228,6 @@ class ProductController extends Controller
             $uploadFile->url = URL::asset($path);
             $uploadFile->save();
         }
-        // return response()->json(URL::asset('upload/' . $id . $ext));
 
         $product = Product::create([
             "name" => $request->name,
@@ -248,17 +246,28 @@ class ProductController extends Controller
         foreach ($images as $image) {
             $imgs[] = ['product_id' => $product->id, 'public_id' => $image['id']];
         }
-        // return response()->json($imgs, 201);
         ProductImage::insert($imgs);
 
         $categories = [];
         foreach ($request->categories as $category_id) {
             $categories[] = ['product_id' => $product->id, 'category_id' => $category_id];
         }
-        // return response()->json($categories);
 
         ProductCategory::insert($categories);
 
         return response()->json($product, 201);
+    }
+
+    public function getLatest()
+    {
+        $productList = Product::orderByDesc('created_at')->take(4)->get();
+        return ProductResource::collection($productList);
+    }
+
+    public function getTopSeller()
+    {
+        $productList =
+            Product::orderByDesc('sale_price')->take(6)->get();
+        return ProductResource::collection($productList);
     }
 }

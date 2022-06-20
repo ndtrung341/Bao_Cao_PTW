@@ -13,6 +13,14 @@ export const productApi = {
       return axiosClient.get(`products/${id}`);
    },
 
+   getReviews(data) {
+      return axiosClient.post('product_reviews', data);
+   },
+
+   review(data) {
+      return axiosClient.post('review', data);
+   },
+
    getRelated(id) {
       return axiosClient.get(`related/${id}`);
    },

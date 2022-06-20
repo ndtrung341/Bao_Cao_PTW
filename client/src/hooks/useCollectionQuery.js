@@ -36,7 +36,7 @@ const useCollectionQuery = (urlKey) => {
 
             window.scrollTo(0, 0);
          } catch (error) {
-            console.err(error);
+            console.error(error);
             navigate('/404', { replace: true });
          }
       })();

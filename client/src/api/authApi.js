@@ -19,4 +19,12 @@ export const authApi = {
    refreshToken() {
       return axiosClient.post('auth/token');
    },
+
+   verify(data) {
+      return axiosClient.post('auth/verify', data);
+   },
+
+   resend(data) {
+      return axiosClient.post('auth/resend', data);
+   },
 };

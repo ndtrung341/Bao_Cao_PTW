@@ -1,5 +1,5 @@
-import { Grid, Paper } from '@mui/material';
-import React from 'react';
+import { Button, Grid, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ShippingInfo from './ShippingInfo';
@@ -11,6 +11,7 @@ import { Box } from '@mui/system';
 import PaypalButton from './PaypalButton';
 import { useSelector } from 'react-redux';
 import { selectCartItems, selectCartTotal } from 'redux/cartSlice';
+import Payment from './Payment';
 
 const defaultValues = {
    customerName: '',
@@ -43,7 +44,8 @@ const schema = yup.object().shape({
 const CheckoutForm = ({ onSubmit }) => {
    const total = useSelector(selectCartTotal);
    const cartItems = useSelector(selectCartItems);
-   console.log('render');
+   const [paymentMethod, setPaymentMethod] = useState('');
+
    const form = useForm({
       defaultValues,
       mode: 'all',
@@ -63,13 +65,41 @@ const CheckoutForm = ({ onSubmit }) => {
          ...values,
          address,
          cartItems,
-         transactionID: order.id,
+         // transactionID: order.id,
          province: undefined,
          district: undefined,
          ward: undefined,
       };
 
-      onSubmit?.(JSON.parse(JSON.stringify(newValues)), order);
+      // onSubmit?.(JSON.parse(JSON.stringify(newValues)), order);
+      onSubmit?.(JSON.parse(JSON.stringify(newValues)));
+   };
+
+   const handleBuyClick = async () => {
+      const isValid = await form.trigger();
+
+      if (!isValid) return;
+
+      const values = form.getValues();
+
+      const address = [values.ward, values.district, values.province]
+         .map((item) => item.label)
+         .join(', ');
+
+      const newValues = {
+         ...values,
+         address,
+         cartItems,
+         province: undefined,
+         district: undefined,
+         ward: undefined,
+      };
+
+      onSubmit?.(JSON.parse(JSON.stringify(newValues)));
+   };
+
+   const handlePaymentMethodChange = (payment) => {
+      setPaymentMethod(payment);
    };
 
    // validate before checkout
@@ -81,19 +111,35 @@ const CheckoutForm = ({ onSubmit }) => {
    return (
       <Grid container spacing={2} mb={2}>
          <Grid item lg={7}>
-            <Box component={'form'}>
+            <Box component={'form'} autoComplete='off'>
                <ShippingInfo form={form} />
+               <Payment form={form} onChange={handlePaymentMethodChange} />
             </Box>
          </Grid>
          <Grid item lg={5}>
             <Paper sx={{ p: 3, mb: 2 }}>
                <OrderDetail />
                <Box sx={{ mt: 2 }}>
-                  <PaypalButton
-                     onClick={handlePaypalClick}
-                     onApprove={handleApprove}
-                     total={total * 0.000043}
-                  />
+                  {(() => {
+                     switch (paymentMethod) {
+                        case 'cod':
+                           return (
+                              <Button variant='contained' fullWidth onClick={handleBuyClick}>
+                                 Thanh toán
+                              </Button>
+                           );
+                        case 'paypal':
+                           return (
+                              <PaypalButton
+                                 onClick={handlePaypalClick}
+                                 onApprove={handleApprove}
+                                 total={(total * 0.000043).toFixed(2)}
+                              />
+                           );
+                        default:
+                           return null;
+                     }
+                  })()}
                </Box>
             </Paper>
          </Grid>

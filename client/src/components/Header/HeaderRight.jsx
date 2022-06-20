@@ -102,14 +102,11 @@ const HeaderRight = ({ currentUser }) => {
                      onClose={handleCloseUserMenu}
                   >
                      {SETTING_LINKS.map((item) => (
-                        <MenuItem
-                           key={item.name}
-                           onClick={handleCloseUserMenu}
-                           component={MUILink}
-                           href={item.path}
-                        >
-                           <ListItemIcon>{item.icon}</ListItemIcon>
-                           <ListItemText>{item.name}</ListItemText>
+                        <MenuItem key={item.name} onClick={handleCloseUserMenu}>
+                           <Link style={{ display: 'flex', color: 'inherit' }} to={item.path}>
+                              <ListItemIcon>{item.icon}</ListItemIcon>
+                              <ListItemText>{item.name}</ListItemText>
+                           </Link>
                         </MenuItem>
                      ))}
                      <Divider />
